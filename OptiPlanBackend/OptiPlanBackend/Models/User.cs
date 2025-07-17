@@ -10,12 +10,22 @@ namespace OptiPlanBackend.Models
         public string PasswordHash { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.User;
 
+        // New fields for professional profile
+        public string FullName { get; set; } = string.Empty;
+        public string JobTitle { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string AvatarUrl { get; set; } = string.Empty;
+        public string? CompanyName { get; set; }
+        public string? Department { get; set; }
+        public string? Country { get; set; }
+
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
-        // Navigation properties
+        // Navigation
         public ICollection<Project> OwnedProjects { get; set; } = new List<Project>();
         public ICollection<TeamMembership> TeamMemberships { get; set; } = new List<TeamMembership>();
-        public UserProfile Profile { get; set; }
+        public UserProfile? Profile { get; set; } 
     }
+
 }

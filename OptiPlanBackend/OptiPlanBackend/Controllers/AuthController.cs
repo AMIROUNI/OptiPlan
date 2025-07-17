@@ -8,11 +8,19 @@ namespace OptiPlanBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthService authService) : ControllerBase
+    public class AuthController(IAuthService authService,IUploadService 
+        uploadService) : ControllerBase
     {
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto request)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<User>> Register([FromForm] RegisterDto request, [FromForm] IFormFile? avatar)
         {
+            if (avatar != null)
+            {
+                var avatarUrl = await uploadService.UploadImageAsync(avatar, "avatars");
+                request.AvatarUrl = avatarUrl!;
+            }
+
             var user = await authService.RegisterAsync(request);
             if (user is null)
                 return BadRequest("Username already exists.");
@@ -20,12 +28,23 @@ namespace OptiPlanBackend.Controllers
             return Ok(user);
         }
 
+
         [HttpPost("login")]
         public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
         {
+            Console.WriteLine($"Login attempt for username: {request.Username}");
+            Console.WriteLine($"Request received at: {DateTime.UtcNow}");
+
             var result = await authService.LoginAsync(request);
+
             if (result is null)
+            {
+                Console.WriteLine("Login failed - invalid credentials");
                 return BadRequest("Invalid username or password.");
+            }
+
+            Console.WriteLine($"Login successful for user: {request.Username}");
+            Console.WriteLine($"Token generated: {result.AccessToken?.Substring(0, 10)}...");
 
             return Ok(result);
         }

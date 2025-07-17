@@ -14,6 +14,7 @@ namespace OptiPlanBackend.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<Skill> Skills { get; set; }
         public DbSet<TeamMembership> TeamMemberships { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
 

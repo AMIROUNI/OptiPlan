@@ -1,0 +1,393 @@
+/* Register Container Styling */
+.register-container {
+  background: linear-gradient(145deg, #2a2e6e 40%, #4a90e2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.15)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.15)"/><path d="M20 20 L80 80" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>') repeat;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+/* Register Card Styling */
+.register-card {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.register-card .card-body {
+  padding: 2.5rem;
+}
+
+/* Logo Styling */
+.register-logo {
+  height: 70px;
+  width: auto;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+  transition: transform 0.3s ease;
+}
+
+.register-logo:hover {
+  transform: scale(1.15);
+}
+
+/* Heading and Text */
+.register-card h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #2a2e6e;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #2a2e6e, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.register-card p.text-muted {
+  font-size: 1.1rem;
+  color: #5f6c7b;
+  margin-bottom: 1.5rem;
+  animation: fadeIn 1s ease-out 0.2s;
+  animation-fill-mode: both;
+}
+
+/* Form Styling */
+.register-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.register-card .form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2a2e6e;
+  margin-bottom: 0.5rem;
+}
+
+.register-card .input-group {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.register-card .input-group:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.register-card .input-group-text {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #4a90e2;
+  padding: 0.625rem;
+}
+
+.register-card .form-control,
+.register-card select.form-control {
+  border: 1px solid #e2e8f0;
+  padding: 0.625rem;
+  font-size: 1rem;
+  color: #2d3748;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card .form-control:focus,
+.register-card select.form-control:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+  outline: none;
+}
+
+.register-card .form-control.is-invalid {
+  border-color: #e53e3e;
+}
+
+.register-card .text-danger {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Checkbox Styling */
+.register-card .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.register-card .form-check-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #4a90e2;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.register-card .form-check-input:checked {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+/* File Input Styling */
+.register-card .form-control[type="file"] {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  transition: border-color 0.3s ease;
+}
+
+.register-card .form-control[type="file"]:hover {
+  border-color: #4a90e2;
+}
+
+/* Submit Button Styling */
+.register-card .btn-primary {
+  background: #4a90e2;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 50px;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card .btn-primary:hover {
+  background: #357abd;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.register-card .btn-primary:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Footer Link Styling */
+.register-card .text-center a {
+  color: #4a90e2;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.register-card .text-center a:hover {
+  color: #357abd;
+  text-decoration: underline;
+}
+
+/* Popup Styling */
+app-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 90%;
+  padding: 2rem;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-out;
+}
+
+app-popup .popup-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2a2e6e;
+  margin-bottom: 1rem;
+}
+
+app-popup .popup-message {
+  font-size: 1.1rem;
+  color: #5f6c7b;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+app-popup .btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+app-popup .btn-success {
+  background: #4a90e2;
+  color: #ffffff;
+  border: none;
+}
+
+app-popup .btn-success:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+}
+
+app-popup .btn-secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+  border: none;
+}
+
+app-popup .btn-secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .register-card .card-body {
+    padding: 2rem;
+  }
+
+  .register-card h2 {
+    font-size: 2.2rem;
+  }
+
+  app-popup {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    background: linear-gradient(145deg, #2a2e6e 50%, #4a90e2 100%);
+  }
+
+  .register-card {
+    max-width: 95%;
+  }
+
+  .register-card .card-body {
+    padding: 1.5rem;
+  }
+
+  .register-card .register-logo {
+    height: 60px;
+  }
+
+  .register-card h2 {
+    font-size: 2rem;
+  }
+
+  .register-card .form-control,
+  .register-card .input-group-text {
+    font-size: 0.95rem;
+  }
+
+  .register-card .btn-primary {
+    font-size: 1rem;
+  }
+
+  app-popup {
+    max-width: 350px;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .register-container {
+    background: #ffffff;
+  }
+
+  .register-card .card-body {
+    padding: 1.25rem;
+  }
+
+  .register-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .register-card p.text-muted {
+    font-size: 0.95rem;
+  }
+
+  .register-card .form-label {
+    font-size: 0.9rem;
+  }
+
+  .register-card .form-control,
+  .register-card .input-group-text {
+    padding: 0.5rem;
+  }
+
+  .register-card .btn-primary {
+    padding: 0.625rem;
+    font-size: 0.95rem;
+  }
+
+  app-popup {
+    max-width: 300px;
+    padding: 1rem;
+  }
+}
+
+/* Accessibility */
+.register-card .form-control:focus,
+.register-card .btn-primary:focus,
+.register-card .form-check-input:focus,
+app-popup .btn:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.register-card .form-group,
+.register-card .form-check {
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: calc(0.1s * var(--index));
+}
+
+/* Theme Enhancements */
+.register-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.15), transparent);
+  transform: translate(-50%, -50%);
+  opacity: 0.1;
+  z-index: -1;
+} 

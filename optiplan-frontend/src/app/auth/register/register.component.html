@@ -1,0 +1,155 @@
+<div class="register-container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="register-card card shadow-lg border-0 animate__animated animate__fadeInUp">
+    <div class="card-body px-5 py-4">
+      <!-- Logo & Heading -->
+      <div class="text-center mb-4">
+        <h2 class="fw-bold text-gradient mb-1">Create Account</h2>
+        <p class="text-muted">Join our platform now</p>
+      </div>
+
+      <!-- Register Form -->
+      <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
+        <!-- Username -->
+        <div class="mb-3">
+          <label for="username" class="form-label fw-semibold">Username</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-user text-muted"></i></span>
+            <input type="text" formControlName="username" class="form-control border-start-0" id="username" placeholder="Enter your username"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('username'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('username'))">
+             <ng-container *ngIf="formRegister.get('username')?.hasError('required')">username is required</ng-container>
+             <ng-container *ngIf="formRegister.get('username')?.hasError('minlength')"> you should add a username that container at least 3 characters</ng-container>
+            <ng-container *ngIf="formRegister.get('username')?.hasError('maxlength')"> you should add a username that container at most 20 characters</ng-container>
+          </small>
+
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-semibold">Email</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-envelope text-muted"></i></span>
+            <input type="email" formControlName="email" class="form-control border-start-0" id="email" placeholder="Enter your email"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('email'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('email'))">
+            <ng-container *ngIf="formRegister.get('email')?.hasError('required')">Email is required</ng-container>
+            <ng-container *ngIf="formRegister.get('email')?.hasError('email')">Invalid email format</ng-container>
+          </small>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label fw-semibold">Password</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-lock text-muted"></i></span>
+            <input type="password" formControlName="password" class="form-control border-start-0" id="password" placeholder="Enter your password"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('password'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('password'))">
+            <ng-container *ngIf="formRegister.get('password')?.hasError('required')">Password is required</ng-container>
+            <ng-container *ngIf="formRegister.get('password')?.hasError('minlength')">Minimum 10 characters required</ng-container>
+          </small>
+        </div>
+
+        <!-- Full Name -->
+        <div class="mb-3">
+          <label for="fullName" class="form-label fw-semibold">Full Name</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-id-card text-muted"></i></span>
+            <input type="text" formControlName="fullName" class="form-control border-start-0" id="fullName" placeholder="Enter your full name"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('fullName'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('fullName'))">
+            Full name is required
+          </small>
+        </div>
+
+        <!-- Job Title -->
+        <div class="mb-3">
+          <label for="jobTitle" class="form-label fw-semibold">Job Title</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-briefcase text-muted"></i></span>
+            <input type="text" formControlName="jobTitle" class="form-control border-start-0" id="jobTitle" placeholder="Enter your job title"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('jobTitle'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('jobTitle'))">
+            Job title is required
+          </small>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label fw-semibold">Phone Number</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-phone text-muted"></i></span>
+            <input type="text" formControlName="phoneNumber" class="form-control border-start-0" id="phoneNumber" placeholder="Enter your phone number"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('phoneNumber'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('phoneNumber'))">
+            Phone number is required
+          </small>
+        </div>
+
+        <!-- Avatar URL -->
+        <div class="mb-3">
+          <label for="avatarUrl" class="form-label fw-semibold">Avatar URL</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-image text-muted"></i></span>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" formControlName="avatarUrl" class="form-control border-start-0" id="avatarUrl" placeholder="Enter avatar URL"
+              [class.is-invalid]="isInvalidAndTouchedOrDirty(formRegister.get('avatarUrl'))">
+          </div>
+          <small class="text-danger" *ngIf="isInvalidAndTouchedOrDirty(formRegister.get('avatarUrl'))">
+            Avatar URL is required
+          </small>
+        </div>
+
+        <!-- Optional Fields -->
+        <div class="mb-3">
+          <label for="companyName" class="form-label fw-semibold">Company Name (optional)</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-building text-muted"></i></span>
+            <input type="text" formControlName="companyName" class="form-control border-start-0" id="companyName" placeholder="Enter your company name">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="department" class="form-label fw-semibold">Department (optional)</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-users text-muted"></i></span>
+            <input type="text" formControlName="department" class="form-control border-start-0" id="department" placeholder="Enter your department">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="country" class="form-label fw-semibold">Country (optional)</label>
+          <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-globe text-muted"></i></span>
+            <input type="text" formControlName="country" class="form-control border-start-0" id="country" placeholder="Enter your country">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill">
+          <i class="fas fa-user-plus me-2"></i>Register
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="text-center mt-4">
+        <p class="text-muted small">Already have an account? <a [routerLink]="['/login']" class="text-primary text-decoration-none fw-semibold">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Component -->
+<app-popup *ngIf="showPopup"
+           [title]="popupTitle"
+           [message]="popupMessage"
+           [isSuccess]="popupIsSuccess"
+           [redirectPath]="popupRedirectPath"
+           [showCancelButton]="showCancelButton"
+           (closed)="closePopup()">
+</app-popup>

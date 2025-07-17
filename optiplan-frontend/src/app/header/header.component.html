@@ -1,0 +1,64 @@
+<header class="main-header">
+  <div class="header-container">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <a routerLink="/" class="logo-link">
+        <img src="assets/images/deepHireLogo.png" alt="OptiPlan Logo" class="logo-img" />
+        <span class="logo-text">OptiPlan</span>
+      </a>
+    </div>
+
+    <!-- Public Navigation -->
+    <nav class="main-nav" *ngIf="!isLoggedIn">
+      <ul class="nav-list">
+        <li class="nav-item"><a routerLink="/" class="nav-link active">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Resources</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>
+      </ul>
+    </nav>
+
+    <!-- Authenticated Navigation -->
+    <nav class="main-nav" *ngIf="isLoggedIn">
+      <ul class="nav-list">
+
+        <!-- Role: USER -->
+        <ng-container *ngIf="isUser()">
+          <li class="nav-item"><a routerLink="/projects" class="nav-link">My Projects</a></li>
+          <li class="nav-item"><a routerLink="/tasks" class="nav-link">Tasks</a></li>
+          <li class="nav-item"><a routerLink="/calendar" class="nav-link">Calendar</a></li>
+          <li class="nav-item"><a routerLink="/chat" class="nav-link">Messages</a></li>
+        </ng-container>
+
+        <!-- Role: MODERATOR -->
+        <ng-container *ngIf="isModerator()">
+          <li class="nav-item"><a routerLink="/moderation" class="nav-link">Moderation Panel</a></li>
+          <li class="nav-item"><a routerLink="/chat" class="nav-link">Messages</a></li>
+        </ng-container>
+
+        <!-- Role: ADMIN -->
+        <ng-container *ngIf="isAdmin()">
+          <li class="nav-item"><a routerLink="/admin-dashboard" class="nav-link">Admin Dashboard</a></li>
+          <li class="nav-item"><a routerLink="/user-management" class="nav-link">Users</a></li>
+          <li class="nav-item"><a routerLink="/project-overview" class="nav-link">All Projects</a></li>
+        </ng-container>
+
+      </ul>
+    </nav>
+
+    <!-- User Actions -->
+    <div class="user-actions" *ngIf="!isLoggedIn">
+      <a routerLink="/login" class="btn btn-login">Log In</a>
+      <a routerLink="/register" class="btn btn-primary">Get Started</a>
+    </div>
+
+    <div class="user-actions" *ngIf="isLoggedIn">
+      <div class="user-profile" routerLink="/profile/{{username}}">
+        <img *ngIf="userImg" [src]="'data:image/png;base64,' + userImg" alt="User Avatar" class="avatar-img" style="height: 50px;width: 50px;" />
+        <img *ngIf="!userImg" src="assets/images/default-profile.png" alt="Default Avatar" class="avatar-img" style="height: 50px;width: 50px;" />
+      </div>
+      <a (click)="logout()" class="btn btn-login">Log Out</a>
+    </div>
+  </div>
+</header>

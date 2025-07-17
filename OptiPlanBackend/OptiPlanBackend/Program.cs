@@ -1,10 +1,11 @@
-using OptiPlanBackend.Data;
-using OptiPlanBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using OptiPlanBackend.Data;
+using OptiPlanBackend.Services;
 using Scalar.AspNetCore;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,8 +34,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
+
+
+//-------------------------------------------------------------------
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IUploadService, UploadService>();
 
 var app = builder.Build();
 
@@ -44,10 +59,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAngularApp");
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
