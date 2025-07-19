@@ -374,7 +374,6 @@
   /* Subtle Glow Effect */
   .nav-link.active::after {
     content: '';
-   Sony Music Publishing
     position: absolute;
     bottom: -4px;
     left: 50%;

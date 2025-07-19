@@ -1,5 +1,6 @@
 ﻿using OptiPlanBackend.Models;
 using Microsoft.EntityFrameworkCore;
+using OptiPlanBackend.Enums;
 
 namespace OptiPlanBackend.Data
 {
@@ -10,6 +11,7 @@ namespace OptiPlanBackend.Data
         {
         }
 
+        // Existing DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
@@ -17,6 +19,12 @@ namespace OptiPlanBackend.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<TeamMembership> TeamMemberships { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
+
+        // New DbSets for Task management
+        public DbSet<OptiPlanBackend.Models.Task> Tasks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<TaskHistory> TaskHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +37,14 @@ namespace OptiPlanBackend.Data
             modelBuilder.Entity<TeamMembership>().ToTable("TeamMemberships");
             modelBuilder.Entity<UserProfile>().ToTable("UserProfiles");
             modelBuilder.Entity<Invitation>().ToTable("Invitations");
+            modelBuilder.Entity<Models.Task>().ToTable("Tasks");
+            modelBuilder.Entity<Comment>().ToTable("Comments");
+            modelBuilder.Entity<Attachment>().ToTable("Attachments");
+            modelBuilder.Entity<TaskHistory>().ToTable("TaskHistories");
+
+            modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
 
             // Configure enums to be stored as strings
             modelBuilder.Entity<TeamMembership>()
@@ -43,7 +59,20 @@ namespace OptiPlanBackend.Data
                 .Property(u => u.Role)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+                .Property(t => t.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+                .Property(t => t.Priority)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+                .Property(t => t.Type)
+                .HasConversion<string>();
+
             // Configure relationships with proper delete behaviors
+
             // User -> Projects (Owner)
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.Owner)
@@ -82,9 +111,88 @@ namespace OptiPlanBackend.Data
             // Team -> Invitations
             modelBuilder.Entity<Invitation>()
                 .HasOne(i => i.Team)
-                .WithMany()
+                .WithMany(t => t.Invitations)
                 .HasForeignKey(i => i.TeamId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // --- NEW TASK-RELATED RELATIONSHIPS ---
+
+            // Project -> Tasks (One-to-Many)
+            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.Tasks)  // Add ICollection<Task> Tasks to Project model
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Task -> Assigned User (Many-to-One)
+            modelBuilder.Entity<Models.Task>()
+                .HasOne(t => t.AssignedUser)
+                .WithMany(u => u.AssignedTasks)  // Add ICollection<Task> AssignedTasks to User model
+                .HasForeignKey(t => t.AssignedUserId)
+                .OnDelete(DeleteBehavior.SetNull);  // Keep tasks if user is deleted
+
+            // Task -> Reporter (Many-to-One)
+            modelBuilder.Entity<Models.Task>()
+                .HasOne(t => t.Reporter)
+                .WithMany(u => u.ReportedTasks)  // Add ICollection<Task> ReportedTasks to User model
+                .HasForeignKey(t => t.ReporterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Task -> Comments (One-to-Many)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Task)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Comment -> Author (Many-to-One)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Author)
+                .WithMany()
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Task -> Attachments (One-to-Many)
+            modelBuilder.Entity<Attachment>()
+                .HasOne(a => a.Task)
+                .WithMany(t => t.Attachments)
+                .HasForeignKey(a => a.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Attachment -> Uploader (Many-to-One)
+            modelBuilder.Entity<Attachment>()
+                .HasOne(a => a.Uploader)
+                .WithMany()
+                .HasForeignKey(a => a.UploaderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Task -> History (One-to-Many)
+            modelBuilder.Entity<TaskHistory>()
+                .HasOne(th => th.Task)
+                .WithMany(t => t.History)
+                .HasForeignKey(th => th.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // History -> ChangedBy (Many-to-One)
+            modelBuilder.Entity<TaskHistory>()
+                .HasOne(th => th.ChangedBy)
+                .WithMany()
+                .HasForeignKey(th => th.ChangedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            // Add these configurations for Invitation relationships
+            modelBuilder.Entity<Invitation>()
+                .HasOne(i => i.Inviter)
+                .WithMany(u => u.SentInvitations)
+                .HasForeignKey(i => i.InviterId)
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(i => i.Invitee)
+                .WithMany(u => u.ReceivedInvitations)
+                .HasForeignKey(i => i.InviteeId)
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
         }
     }
 }

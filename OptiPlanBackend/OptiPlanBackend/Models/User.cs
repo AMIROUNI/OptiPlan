@@ -1,4 +1,5 @@
 ﻿using OptiPlanBackend.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OptiPlanBackend.Models
 {
@@ -6,6 +7,9 @@ namespace OptiPlanBackend.Models
     {
         public Guid Id { get; set; }
         public string Username { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.User;
@@ -25,7 +29,15 @@ namespace OptiPlanBackend.Models
         // Navigation
         public ICollection<Project> OwnedProjects { get; set; } = new List<Project>();
         public ICollection<TeamMembership> TeamMemberships { get; set; } = new List<TeamMembership>();
-        public UserProfile? Profile { get; set; } 
+        public UserProfile? Profile { get; set; }
+
+
+
+        public ICollection<Task> AssignedTasks { get; set; } = new List<Task>();
+        public ICollection<Task> ReportedTasks { get; set; } = new List<Task>();
+
+        public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();  // As Inviter
+        public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();  // As Invitee
     }
 
 }

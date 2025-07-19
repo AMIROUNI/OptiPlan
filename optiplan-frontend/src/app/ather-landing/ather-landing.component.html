@@ -1,0 +1,73 @@
+<!-- Hero Section --> 
+<section class="hero-section" style="background-color: rgb(99, 99, 179);">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Welcome to OptiPlan</h1>
+      <p class="lead">Optimize your project planning and sprint management with our intelligent and intuitive platform.</p>
+      <a href="#services" class="btn btn-primary">Explore Our Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services-section">
+  <div class="container">
+    <h2>Our Services</h2>
+    
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let service of services">
+        <h3>{{service.title}}</h3>
+        <p>{{service.description}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-text">
+        <h2>About OptiPlan</h2>
+        <p>OptiPlan is a modern platform designed to streamline project planning and team collaboration. Manage sprints, assign tasks, monitor progress, and ensure successful delivery with ease.</p>
+        <a href="#" class="btn btn-outline">Learn More</a>
+      </div>
+      <div class="about-image">
+        <img src="assets/images/about-image.jpg" alt="About OptiPlan">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video Section -->
+<section class="video-section">
+  <div class="container">
+<app-video-player
+  videoUrl="assets/videos/optiPlan.mp4"
+  posterUrl="assets/images/candidate-video-poster.png">
+</app-video-player>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <h2>Contact Us</h2>
+    <p class="contact-lead">Have questions? Get in touch with our team for more information.</p>
+    
+    <div class="contact-form">
+      <form>
+        <div class="form-group">
+          <input type="text" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="Your Email">
+        </div>
+        <div class="form-group">
+          <textarea placeholder="Your Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>

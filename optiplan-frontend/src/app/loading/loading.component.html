@@ -1,0 +1,35 @@
+<div class="service-loading-screen">
+  <div class="loading-container">
+    <!-- Header with Logo -->
+    <div class="loading-header">
+      <div class="logo">
+        <svg viewBox="0 0 200 200">
+          <path class="logo-shape" d="M100 20 L180 60 L180 140 L100 180 L20 140 L20 60 Z" />
+          <path class="logo-inner" d="M100 50 L150 80 L150 120 L100 150 L50 120 L50 80 Z" />
+        </svg>
+      </div>
+      <h1>OptiPlan</h1>
+      <p class="tagline">Intelligent Workflow Optimization</p>
+    </div>
+
+    <!-- Service Showcase -->
+    <div class="service-display">
+      <div class="service-icon">{{ currentService.icon }}</div>
+      <h2>{{ currentService.title }}</h2>
+      <p class="service-description">{{ currentService.description }}</p>
+    </div>
+
+    <!-- Loading Progress -->
+    <div class="loading-progress">
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+      <span class="progress-text">{{ progress  }}% loaded</span>
+    </div>
+
+    <!-- Loading Tips -->
+    <div class="loading-tips">
+      <p>🔧 Tip: Use our dashboard to track all optimization metrics in real-time</p>
+    </div>
+  </div>
+</div>

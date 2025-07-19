@@ -3,7 +3,10 @@
     <!-- Logo Section -->
     <div class="logo-section">
       <a routerLink="/" class="logo-link">
-        <img src="assets/images/deepHireLogo.png" alt="OptiPlan Logo" class="logo-img" />
+         <svg viewBox="0 0 200 200" style=" z-index: 1000; width: 3em; height: 3em;">
+            <path class="logo-path" d="M100 20 L180 60 L180 140 L100 180 L20 140 L20 60 Z" />
+            <circle class="logo-dot" cx="100" cy="100" r="20" />
+          </svg>
         <span class="logo-text">OptiPlan</span>
       </a>
     </div>
@@ -22,7 +25,6 @@
     <!-- Authenticated Navigation -->
     <nav class="main-nav" *ngIf="isLoggedIn">
       <ul class="nav-list">
-
         <!-- Role: USER -->
         <ng-container *ngIf="isUser()">
           <li class="nav-item"><a routerLink="/projects" class="nav-link">My Projects</a></li>
@@ -43,7 +45,6 @@
           <li class="nav-item"><a routerLink="/user-management" class="nav-link">Users</a></li>
           <li class="nav-item"><a routerLink="/project-overview" class="nav-link">All Projects</a></li>
         </ng-container>
-
       </ul>
     </nav>
 
@@ -55,8 +56,7 @@
 
     <div class="user-actions" *ngIf="isLoggedIn">
       <div class="user-profile" routerLink="/profile/{{username}}">
-        <img *ngIf="userImg" [src]="'data:image/png;base64,' + userImg" alt="User Avatar" class="avatar-img" style="height: 50px;width: 50px;" />
-        <img *ngIf="!userImg" src="assets/images/default-profile.png" alt="Default Avatar" class="avatar-img" style="height: 50px;width: 50px;" />
+        <img style="width: 5em;" [src]="getAvatarUrl()" alt="User Avatar" class="avatar-img" />
       </div>
       <a (click)="logout()" class="btn btn-login">Log Out</a>
     </div>

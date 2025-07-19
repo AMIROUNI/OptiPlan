@@ -154,5 +154,4 @@ C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.genruntimeconfig.cache
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\ref\OptiPlanBackend.dll
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.sourcelink.json
-C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.staticwebassets.runtime.json

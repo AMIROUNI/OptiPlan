@@ -1,8 +1,8 @@
 ﻿using OptiPlanBackend.Models;
 using OptiPlanBackend.Dto;
-using OptiPlanBackend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OptiPlanBackend.Services.Interfaces;
 
 namespace OptiPlanBackend.Controllers
 {

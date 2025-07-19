@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OptiPlanBackend.Models;
-using OptiPlanBackend.Services;
+using OptiPlanBackend.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -37,7 +37,10 @@ namespace OptiPlanBackend.Controllers
                     user.Id,
                     user.Username,
                     user.Email,
-                    user.AvatarUrl
+                    user.AvatarUrl,
+                    user.CompanyName,
+                    user.PhoneNumber,
+                    user.FullName,
 
                 });
             }

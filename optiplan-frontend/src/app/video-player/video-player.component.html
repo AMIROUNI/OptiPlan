@@ -1,0 +1,18 @@
+<!-- video-player.component.html -->
+<div class="video-container">
+    <video #videoPlayer controls [poster]="posterUrl" class="video-element">
+      <source [src]="videoUrl" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="video-controls" *ngIf="showControls">
+      <button (click)="togglePlay()">
+        <i class="fas" [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}"></i>
+      </button>
+      <div class="progress-bar" (click)="seek($event)">
+        <div class="progress" [style.width.%]="progress"></div>
+      </div>
+      <button (click)="toggleMute()">
+        <i class="fas" [ngClass]="{'fa-volume-up': !isMuted, 'fa-volume-mute': isMuted}"></i>
+      </button>
+    </div>
+  </div>

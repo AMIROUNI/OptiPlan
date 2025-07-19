@@ -22,6 +22,66 @@ namespace OptiPlanBackend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("OptiPlanBackend.Models.Attachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UploaderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UploaderId");
+
+                    b.ToTable("Attachments", (string)null);
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("Comments", (string)null);
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,23 +92,34 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("InviteeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InviterId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("TeamId1")
+                    b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("InviteeId");
 
-                    b.HasIndex("TeamId1");
+                    b.HasIndex("InviterId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Invitations", (string)null);
                 });
@@ -106,7 +177,127 @@ namespace OptiPlanBackend.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BlockReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("CompletionPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EstimatedHours")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Labels")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ReporterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SprintId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StoryPoints")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ReporterId");
+
+                    b.ToTable("Tasks", (string)null);
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ChangedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FieldChanged")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedById");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskHistories", (string)null);
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Team", b =>
@@ -183,7 +374,7 @@ namespace OptiPlanBackend.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -217,6 +408,9 @@ namespace OptiPlanBackend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users", (string)null);
                 });
 
@@ -247,17 +441,66 @@ namespace OptiPlanBackend.Migrations
                     b.ToTable("UserProfiles", (string)null);
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.Attachment", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                        .WithMany("Attachments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OptiPlanBackend.Models.User", "Uploader")
+                        .WithMany()
+                        .HasForeignKey("UploaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+
+                    b.Navigation("Uploader");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Comment", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Task");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
                 {
+                    b.HasOne("OptiPlanBackend.Models.User", "Invitee")
+                        .WithMany("ReceivedInvitations")
+                        .HasForeignKey("InviteeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("OptiPlanBackend.Models.User", "Inviter")
+                        .WithMany("SentInvitations")
+                        .HasForeignKey("InviterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("OptiPlanBackend.Models.Team", "Team")
-                        .WithMany()
+                        .WithMany("Invitations")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OptiPlanBackend.Models.Team", null)
-                        .WithMany("Invitations")
-                        .HasForeignKey("TeamId1");
+                    b.Navigation("Invitee");
+
+                    b.Navigation("Inviter");
 
                     b.Navigation("Team");
                 });
@@ -282,6 +525,50 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.User", "AssignedUser")
+                        .WithMany("AssignedTasks")
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("OptiPlanBackend.Models.Project", "Project")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OptiPlanBackend.Models.User", "Reporter")
+                        .WithMany("ReportedTasks")
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AssignedUser");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Reporter");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.User", "ChangedBy")
+                        .WithMany()
+                        .HasForeignKey("ChangedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                        .WithMany("History")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChangedBy");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Team", b =>
@@ -327,8 +614,19 @@ namespace OptiPlanBackend.Migrations
 
             modelBuilder.Entity("OptiPlanBackend.Models.Project", b =>
                 {
+                    b.Navigation("Tasks");
+
                     b.Navigation("Team")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+                {
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("History");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Team", b =>
@@ -340,9 +638,17 @@ namespace OptiPlanBackend.Migrations
 
             modelBuilder.Entity("OptiPlanBackend.Models.User", b =>
                 {
+                    b.Navigation("AssignedTasks");
+
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("Profile");
+
+                    b.Navigation("ReceivedInvitations");
+
+                    b.Navigation("ReportedTasks");
+
+                    b.Navigation("SentInvitations");
 
                     b.Navigation("TeamMemberships");
                 });

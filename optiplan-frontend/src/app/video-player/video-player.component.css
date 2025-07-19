@@ -1,0 +1,46 @@
+
+.video-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .video-element {
+    width: 100%;
+    display: block;
+  }
+  
+  .video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .progress-bar {
+      flex-grow: 1;
+      height: 5px;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      
+      .progress {
+        height: 100%;
+        background: var(--primary-color);
+      }
+    }
+  }

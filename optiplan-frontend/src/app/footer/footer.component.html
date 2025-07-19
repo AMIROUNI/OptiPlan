@@ -1,0 +1,83 @@
+<footer class="optiplan-footer">
+  <div class="footer-container">
+    <!-- Main Footer Content -->
+    <div class="footer-grid">
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 200 200">
+            <path class="logo-path" d="M100 20 L180 60 L180 140 L100 180 L20 140 L20 60 Z" />
+            <circle class="logo-dot" cx="100" cy="100" r="20" />
+          </svg>
+          <span class="logo-text">OptiPlan</span>
+        </div>
+        <p class="brand-tagline">Intelligent workflow optimization for modern teams</p>
+        <div class="social-links">
+          <a *ngFor="let social of socialLinks" [href]="social.url" class="social-link">
+            <span class="material-icons">{{social.icon}}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h3 class="section-title">Quick Links</h3>
+        <ul class="footer-links">
+          <li *ngFor="let link of quickLinks">
+            <a href="#" class="footer-link">
+              <span class="material-icons">{{link.icon}}</span>
+              {{link.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div class="footer-section">
+        <h3 class="section-title">Resources</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="footer-link">Documentation</a></li>
+          <li><a href="#" class="footer-link">API Reference</a></li>
+          <li><a href="#" class="footer-link">Community</a></li>
+          <li><a href="#" class="footer-link">Support Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="footer-section">
+        <h3 class="section-title">Company</h3>
+        <ul class="footer-links">
+          <li *ngFor="let info of companyInfo">
+            <a [href]="info.url" class="footer-link">{{info.name}}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-section">
+        <h3 class="section-title">Stay Updated</h3>
+        <p class="newsletter-text">Subscribe to our newsletter for the latest updates</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input">
+          <button class="newsletter-button">
+            <span class="material-icons">send</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="copyright">
+        &copy; {{currentYear}} OptiPlan. All rights reserved.
+      </div>
+      <div class="legal-links">
+        <a href="#" class="legal-link">Privacy Policy</a>
+        <span class="divider">•</span>
+        <a href="#" class="legal-link">Terms of Service</a>
+        <span class="divider">•</span>
+        <a href="#" class="legal-link">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
