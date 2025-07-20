@@ -20,8 +20,9 @@ namespace OptiPlanBackend.Data
         public DbSet<TeamMembership> TeamMemberships { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
 
-        // New DbSets for Task management
-        public DbSet<OptiPlanBackend.Models.Task> Tasks { get; set; }
+       
+       
+        public DbSet<ProjectTask> Tasks { get; set; }  
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<TaskHistory> TaskHistories { get; set; }
@@ -37,7 +38,7 @@ namespace OptiPlanBackend.Data
             modelBuilder.Entity<TeamMembership>().ToTable("TeamMemberships");
             modelBuilder.Entity<UserProfile>().ToTable("UserProfiles");
             modelBuilder.Entity<Invitation>().ToTable("Invitations");
-            modelBuilder.Entity<Models.Task>().ToTable("Tasks");
+            modelBuilder.Entity<Models.ProjectTask>().ToTable("Tasks");
             modelBuilder.Entity<Comment>().ToTable("Comments");
             modelBuilder.Entity<Attachment>().ToTable("Attachments");
             modelBuilder.Entity<TaskHistory>().ToTable("TaskHistories");
@@ -59,15 +60,15 @@ namespace OptiPlanBackend.Data
                 .Property(u => u.Role)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
                 .Property(t => t.Status)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
                 .Property(t => t.Priority)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
                 .Property(t => t.Type)
                 .HasConversion<string>();
 
@@ -118,21 +119,21 @@ namespace OptiPlanBackend.Data
             // --- NEW TASK-RELATED RELATIONSHIPS ---
 
             // Project -> Tasks (One-to-Many)
-            modelBuilder.Entity<OptiPlanBackend.Models.Task>()
+            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
                 .HasOne(t => t.Project)
                 .WithMany(p => p.Tasks)  // Add ICollection<Task> Tasks to Project model
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Task -> Assigned User (Many-to-One)
-            modelBuilder.Entity<Models.Task>()
+            modelBuilder.Entity<Models.ProjectTask>()
                 .HasOne(t => t.AssignedUser)
                 .WithMany(u => u.AssignedTasks)  // Add ICollection<Task> AssignedTasks to User model
                 .HasForeignKey(t => t.AssignedUserId)
                 .OnDelete(DeleteBehavior.SetNull);  // Keep tasks if user is deleted
 
             // Task -> Reporter (Many-to-One)
-            modelBuilder.Entity<Models.Task>()
+            modelBuilder.Entity<Models.ProjectTask>()
                 .HasOne(t => t.Reporter)
                 .WithMany(u => u.ReportedTasks)  // Add ICollection<Task> ReportedTasks to User model
                 .HasForeignKey(t => t.ReporterId)

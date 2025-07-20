@@ -5,12 +5,16 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { tap } from 'rxjs/operators';
 import { Role } from '../models/enums/role';
+import { environment } from  '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7078/api/auth'; // Adjust the API URL as needed
+  private apiUrl = `${environment.apiUrl}/auth`; 
+
+
   private tokenSubject = new BehaviorSubject<string | null>(null);
   private currentUserSubject = new BehaviorSubject<any>(null);
 
@@ -43,6 +47,7 @@ export class AuthService {
 
 
  login(credentials: { username: string, password: string }): Observable<{ token: string }> {
+  console.log(this.apiUrl);
   return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(
     tap(response => {
       console.log('Full login response:', response);

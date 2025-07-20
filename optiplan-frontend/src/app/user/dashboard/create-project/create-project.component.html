@@ -1,0 +1,72 @@
+<div class="project-container">
+  <div class="project-card">
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <h2>Create New Project</h2>
+        <p>Define your project details</p>
+      </div>
+
+      <form [formGroup]="formProject" (ngSubmit)="onSubmitProject()">
+        <!-- Title -->
+        <div class="form-group">
+          <label>Project Title</label>
+          <input type="text" formControlName="title" 
+                 [class.is-invalid]="isInvalidAndTouchedOrDirty('title')">
+          <div *ngIf="isInvalidAndTouchedOrDirty('title')" class="invalid-feedback">
+            <span *ngIf="formProject.get('title')?.hasError('required')">Title is required</span>
+            <span *ngIf="formProject.get('title')?.hasError('minlength')">Minimum 3 characters</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description</label>
+          <textarea formControlName="description" rows="4"
+                    [class.is-invalid]="isInvalidAndTouchedOrDirty('description')"></textarea>
+          <div *ngIf="isInvalidAndTouchedOrDirty('description')" class="invalid-feedback">
+            <span *ngIf="formProject.get('description')?.hasError('required')">Description is required</span>
+            <span *ngIf="formProject.get('description')?.hasError('minlength')">Minimum 10 characters</span>
+          </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" formControlName="startDate"
+                 [class.is-invalid]="isInvalidAndTouchedOrDirty('startDate')">
+          <div *ngIf="isInvalidAndTouchedOrDirty('startDate')" class="invalid-feedback">
+            Start date is required
+          </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" formControlName="endDate"
+                 [class.is-invalid]="isInvalidAndTouchedOrDirty('endDate')">
+          <div *ngIf="isInvalidAndTouchedOrDirty('endDate')" class="invalid-feedback">
+            End date is required
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" style="background-color: rgb(224, 68, 68);" class="btn btn-primary">Create Project</button>
+        <button type="button" class="btn btn-danger " (click)="onCancel()">Cancel</button>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-popup *ngIf="showPopup"
+           [title]="popupTitle"
+           [message]="popupMessage"
+           [isSuccess]="popupIsSuccess"
+           [redirectPath]="popupRedirectPath"
+           [showCancelButton]="showCancelButton"
+           (closed)="closePopup()">
+</app-popup>

@@ -3,11 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using OptiPlanBackend.Data;
+using OptiPlanBackend.Repositories.Implementations;
+using OptiPlanBackend.Repositories.Implementations.OptiPlanBackend.Repositories.Implementations;
+using OptiPlanBackend.Repositories.Interfaces;
+using OptiPlanBackend.Repositories.Interfaces.OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
 using Scalar.AspNetCore;
 using System;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,13 +49,36 @@ builder.Services.AddCors(options =>
 });
 
 
+// Configure JSON Serializer to Handle References
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
+
 
 //-------------------------------------------------------------------
-
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IProjectRepository), typeof(ProjectRepository));
+builder.Services.AddScoped(typeof(ITaskRepository), typeof(TaskRepository));
+//-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUploadService, UploadService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+
+
+
+
+
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

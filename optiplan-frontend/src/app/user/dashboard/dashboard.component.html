@@ -1,0 +1,37 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-container">
+  <app-welcome-card></app-welcome-card>
+  
+  <app-kpi-cards [kpis]="kpis"></app-kpi-cards>
+  
+  <!-- Task Completion Chart -->
+  <div class="chart-section">
+    <ng-container *ngIf="!loadingChart && !chartError; else chartState">
+      <app-generic-chart
+        [chartData]="taskChartData"
+        [chartCategories]="taskChartCategories"
+        chartTitle="Monthly Task Completion"
+        yAxisTitle="Tasks Completed"
+        seriesName="Tasks"
+        color="#4a6cf7"
+        [footerStats]="taskStats">
+      </app-generic-chart>
+    </ng-container>
+    
+    <ng-template #chartState>
+      <div class="chart-placeholder">
+        <div *ngIf="loadingChart" class="loading-spinner">
+          <!-- Add your loading spinner here -->
+          <p>Loading chart data...</p>
+        </div>
+        <div *ngIf="chartError" class="error-message">
+          {{ chartError }}
+          <button (click)="loadTaskChartData()">Retry</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<app-display-project></app-display-project>

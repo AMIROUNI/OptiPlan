@@ -7,7 +7,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public Guid TaskId { get; set; }
-        public Task Task { get; set; }
+        public ProjectTask Task { get; set; }
 
         public Guid AuthorId { get; set; }
         public User Author { get; set; }

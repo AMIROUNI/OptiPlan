@@ -13,8 +13,6 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
   getCurrentUser(): Observable<User> {
-    // This method should return the current user details
-    // For example, it could make an HTTP GET request to your API endpoint
     return this.http.get<User>(`${this.apiUrl}/profile  `);
 
   }

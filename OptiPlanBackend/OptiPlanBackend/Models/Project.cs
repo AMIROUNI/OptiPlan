@@ -14,6 +14,6 @@
         public Team Team { get; set; }  // One-to-One
 
 
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
     }
 }

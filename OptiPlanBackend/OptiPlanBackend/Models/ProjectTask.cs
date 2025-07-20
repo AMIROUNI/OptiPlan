@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OptiPlanBackend.Models
 {
-    public class Task
+    public class ProjectTask
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

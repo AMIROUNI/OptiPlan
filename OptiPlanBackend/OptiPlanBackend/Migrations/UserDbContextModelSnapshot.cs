@@ -154,33 +154,7 @@ namespace OptiPlanBackend.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
-            modelBuilder.Entity("OptiPlanBackend.Models.Skill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProficiencyLevel")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserProfileId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("YearsExperience")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("Skills");
-                });
-
-            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+            modelBuilder.Entity("OptiPlanBackend.Models.ProjectTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,6 +236,32 @@ namespace OptiPlanBackend.Migrations
                     b.HasIndex("ReporterId");
 
                     b.ToTable("Tasks", (string)null);
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Skill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProficiencyLevel")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("YearsExperience")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
@@ -443,7 +443,7 @@ namespace OptiPlanBackend.Migrations
 
             modelBuilder.Entity("OptiPlanBackend.Models.Attachment", b =>
                 {
-                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                    b.HasOne("OptiPlanBackend.Models.ProjectTask", "Task")
                         .WithMany("Attachments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,7 +468,7 @@ namespace OptiPlanBackend.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                    b.HasOne("OptiPlanBackend.Models.ProjectTask", "Task")
                         .WithMany("Comments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -516,18 +516,7 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("OptiPlanBackend.Models.Skill", b =>
-                {
-                    b.HasOne("OptiPlanBackend.Models.UserProfile", "UserProfile")
-                        .WithMany("Skills")
-                        .HasForeignKey("UserProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserProfile");
-                });
-
-            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+            modelBuilder.Entity("OptiPlanBackend.Models.ProjectTask", b =>
                 {
                     b.HasOne("OptiPlanBackend.Models.User", "AssignedUser")
                         .WithMany("AssignedTasks")
@@ -552,6 +541,17 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("Reporter");
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.Skill", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.UserProfile", "UserProfile")
+                        .WithMany("Skills")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserProfile");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
                 {
                     b.HasOne("OptiPlanBackend.Models.User", "ChangedBy")
@@ -560,7 +560,7 @@ namespace OptiPlanBackend.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("OptiPlanBackend.Models.Task", "Task")
+                    b.HasOne("OptiPlanBackend.Models.ProjectTask", "Task")
                         .WithMany("History")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -620,7 +620,7 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OptiPlanBackend.Models.Task", b =>
+            modelBuilder.Entity("OptiPlanBackend.Models.ProjectTask", b =>
                 {
                     b.Navigation("Attachments");
 
