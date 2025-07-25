@@ -19,7 +19,11 @@ namespace OptiPlanBackend.Services.Interfaces
 
         public  Task<IEnumerable<IGrouping<(Guid ProjectId, string ProjectTitle), ProjectTask>>>
            GetUserTasksGroupedByProjectForMonth(Guid userId, int month, int year);
-        }
+
+        public Task<IEnumerable<ProjectTask>> GetProjectTasksByProjectIdAsync(Guid projectId);
+
+        public  Task<ProjectTask> AddProjectTaskForAProject(Dto.ProjectTaskDto projectTaskDto,Guid userId);
+    }
     }
 
 

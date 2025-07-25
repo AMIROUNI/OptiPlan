@@ -26,6 +26,9 @@ namespace OptiPlanBackend.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<TaskHistory> TaskHistories { get; set; }
+        
+        public DbSet<Sprint> Sprints { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

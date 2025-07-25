@@ -49,11 +49,14 @@ builder.Services.AddCors(options =>
 });
 
 
-// Configure JSON Serializer to Handle References
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        //  Handle circular references (you already have this)
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
+        //  Enable string-based enum deserialization
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 
@@ -62,6 +65,7 @@ builder.Services.AddControllers()
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IProjectRepository), typeof(ProjectRepository));
 builder.Services.AddScoped(typeof(ITaskRepository), typeof(TaskRepository));
+builder.Services.AddScoped(typeof(ISprintRepository), typeof(SprintRepository));
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -71,6 +75,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped(typeof(ISprintService), typeof(SprintService));
 
 
 

@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Dto;
+﻿using Microsoft.VisualBasic;
+using OptiPlanBackend.Dto;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Repositories.Interfaces.OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Interfaces;
@@ -66,5 +67,15 @@ namespace OptiPlanBackend.Services.Implementations
             return await _taskRepository.GetUserTasksGroupedByProjectForMonth(userId, month, year);
         }
 
+        public async Task<IEnumerable<ProjectTask>> GetProjectTasksByProjectIdAsync(Guid projectId)
+        {
+            return await _taskRepository.GetProjectTasksByProjectIdAsync(projectId);
+
+        }
+
+        public async Task<ProjectTask> AddProjectTaskForAProject(ProjectTaskDto projectTaskDto, Guid userId)
+        {
+          return await _taskRepository.AddProjectTaskForAProject(projectTaskDto,userId);
+        }
     }
 }

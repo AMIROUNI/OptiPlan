@@ -1,0 +1,85 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <h2>OPTIPLAN</h2>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <h4 class="nav-section-title">MENU</h4>
+
+      <div class="nav-item" [class.active]="activeSection === 'projects'">
+        <a href="#" (click)="setActiveSection('projects')">
+          <i class="bi bi-folder"></i>
+          <span>My Projects</span>
+        </a>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'tasks'">
+        <a href="#" (click)="setActiveSection('tasks')">
+          <i class="bi bi-list-task"></i>
+          <span>Tasks</span>
+        </a>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'calendar'">
+        <a href="#" (click)="setActiveSection('calendar')">
+          <i class="bi bi-calendar"></i>
+          <span>Calendar</span>
+        </a>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'messages'">
+        <a href="#" (click)="setActiveSection('messages')">
+          <i class="bi bi-chat-left-text"></i>
+          <span>Messages</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <h4 class="nav-section-title">PROJECT</h4>
+
+      <div class="nav-item" [class.active]="activeSection === 'overview'" (click)="setActiveSection('overview')">
+        <a href="#">
+          <i class="bi bi-speedometer2"></i>
+          <span>Overview</span>
+        </a>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'backlog'" (click)="setActiveSection('backlog')">
+        <a href="#">
+          <i class="bi bi-list-ul"></i>
+          <span>Backlog</span>
+        </a>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'sprints'" (click)="setActiveSection('sprints')">
+        <a href="#">
+          <i class="bi bi-kanban"></i>
+          <span>Active Sprints</span>
+        </a>
+      </div>
+
+      <div class="nav-item" (click)="addTask()">
+        <a href="#">
+          <i class="bi bi-plus-circle"></i>
+          <span>Add Task</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="project-progress">
+      <h4>Project Progress</h4>
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+      <div class="progress-stats">
+        <span>{{ doneTasksCount }} Done</span>
+        <span>{{ blockedTasksCount }} Blocked</span>
+      </div>
+    </div>
+  </nav>
+</aside>

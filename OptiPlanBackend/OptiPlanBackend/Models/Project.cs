@@ -11,9 +11,11 @@
         public Guid OwnerId { get; set; }
         public User Owner { get; set; }
 
-        public Team Team { get; set; }  // One-to-One
-
+        public Team Team { get; set; }
 
         public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
+
+     
+        public ICollection<Sprint> Sprints { get; set; } = new List<Sprint>();
     }
 }

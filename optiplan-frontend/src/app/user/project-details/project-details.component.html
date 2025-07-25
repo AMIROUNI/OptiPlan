@@ -1,1 +1,158 @@
-<p>project-details works!</p>
+<div class="project-layout">
+  <!-- Sidebar Section -->
+  <div class="sidebar-container">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <!-- Main Content Section -->
+  <div class="content-container">
+    <div class="project-card" *ngIf="!loading; else loadingTemplate">
+      <!-- Project Header -->
+      <div class="project-header">
+        <h1>{{ project.title }}</h1>
+        <div class="project-meta">
+          <span class="meta-item">
+            <i class="icon-calendar"></i>
+            {{ formatDate(project.startDate) }} - {{ formatDate(project.endDate) }}
+          </span>
+          <span class="meta-item">
+            <i class="icon-user"></i>
+            {{ project.owner.username || 'No owner' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="project-tabs">
+        <button [class.active]="activeTab === 'details'" (click)="switchTab('details')">
+          Project Details
+        </button>
+        <button [class.active]="activeTab === 'tasks'" (click)="switchTab('tasks')">
+          Tasks ({{ tasks.length }})
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      <div class="alert-error" *ngIf="error" @fadeIn>
+        {{ error }}
+      </div>
+
+      <!-- Project Details Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'details'" @slideIn>
+        <div class="project-description">
+          <h3>Description</h3>
+          <p>{{ project.description || 'No description provided' }}</p>
+        </div>
+
+        <div class="project-stats">
+          <div class="stat-card" *ngFor="let stat of [
+            { value: tasks.length, label: 'Total Tasks' },
+            { value: getDoneTasksCount(), label: 'Completed' },
+            { value: getProgressPercentage() + '%', label: 'Progress' },
+            { value: getBlockedTasksCount(), label: 'Blocked' }
+          ]">
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="getProgressPercentage()"></div>
+        </div>
+
+        <div class="project-dates">
+          <div class="date-item">
+            <span class="date-label">Start Date:</span>
+            <span class="date-value">{{ formatDate(project.startDate) }}</span>
+          </div>
+          <div class="date-item">
+            <span class="date-label">End Date:</span>
+            <span class="date-value">{{ formatDate(project.endDate) }}</span>
+          </div>
+          <div class="date-item">
+            <span class="date-label">Duration:</span>
+            <span class="date-value">{{ calculateDuration(project.startDate, project.endDate) }} days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasks Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'tasks'" @slideIn>
+        <div class="task-filters">
+          <button [class.active]="taskStatusFilter === 'all'" (click)="filterTasks('all')">
+            All ({{ tasks.length }})
+          </button>
+          <button [class.active]="taskStatusFilter === 'todo'" (click)="filterTasks('todo')">
+            To Do ({{ getTodoTasksCount() }})
+          </button>
+          <button [class.active]="taskStatusFilter === 'inprogress'" (click)="filterTasks('inprogress')">
+            In Progress ({{ getInProgressTasksCount() }})
+          </button>
+          <button [class.active]="taskStatusFilter === 'done'" (click)="filterTasks('done')">
+            Done ({{ getDoneTasksCount() }})
+          </button>
+          <button [class.active]="taskStatusFilter === 'review'" (click)="filterTasks('review')">
+            In Review ({{ getInReviewTasksCount() }})
+          </button>
+        </div>
+
+        <div class="task-list">
+          <div *ngFor="let task of filteredTasks" class="task-card" [class.blocked]="task.isBlocked" @stagger>
+            <div class="task-header">
+              <span class="task-id">#{{ task.id.slice(0, 6) }}</span>
+              <span class="task-type">{{ task.type }}</span>
+              <span class="task-priority" [class]="getPriorityClass(task.priority)">
+                {{ task.priority }}
+              </span>
+              <span class="task-status" [class]="getStatusClass(task.status)">
+                {{ task.status }}
+              </span>
+            </div>
+            <h3 class="task-title">{{ task.title }}</h3>
+            <p class="task-description">{{ task.description || 'No description' }}</p>
+
+            <div class="task-meta">
+              <span class="meta-item" *ngIf="task.AssignedUser">
+                <i class="icon-user"></i>
+                {{ task.AssignedUser.username }}
+              </span>
+              <span class="meta-item" *ngIf="task.reporter">
+                <i class="icon-reporter"></i>
+                Reporter: {{ task.reporter?.username }}
+              </span>
+              <span class="meta-item">
+                <i class="icon-story-points"></i>
+                {{ task.storyPoints || '0' }} pts
+              </span>
+              <span class="meta-item">
+                <i class="icon-hours"></i>
+                {{ task.estimatedHours }}h
+              </span>
+              <span class="meta-item" *ngIf="task.isBlocked">
+                <i class="icon-blocked"></i>
+                Blocked: {{ task.blockReason || 'No reason provided' }}
+              </span>
+            </div>
+
+            <div class="task-progress">
+              <div class="progress-bar" [style.width.%]="task.completionPercentage"></div>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="filteredTasks.length === 0">
+            <i class="icon-empty"></i>
+            <p>No tasks found for this filter</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <ng-template #loadingTemplate>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading project details...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

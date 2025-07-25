@@ -246,6 +246,106 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
+    "Method": "Create",
+    "RelativePath": "api/ProjectTask/Create/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectTaskDto",
+        "Type": "OptiPlanBackend.Dto.ProjectTaskDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
+    "Method": "GetByProjectId",
+    "RelativePath": "api/ProjectTask/get-by-project-id/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
+    "Method": "GetAll",
+    "RelativePath": "api/ProjectTask/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
+    "Method": "GetById",
+    "RelativePath": "api/ProjectTask/GetById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.SprintController",
+    "Method": "getSpritsByProjectId",
+    "RelativePath": "api/Sprint/project/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.SprintController",
+    "Method": "CreateSprintForProject",
+    "RelativePath": "api/Sprint/project/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "sprintDto",
+        "Type": "OptiPlanBackend.Dtos.SprintDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "UploadController",
     "Method": "UploadAvatar",
     "RelativePath": "api/Upload/avatar",

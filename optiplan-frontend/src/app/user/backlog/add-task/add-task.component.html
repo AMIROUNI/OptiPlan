@@ -1,0 +1,119 @@
+<div class="task-form-container">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <!-- Title -->
+    <div class="form-group mb-3">
+      <label class="form-label">Title</label>
+      <input type="text" class="form-control" formControlName="title"
+             [class.is-invalid]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="invalid-feedback">
+        <span *ngIf="taskForm.get('title')?.hasError('required')">Title is required</span>
+        <span *ngIf="taskForm.get('title')?.hasError('maxlength')">Maximum 100 characters</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" rows="4" formControlName="description"
+                [class.is-invalid]="taskForm.get('description')?.invalid && taskForm.get('description')?.touched"></textarea>
+      <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched" class="invalid-feedback">
+        <span *ngIf="taskForm.get('description')?.hasError('maxlength')">Maximum 500 characters</span>
+      </div>
+    </div>
+
+    <!-- Type and Priority -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select" formControlName="type">
+            <option value="Task">Task</option>
+            <option value="Bug">Bug</option>
+            <option value="Feature">Feature</option>
+            <option value="Improvement">Improvement</option>
+            <option value="Epic">Epic</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          <select class="form-select" formControlName="priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status and Estimate -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" formControlName="status">
+            <option value="ToDo">To Do</option>
+            <option value="InProgress">In Progress</option>
+            <option value="InReview">In Review</option>
+            <option value="Done">Done</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Estimated Hours</label>
+          <input type="number" class="form-control" formControlName="estimatedHours" min="1"
+                 [class.is-invalid]="taskForm.get('estimatedHours')?.invalid && taskForm.get('estimatedHours')?.touched">
+          <div *ngIf="taskForm.get('estimatedHours')?.invalid && taskForm.get('estimatedHours')?.touched" class="invalid-feedback">
+            <span *ngIf="taskForm.get('estimatedHours')?.hasError('required')">Estimate is required</span>
+            <span *ngIf="taskForm.get('estimatedHours')?.hasError('min')">Minimum 1 hour</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Due Date and Story Points -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Due Date</label>
+          <input type="date" class="form-control" formControlName="dueDate">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Story Points</label>
+          <input type="number" class="form-control" formControlName="storyPoints" min="1"
+                 [class.is-invalid]="taskForm.get('storyPoints')?.invalid && taskForm.get('storyPoints')?.touched">
+          <div *ngIf="taskForm.get('storyPoints')?.invalid && taskForm.get('storyPoints')?.touched" class="invalid-feedback">
+            <span *ngIf="taskForm.get('storyPoints')?.hasError('min')">Minimum 1 point</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Labels -->
+    <div class="form-group mb-4">
+      <label class="form-label">Labels (comma separated)</label>
+      <input type="text" class="form-control" formControlName="labels">
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-footer d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Create Task</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>

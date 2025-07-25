@@ -1,0 +1,422 @@
+<div class="backlog-container">
+  <!-- Header Section -->
+  <div class="backlog-header mb-4">
+    <h1 class="display-5">Project Backlog</h1>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-outline-primary" 
+                [class.active]="activeTab === 'backlog'" 
+                (click)="activeTab = 'backlog'">
+          Backlog
+        </button>
+        <button type="button" class="btn btn-outline-primary" 
+                [class.active]="activeTab === 'sprints'" 
+                (click)="activeTab = 'sprints'">
+          Sprints
+        </button>
+      </div>
+      
+      <div>
+        <button class="btn btn-primary me-2" (click)="openTaskModal(taskModal)">
+          <i class="bi bi-plus-circle"></i> Add Task
+        </button>
+        <button class="btn btn-success" (click)="openSprintModal(sprintModal)">
+          <i class="bi bi-rocket-takeoff"></i> Create Sprint
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading your backlog...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''"></button>
+  </div>
+
+  <!-- Content Area -->
+  <div *ngIf="!loading && !error">
+    <!-- Backlog View -->
+    <div *ngIf="activeTab === 'backlog'">
+      <div>
+        <div class="d-flex justify-content-between mb-3">
+          <h3>Unassigned Tasks</h3>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary" 
+                    [class.active]="viewMode === 'list'"
+                    (click)="viewMode = 'list'">
+              <i class="bi bi-list-ul"></i> List
+            </button>
+            <button type="button" class="btn btn-outline-secondary" 
+                    [class.active]="viewMode === 'board'"
+                    (click)="viewMode = 'board'">
+              <i class="bi bi-kanban"></i> Board
+            </button>
+          </div>
+        </div>
+
+        <!-- List View -->
+        <div *ngIf="viewMode === 'list'" class="task-list">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">title</th>
+                  <th scope="col">priority</th>
+                  <th scope="col">Estimate</th>
+                  <th scope="col">status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let task of backlogTasks" class="task-item">
+                  <td>
+                    <strong>{{ task.title }}</strong>
+                    <p class="text-muted small mb-0">{{ task.description }}</p>
+                  </td>
+                  <td>
+                    <span [ngClass]="{
+                      'badge bg-danger': task.priority === 'High' || task.priority === 'Critical',
+                      'badge bg-warning': task.priority === 'Medium',
+                      'badge bg-secondary': task.priority === 'Low'
+                    }">
+                      {{ task.priority }}
+                    </span>
+                  </td>
+                  <td>{{ task.estimatedHours }} hours</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-info': task.status === 'ToDo',
+                      'bg-primary': task.status === 'InProgress',
+                      'bg-warning': task.status === 'InReview',
+                      'bg-success': task.status === 'Done',
+                      'bg-danger': task.status === 'Rejected',
+                      'bg-secondary': task.status === 'Archived'
+                    }">
+                      {{ task.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Board View -->
+        <div *ngIf="viewMode === 'board'" class="task-board">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="board-column">
+                <h5 class="column-header">To Do</h5>
+                <div class="task-column-content">
+                  <div *ngFor="let task of getFilteredTasks('ToDo')" class="task-card" draggable="true">
+                    <div class="task-card-header">
+                      <span [ngClass]="{
+                        'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
+                        'badge bg-warning float-end': task.priority === 'Medium',
+                        'badge bg-secondary float-end': task.priority === 'Low'
+                      }">
+                        {{ task.priority }}
+                      </span>
+                      <h6>{{ task.title }}</h6>
+                    </div>
+                    <p class="task-description">{{ task.description }}</p>
+                    <div class="task-footer">
+                      <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
+                      <div class="task-actions">
+                        <button class="btn btn-sm btn-outline-primary">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-3">
+              <div class="board-column">
+                <h5 class="column-header">In Progress</h5>
+                <div class="task-column-content">
+                  <div *ngFor="let task of getFilteredTasks('InProgress')" class="task-card" draggable="true">
+                    <div class="task-card-header">
+                      <span [ngClass]="{
+                        'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
+                        'badge bg-warning float-end': task.priority === 'Medium',
+                        'badge bg-secondary float-end': task.priority === 'Low'
+                      }">
+                        {{ task.priority }}
+                      </span>
+                      <h6>{{ task.title }}</h6>
+                    </div>
+                    <p class="task-description">{{ task.description }}</p>
+                    <div class="task-footer">
+                      <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
+                      <div class="task-actions">
+                        <button class="btn btn-sm btn-outline-primary">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="board-column">
+                <h5 class="column-header">In Review</h5>
+                <div class="task-column-content">
+                  <div *ngFor="let task of getFilteredTasks('InReview')" class="task-card" draggable="true">
+                    <div class="task-card-header">
+                      <span [ngClass]="{
+                        'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
+                        'badge bg-warning float-end': task.priority === 'Medium',
+                        'badge bg-secondary float-end': task.priority === 'Low'
+                      }">
+                        {{ task.priority }}
+                      </span>
+                      <h6>{{ task.title }}</h6>
+                    </div>
+                    <p class="task-description">{{ task.description }}</p>
+                    <div class="task-footer">
+                      <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
+                      <div class="task-actions">
+                        <button class="btn btn-sm btn-outline-primary">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-3">
+              <div class="board-column">
+                <h5 class="column-header">Done</h5>
+                <div class="task-column-content">
+                  <div *ngFor="let task of getFilteredTasks('Done')" class="task-card" draggable="true">
+                    <div class="task-card-header">
+                      <span [ngClass]="{
+                        'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
+                        'badge bg-warning float-end': task.priority === 'Medium',
+                        'badge bg-secondary float-end': task.priority === 'Low'
+                      }">
+                        {{ task.priority }}
+                      </span>
+                      <h6>{{ task.title }}</h6>
+                    </div>
+                    <p class="task-description">{{ task.description }}</p>
+                    <div class="task-footer">
+                      <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
+                      <div class="task-actions">
+                        <button class="btn btn-sm btn-outline-primary">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprints View -->
+    <div *ngIf="activeTab === 'sprints'">
+      <div class="sprints-container">
+        <h3 class="mb-3">Active Sprint</h3>
+        <div *ngIf="activeSprint; else noActiveSprint" class="active-sprint-card mb-4">
+          <div class="sprint-card-header">
+            <h4>{{ activeSprint.name }}</h4>
+            <span class="badge bg-success">Active</span>
+          </div>
+          <div class="sprint-card-body">
+            <p>{{ activeSprint.description || 'No description provided' }}</p>
+            <div class="sprint-dates">
+              <span><i class="bi bi-calendar-event"></i> {{ activeSprint.startDate | date }}</span>
+              <span><i class="bi bi-arrow-right"></i></span>
+              <span><i class="bi bi-calendar-event"></i> {{ activeSprint.endDate | date }}</span>
+            </div>
+            <div class="progress mt-3">
+              <div class="progress-bar bg-success" role="progressbar" 
+                   [style.width]="getSprintCompletionPercentage() + '%'" 
+                   [attr.aria-valuenow]="getSprintCompletionPercentage()" 
+                   aria-valuemin="0" 
+                   aria-valuemax="100">
+                {{ getSprintCompletionPercentage() }}%
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noActiveSprint>
+          <div class="alert alert-info">
+            No active sprint currently running.
+          </div>
+        </ng-template>
+
+        <h3 class="mb-3">Past Sprints</h3>
+         <div *ngIf="hasCompletedSprints(); else noPastSprints">
+    <div class="past-sprints-list">
+      <div *ngFor="let sprint of getCompletedSprints()" class="sprint-item mb-3">
+        <div class="sprint-item-header">
+          <h5>{{ sprint.name }}</h5>
+          <span class="badge bg-secondary">Completed</span>
+        </div>
+        <div class="sprint-item-dates">
+          <small class="text-muted">
+            {{ sprint.startDate | date }} - {{ sprint.endDate | date }}
+          </small>
+        </div>
+        <div class="progress mt-2" style="height: 5px;">
+          <div class="progress-bar bg-success" role="progressbar" 
+               [style.width]="getSprintCompletionPercentage(sprint) + '%'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        <ng-template #noPastSprints>
+          <div class="alert alert-info">
+            No past sprints found.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Sprint Modal -->
+  <ng-template #sprintModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Create New Sprint</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="sprintForm">
+        <div class="mb-3">
+          <label for="sprintName" class="form-label">Sprint Name</label>
+          <input type="text" class="form-control" id="sprintName" formControlName="name">
+          <div *ngIf="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched" 
+               class="invalid-feedback d-block">
+            Sprint name is required (max 50 characters)
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="sprintDescription" class="form-label">Description</label>
+          <textarea class="form-control" id="sprintDescription" rows="3" 
+                    formControlName="description"></textarea>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startDate" formControlName="startDate">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endDate" formControlName="endDate">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary" 
+              [disabled]="sprintForm.invalid" (click)="createSprint()">
+        Create Sprint
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Create Task Modal -->
+  <ng-template #taskModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Add New Task</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="taskForm">
+        <div class="mb-3">
+          <label for="tasktitle" class="form-label">title</label>
+          <input type="text" class="form-control" id="tasktitle" formControlName="title">
+          <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" 
+               class="invalid-feedback d-block">
+            Task title is required (max 100 characters)
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="taskDescription" class="form-label">Description</label>
+          <textarea class="form-control" id="taskDescription" rows="3" 
+                    formControlName="Description"></textarea>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="taskType" class="form-label">Type</label>
+            <select class="form-select" id="taskType" formControlName="Type">
+              <option value="Task">Task</option>
+              <option value="Bug">Bug</option>
+              <option value="Feature">Feature</option>
+              <option value="Improvement">Improvement</option>
+              <option value="Epic">Epic</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="taskpriority" class="form-label">priority</label>
+            <select class="form-select" id="taskpriority" formControlName="priority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="taskEstimate" class="form-label">Estimate (hours)</label>
+            <input type="number" class="form-control" id="taskEstimate" 
+                   min="1" formControlName="estimatedHours">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="taskstatus" class="form-label">status</label>
+            <select class="form-select" id="taskstatus" formControlName="status">
+              <option value="ToDo">To Do</option>
+              <option value="InProgress">In Progress</option>
+              <option value="InReview">In Review</option>
+              <option value="Done">Done</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="taskDueDate" class="form-label">Due Date</label>
+            <input type="date" class="form-control" id="taskDueDate" formControlName="DueDate">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary" 
+              [disabled]="taskForm.invalid" (click)="modal.close('Save click')">
+        Add Task
+      </button>
+    </div>
+  </ng-template>
+</div>

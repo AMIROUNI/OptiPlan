@@ -205,8 +205,8 @@ namespace OptiPlanBackend.Migrations
                     b.Property<Guid?>("ReporterId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SprintId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("SprintId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -235,6 +235,8 @@ namespace OptiPlanBackend.Migrations
 
                     b.HasIndex("ReporterId");
 
+                    b.HasIndex("SprintId");
+
                     b.ToTable("Tasks", (string)null);
                 });
 
@@ -262,6 +264,41 @@ namespace OptiPlanBackend.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Sprint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Sprints");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
@@ -534,11 +571,17 @@ namespace OptiPlanBackend.Migrations
                         .HasForeignKey("ReporterId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("OptiPlanBackend.Models.Sprint", "Sprint")
+                        .WithMany("Tasks")
+                        .HasForeignKey("SprintId");
+
                     b.Navigation("AssignedUser");
 
                     b.Navigation("Project");
 
                     b.Navigation("Reporter");
+
+                    b.Navigation("Sprint");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Skill", b =>
@@ -550,6 +593,17 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Sprint", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.Project", "Project")
+                        .WithMany("Sprints")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.TaskHistory", b =>
@@ -614,6 +668,8 @@ namespace OptiPlanBackend.Migrations
 
             modelBuilder.Entity("OptiPlanBackend.Models.Project", b =>
                 {
+                    b.Navigation("Sprints");
+
                     b.Navigation("Tasks");
 
                     b.Navigation("Team")
@@ -627,6 +683,11 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("History");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Sprint", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Team", b =>
