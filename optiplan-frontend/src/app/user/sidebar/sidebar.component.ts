@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '../../models/project';
-import { ProjectTask } from '../../models/projectTask';
+
 import { CommonModule } from '@angular/common';
+import { WorkItem } from '../../models/work-item';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,8 +14,9 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent implements OnInit {
   @Input() project!: Project;
-  @Input() tasks: ProjectTask[] = [];
-  
+  @Input() tasks: WorkItem[] = [];
+  @Output() viewChange = new EventEmitter<'board' | 'backlog' | 'reports'>();
+
   isCollapsed = false;
   activeSection: string = 'overview';
   quickFilters = [
@@ -42,7 +44,7 @@ export class SidebarComponent implements OnInit {
   }
 
   calculateQuickFilterCounts(): void {
-    this.quickFilters[0].count = this.tasks.filter(t => t.AssignedUser?.username === 'currentUser').length;
+    this.quickFilters[0].count = this.tasks.filter(t => t.assignedUser?.username === 'currentUser').length;
     this.quickFilters[1].count = this.tasks.filter(t => {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);

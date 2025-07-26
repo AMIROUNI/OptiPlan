@@ -1,0 +1,73 @@
+<div class="backlog-view">
+  <div class="backlog-header">
+    <div class="backlog-filters">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search backlog..." [(ngModel)]="searchQuery">
+      </div>
+      <div class="filter-buttons">
+        <button class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-filter"></i> Filter
+        </button>
+        <button class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-list-check"></i> Display
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="backlog-content">
+    <table class="backlog-table">
+      <thead>
+        <tr>
+          <th width="40px"></th>
+          <th width="100px">Key</th>
+          <th>Summary</th>
+          <th width="120px">Type</th>
+          <th width="120px">Priority</th>
+          <th width="120px">Status</th>
+          <th width="100px">Assignee</th>
+          <th width="80px">Estimate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredWorkItems" class="backlog-item" (click)="workItemSelected.emit(item)">
+          <td>
+            <i class="bi bi-grip-vertical drag-handle"></i>
+          </td>
+          <td class="item-key" *ngIf="item">{{item.type | slice:0:1}}-{{item.id.substring(0, 4)}}</td>
+          <td class="item-summary">
+            <a>{{item.title}}</a>
+            <div class="item-labels" *ngIf="item.labels">
+              <span *ngFor="let label of item.labels.split(',')" class="badge">{{label.trim()}}</span>
+            </div>
+          </td>
+          <td>
+            <span class="item-type" [ngClass]="'type-' + item.type.toLowerCase()">
+              {{item.type}}
+            </span>
+          </td>
+          <td>
+            <span class="item-priority" [ngClass]="'priority-' + item.priority.toLowerCase()">
+              <i [class]="getPriorityIcon(item.priority)"></i> {{item.priority}}
+            </span>
+          </td>
+          <td>
+            <span class="item-status" [ngClass]="'status-' + item.status.toLowerCase()">
+              {{item.status}}
+            </span>
+          </td>
+          <td class="item-assignee" >
+            <img *ngIf="item.assignedUser" 
+                 [src]="item.assignedUser.avatarUrl || 'assets/default-avatar.png'" 
+                 [alt]="item.assignedUser.username" 
+                 class="avatar">
+          </td>
+          <td class="item-estimate">
+            {{item.estimatedHours || '-'}}h
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

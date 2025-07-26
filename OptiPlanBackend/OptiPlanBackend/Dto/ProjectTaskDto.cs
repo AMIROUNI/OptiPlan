@@ -1,6 +1,6 @@
 ﻿using OptiPlanBackend.Enums;
 using System.ComponentModel.DataAnnotations;
-using TaskStatus = OptiPlanBackend.Enums.TaskStatus;
+using WorkItemStatus = OptiPlanBackend.Enums.WorkItemStatus;
 
 namespace OptiPlanBackend.Dto
 {
@@ -20,9 +20,9 @@ namespace OptiPlanBackend.Dto
         public Guid? AssignedUserId { get; set; } 
         public Guid? ReporterId { get; set; } 
 
-        public TaskStatus Status { get; set; } = TaskStatus.ToDo;
-        public TaskPriority Priority { get; set; } = TaskPriority.Medium;
-        public TaskType Type { get; set; } = TaskType.Task;
+        public WorkItemStatus Status { get; set; } = WorkItemStatus.ToDo;
+        public WorkItemPriority Priority { get; set; } = WorkItemPriority.Medium;
+        public WorkItemType Type { get; set; } = WorkItemType.Task;
 
         public DateTime? DueDate { get; set; }
         public DateTime? StartDate { get; set; }

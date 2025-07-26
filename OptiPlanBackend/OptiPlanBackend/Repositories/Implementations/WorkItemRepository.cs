@@ -1,11 +1,10 @@
-﻿namespace OptiPlanBackend.Repositories.Implementations
-{
+﻿
     using global::OptiPlanBackend.Data;
     using global::OptiPlanBackend.Enums;
     using global::OptiPlanBackend.Models;
-    using global::OptiPlanBackend.Repositories.Interfaces.OptiPlanBackend.Repositories.Interfaces;
+    using global::OptiPlanBackend.Repositories.Interfaces;
     using Microsoft.EntityFrameworkCore;
-    using System;
+using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -13,19 +12,19 @@
 
     namespace OptiPlanBackend.Repositories.Implementations
     {
-        public class TaskRepository : GenericRepository<ProjectTask>, ITaskRepository
+        public class WorkItemRepository : GenericRepository<WorkItem>, IWorkItemRepository
         {
             private readonly UserDbContext _context;
 
-            public TaskRepository(UserDbContext context) : base(context)
+            public WorkItemRepository(UserDbContext context) : base(context)
             {
                 _context = context;
             }
 
-            public async Task<IEnumerable<IGrouping<(Guid ProjectId, string ProjectTitle), ProjectTask>>>
+            public async Task<IEnumerable<IGrouping<(Guid ProjectId, string ProjectTitle), WorkItem>>>
             GetUserTasksGroupedByProjectForMonth(Guid userId, int month, int year)
             {
-                var tasks = await _context.Tasks
+                var tasks = await _context.WorkItems
                     .Include(t => t.Project)
                     .Where(t =>
                         t.AssignedUserId == userId &&
@@ -43,15 +42,15 @@
         
 
 
-        public async Task<IEnumerable<ProjectTask>> GetProjectTasksByProjectIdAsync(Guid projectId)
+        public async Task<IEnumerable<WorkItem>> GetProjectTasksByProjectIdAsync(Guid projectId)
             {
                 return await FindAsync(pt => pt.ProjectId == projectId);
 
             }
 
-            public async Task<ProjectTask> AddProjectTaskForAProject(Dto.ProjectTaskDto projectTaskDto, Guid userId)
+            public async Task<WorkItem> AddWorkItemForAProject(Dto.ProjectTaskDto projectTaskDto, Guid userId)
             {
-                var projectTask = new ProjectTask
+                var projectTask = new WorkItem
                 {
                     Title = projectTaskDto.Title,
                     Description = projectTaskDto.Description,
@@ -68,7 +67,7 @@
                     IsBlocked = projectTaskDto.IsBlocked,
                     BlockReason = projectTaskDto.BlockReason,
                     CreatedAt = DateTime.UtcNow,
-                    Status = Enums.TaskStatus.ToDo,
+                    Status = Enums.WorkItemStatus.ToDo,
                     CompletionPercentage = 0
                 };
 
@@ -78,8 +77,22 @@
                 return projectTask;
             }
 
+        public async Task<bool> UpdateWorkItemStatusAsync(Guid workItemId, WorkItemStatus newStatus)
+        {
+            var workItem = await _context.WorkItems.FindAsync(workItemId);
+            if (workItem == null)
+                return false;
+
+            workItem.Status = newStatus;
+
+            if (newStatus == WorkItemStatus.Done)
+                workItem.CompletedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
+    }
 
     }
 
-}
+

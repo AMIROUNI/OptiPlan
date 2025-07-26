@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
+import { Project } from '../models/project';
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +16,11 @@ export class UserService {
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/profile  `);
 
+  }
+
+
+
+  getProjectTeam(projectid : string):Observable<Project[]>{
+    return this.http.get<Project[]>(`${this.apiUrl}/get-project-team/${projectid}`);
   }
 }

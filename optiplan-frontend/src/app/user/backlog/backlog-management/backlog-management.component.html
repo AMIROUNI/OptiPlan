@@ -1,345 +1,288 @@
-<div class="backlog-container">
-    <!-- Header Section -->
-    <div class="backlog-header mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="display-5 mb-0">
-                <i class="bi bi-list-task me-2"></i>Project Backlog
-            </h1>
-            <div>
-                <!-- Add Task Button with Modal Trigger -->
-                <button class="btn btn-primary me-2" (click)="openTaskModal()">
-                    <i class="bi bi-plus-circle me-1"></i> Add Task
-                </button>
-
-                <!-- Add Sprint Button with Modal Trigger -->
-                <button class="btn btn-success" (click)="openSprintModal()">
-                    <i class="bi bi-rocket me-1"></i> Create Sprint
-                </button>
-            </div>
+<div class="jira-backlog-container">
+  <!-- Header Section -->
+  <div class="backlog-header">
+    <div class="header-top">
+      <div class="header-title">
+        <h1>
+          <i class="bi bi-list-task"></i>
+          <span>Project Backlog</span>
+        </h1>
+        <div class="header-actions">
+          <button class="btn btn-primary" (click)="openTaskModal()">
+            <i class="bi bi-plus-lg"></i> Create
+          </button>
+          <div class="view-switcher">
+            <button class="btn btn-outline-secondary" [class.active]="activeTab === 'backlog'" (click)="activeTab = 'backlog'">
+              <i class="bi bi-list-ul"></i> Backlog
+            </button>
+            <button class="btn btn-outline-secondary" [class.active]="activeTab === 'sprints'" (click)="activeTab = 'sprints'">
+              <i class="bi bi-rocket"></i> Sprints
+            </button>
+          </div>
         </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-primary" [class.active]="activeTab === 'backlog'"
-                    (click)="activeTab = 'backlog'">
-                    <i class="bi bi-list-check me-1"></i> Backlog
-                </button>
-                <button type="button" class="btn btn-outline-primary" [class.active]="activeTab === 'sprints'"
-                    (click)="activeTab = 'sprints'">
-                    <i class="bi bi-calendar-range me-1"></i> Sprints
-                </button>
-            </div>
-
-            <div *ngIf="activeTab === 'backlog'" class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-secondary" [class.active]="viewMode === 'list'"
-                    (click)="viewMode = 'list'">
-                    <i class="bi bi-list-ul me-1"></i> List
-                </button>
-                <button type="button" class="btn btn-outline-secondary" [class.active]="viewMode === 'board'"
-                    (click)="viewMode = 'board'">
-                    <i class="bi bi-kanban me-1"></i> Board
-                </button>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- Add Task Modal -->
-    <ng-template #addTaskModal let-modal>
-        <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
-            <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
-        </div>
-        <div class="modal-body">
-            <app-add-task [projectId]="projectId" (taskCreated)="handleTaskCreated($event)" (cancel)="modal.dismiss()">
-            </app-add-task>
-        </div>
-    </ng-template>
+    <!-- Filters and Search -->
+    <div class="header-filters">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search backlog...">
+      </div>
+      <div class="filter-buttons">
+        <button class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-filter"></i> Filter
+        </button>
+        <button class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-list-check"></i> Display
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <!-- Add Sprint Modal -->
-    <ng-template #addSprintModal let-modal>
-        <div class="modal-header bg-success text-white">
-            <h5 class="modal-title" id="addSprintModalLabel">Create New Sprint</h5>
-            <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
-        </div>
-        <div class="modal-body">
-            <app-add-sprint [projectId]="projectId" (sprintCreated)="handleSprintCreated($event)"
-                (cancel)="modal.dismiss()">
-            </app-add-sprint>
-        </div>
-    </ng-template>
-
+  <!-- Content Area -->
+  <div class="backlog-content">
     <!-- Loading State -->
-    <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-2">Loading your backlog...</p>
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p>Loading your backlog...</p>
     </div>
 
     <!-- Error State -->
-    <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        {{ error }}
-        <button type="button" class="btn-close" (click)="error = ''"></button>
+    <div *ngIf="error && !loading" class="alert alert-danger">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      {{ error }}
     </div>
 
-    <!-- Content Area -->
-    <div *ngIf="!loading && !error">
-        <!-- Backlog View -->
-        <div *ngIf="activeTab === 'backlog'">
-            <div class="d-flex justify-content-between mb-3">
-                <h3>Unassigned Tasks</h3>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary" [class.active]="viewMode === 'list'"
-                        (click)="viewMode = 'list'">
-                        <i class="bi bi-list-ul"></i> List
-                    </button>
-                    <button type="button" class="btn btn-outline-secondary" [class.active]="viewMode === 'board'"
-                        (click)="viewMode = 'board'">
-                        <i class="bi bi-kanban"></i> Board
-                    </button>
-                </div>
-            </div>
-
-            <!-- List View -->
-            <div *ngIf="viewMode === 'list'" class="task-list">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">title</th>
-                                <th scope="col">priority</th>
-                                <th scope="col">Estimate</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let task of backlogTasks" class="task-item">
-                                <td>
-                                    <strong>{{ task.title }}</strong>
-                                    <p class="text-muted small mb-0">{{ task.description }}</p>
-                                </td>
-                                <td>
-                                    <span [ngClass]="{
-                                              'badge bg-danger': task.priority === 'High' || task.priority === 'Critical',
-                                              'badge bg-warning': task.priority === 'Medium',
-                                              'badge bg-secondary': task.priority === 'Low'
-                                                     }">
-                                        {{ task.priority }}
-                                    </span>
-                                </td>
-                                <td>{{ task.estimatedHours }} hours</td>
-                                <td>
-                                    <span class="badge" [ngClass]="{
-      'bg-info': task.status === 'ToDo',
-      'bg-primary': task.status === 'InProgress',
-      'bg-warning': task.status === 'InReview',
-      'bg-success': task.status === 'Done',
-      'bg-danger': task.status === 'Rejected',
-      'bg-secondary': task.status === 'Archived'
-    }">
-                                        {{ task.status }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary me-1">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Board View -->
-            <div *ngIf="viewMode === 'board'" class="task-board">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="board-column">
-                            <h5 class="column-header">To Do</h5>
-                            <div class="task-column-content">
-                                <div *ngFor="let task of getFilteredTasks('ToDo')" class="task-card" draggable="true">
-                                    <div class="task-card-header">
-                                        <span [ngClass]="{
-                      'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
-                      'badge bg-warning float-end': task.priority === 'Medium',
-                      'badge bg-secondary float-end': task.priority === 'Low'
-                    }">
-                                            {{ task.priority }}
-                                        </span>
-                                        <h6>{{ task.title }}</h6>
-                                    </div>
-                                    <p class="task-description">{{ task.description }}</p>
-                                    <div class="task-footer">
-                                        <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
-                                        <div class="task-actions">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="board-column">
-                            <h5 class="column-header">In Progress</h5>
-                            <div class="task-column-content">
-                                <div *ngFor="let task of getFilteredTasks('InProgress')" class="task-card"
-                                    draggable="true">
-                                    <div class="task-card-header">
-                                        <span [ngClass]="{
-                      'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
-                      'badge bg-warning float-end': task.priority === 'Medium',
-                      'badge bg-secondary float-end': task.priority === 'Low'
-                    }">
-                                            {{ task.priority }}
-                                        </span>
-                                        <h6>{{ task.title }}</h6>
-                                    </div>
-                                    <p class="task-description">{{ task.description }}</p>
-                                    <div class="task-footer">
-                                        <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
-                                        <div class="task-actions">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="board-column">
-                            <h5 class="column-header">In Review</h5>
-                            <div class="task-column-content">
-                                <div *ngFor="let task of getFilteredTasks('InReview')" class="task-card"
-                                    draggable="true">
-                                    <div class="task-card-header">
-                                        <span [ngClass]="{
-                      'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
-                      'badge bg-warning float-end': task.priority === 'Medium',
-                      'badge bg-secondary float-end': task.priority === 'Low'
-                    }">
-                                            {{ task.priority }}
-                                        </span>
-                                        <h6>{{ task.title }}</h6>
-                                    </div>
-                                    <p class="task-description">{{ task.description }}</p>
-                                    <div class="task-footer">
-                                        <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
-                                        <div class="task-actions">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="board-column">
-                            <h5 class="column-header">Done</h5>
-                            <div class="task-column-content">
-                                <div *ngFor="let task of getFilteredTasks('Done')" class="task-card" draggable="true">
-                                    <div class="task-card-header">
-                                        <span [ngClass]="{
-                      'badge bg-danger float-end': task.priority === 'High' || task.priority === 'Critical',
-                      'badge bg-warning float-end': task.priority === 'Medium',
-                      'badge bg-secondary float-end': task.priority === 'Low'
-                    }">
-                                            {{ task.priority }}
-                                        </span>
-                                        <h6>{{ task.title }}</h6>
-                                    </div>
-                                    <p class="task-description">{{ task.description }}</p>
-                                    <div class="task-footer">
-                                        <span class="estimate-badge">{{ task.estimatedHours }} hours</span>
-                                        <div class="task-actions">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Backlog View -->
+    <div *ngIf="activeTab === 'backlog' && !loading && !error">
+      <!-- Backlog Issues -->
+      <div class="issues-container">
+        <div class="issues-header">
+          <div class="issues-count">
+            {{ backlogTasks.length }} issues
+          </div>
+          <div class="issues-view-options">
+            <button class="btn btn-sm btn-outline-secondary" [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">
+              <i class="bi bi-list-ul"></i> List
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" [class.active]="viewMode === 'board'" (click)="viewMode = 'board'">
+              <i class="bi bi-kanban"></i> Board
+            </button>
+          </div>
         </div>
 
-        <!-- Sprints View -->
-        <div *ngIf="activeTab === 'sprints'">
-            <div class="sprints-container">
-                <h3 class="mb-3">Active Sprint</h3>
-                <div *ngIf="activeSprint; else noActiveSprint" class="active-sprint-card mb-4">
-                    <div class="sprint-card-header">
-                        <h4>{{ activeSprint.name }}</h4>
-                        <span class="badge bg-success">Active</span>
-                    </div>
-                    <div class="sprint-card-body">
-                        <p>{{ activeSprint.description || 'No description provided' }}</p>
-                        <div class="sprint-dates">
-                            <span><i class="bi bi-calendar-event"></i> {{ activeSprint.startDate | date }}</span>
-                            <span><i class="bi bi-arrow-right"></i></span>
-                            <span><i class="bi bi-calendar-event"></i> {{ activeSprint.endDate | date }}</span>
-                        </div>
-                        <div class="progress mt-3">
-                            <div class="progress-bar bg-success" role="progressbar"
-                                [style.width]="getSprintCompletionPercentage() + '%'"
-                                [attr.aria-valuenow]="getSprintCompletionPercentage()" aria-valuemin="0"
-                                aria-valuemax="100">
-                                {{ getSprintCompletionPercentage() }}%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <ng-template #noActiveSprint>
-                    <div class="alert alert-info">
-                        No active sprint currently running.
-                    </div>
-                </ng-template>
-
-                <h3 class="mb-3">Past Sprints</h3>
-                <div *ngIf="hasCompletedSprints(); else noPastSprints">
-                    <div class="past-sprints-list">
-                        <div *ngFor="let sprint of getCompletedSprints()" class="sprint-item mb-3">
-                            <div class="sprint-item-header">
-                                <h5>{{ sprint.name }}</h5>
-                                <span class="badge bg-secondary">Completed</span>
-                            </div>
-                            <div class="sprint-item-dates">
-                                <small class="text-muted">
-                                    {{ sprint.startDate | date }} - {{ sprint.endDate | date }}
-                                </small>
-                            </div>
-                            <div class="progress mt-2" style="height: 5px;">
-                                <div class="progress-bar bg-success" role="progressbar"
-                                    [style.width]="getSprintCompletionPercentage(sprint) + '%'">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <ng-template #noPastSprints>
-                    <div class="alert alert-info">
-                        No past sprints found.
-                    </div>
-                </ng-template>
-            </div>
+        <!-- List View -->
+        <div *ngIf="viewMode === 'list'" class="issues-list">
+          <table class="table">
+            <thead>
+              <tr>
+                <th width="40px"></th>
+                <th width="60px">Key</th>
+                <th>Summary</th>
+                <th width="120px">Type</th>
+                <th width="120px">Priority</th>
+                <th width="120px">Status</th>
+                <th width="100px">Estimate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let task of backlogTasks" class="issue-row">
+                <td>
+                  <i class="bi bi-grip-vertical drag-handle"></i>
+                </td>
+                <td class="issue-key">PROJ-{{ task.id }}</td>
+                <td class="issue-summary">
+                  <a href="#">{{ task.title }}</a>
+                  <div class="issue-labels">
+                    <span *ngFor="let label of task.labels" class="badge bg-light text-dark">{{ label }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="issue-type" [ngClass]="'type-' + task.type.toLowerCase()">
+                    <i [class]="getTypeIcon(task.type)"></i> {{ task.type }}
+                  </span>
+                </td>
+                <td>
+                  <span class="issue-priority" [ngClass]="'priority-' + task.priority.toLowerCase()">
+                    <i [class]="getPriorityIcon(task.priority)"></i> {{ task.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="issue-status" [ngClass]="'status-' + task.status.toLowerCase()">
+                    {{ task.status }}
+                  </span>
+                </td>
+                <td class="issue-estimate">
+                  {{ task.estimatedHours }}h
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+        <!-- Board View -->
+        <div *ngIf="viewMode === 'board'" class="issues-board">
+          <div class="board-columns">
+            <div class="board-column" *ngFor="let status of ['ToDo', 'InProgress', 'InReview', 'Done']">
+              <div class="column-header">
+                <h5>{{ status }}</h5>
+                <span class="badge bg-secondary">{{ getFilteredTasks(status).length }}</span>
+              </div>
+              <div class="column-content" 
+                   droppable 
+                   (dragover)="onDragOver($event)" 
+                   (drop)="onDrop(status, $event)">
+                <div class="issue-card" 
+                     *ngFor="let task of getFilteredTasks(status)" 
+                     draggable="true"
+                     (dragstart)="onDragStart(task)">
+                  <div class="card-header">
+                    <span class="issue-key">PROJ-{{ task.id }}</span>
+                    <span class="issue-type" [ngClass]="'type-' + task.type.toLowerCase()">
+                      <i [class]="getTypeIcon(task.type)"></i>
+                    </span>
+                  </div>
+                  <div class="card-summary">
+                    <a href="#">{{ task.title }}</a>
+                  </div>
+                  <div class="card-footer">
+                    <span class="issue-priority" [ngClass]="'priority-' + task.priority.toLowerCase()">
+                      <i [class]="getPriorityIcon(task.priority)"></i>
+                    </span>
+                    <span class="issue-estimate">{{ task.estimatedHours }}h</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Sprints View -->
+    <div *ngIf="activeTab === 'sprints' && !loading && !error" class="sprints-view">
+      <!-- Active Sprint -->
+      <div class="sprint-section">
+        <h3 class="section-title">Active Sprint</h3>
+        <div *ngIf="activeSprint; else noActiveSprint" class="sprint-card active">
+          <div class="sprint-header">
+            <div class="sprint-title">
+              <h4>{{ activeSprint.name }}</h4>
+              <span class="badge bg-success">Active</span>
+            </div>
+            <div class="sprint-dates">
+              {{ activeSprint.startDate | date }} - {{ activeSprint.endDate | date }}
+            </div>
+          </div>
+          <div class="sprint-progress">
+            <div class="progress">
+              <div class="progress-bar" 
+                   [style.width]="getSprintCompletionPercentage() + '%'">
+                {{ getSprintCompletionPercentage() }}%
+              </div>
+            </div>
+          </div>
+          <div class="sprint-actions">
+            <button class="btn btn-sm btn-outline-primary">View Board</button>
+            <button class="btn btn-sm btn-outline-secondary">Complete Sprint</button>
+          </div>
+        </div>
+        <ng-template #noActiveSprint>
+          <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <p>No active sprint currently running</p>
+            <button class="btn btn-primary" (click)="openSprintModal()">
+              <i class="bi bi-plus-lg"></i> Create Sprint
+            </button>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Future Sprints -->
+      <div class="sprint-section">
+        <h3 class="section-title">Future Sprints</h3>
+        <div *ngIf="getFutureSprints().length > 0; else noFutureSprints" class="sprint-list">
+          <div *ngFor="let sprint of getFutureSprints()" class="sprint-card future">
+            <div class="sprint-header">
+              <div class="sprint-title">
+                <h5>{{ sprint.name }}</h5>
+                <span class="badge bg-info">Planned</span>
+              </div>
+              <div class="sprint-dates">
+                {{ sprint.startDate | date }} - {{ sprint.endDate | date }}
+              </div>
+            </div>
+            <div class="sprint-actions">
+              <button class="btn btn-sm btn-outline-primary">Start Sprint</button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noFutureSprints>
+          <div class="empty-state">
+            <i class="bi bi-calendar-plus"></i>
+            <p>No future sprints planned</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Past Sprints -->
+      <div class="sprint-section">
+        <h3 class="section-title">Past Sprints</h3>
+        <div *ngIf="getCompletedSprints().length > 0; else noPastSprints" class="sprint-list">
+          <div *ngFor="let sprint of getCompletedSprints()" class="sprint-card past">
+            <div class="sprint-header">
+              <div class="sprint-title">
+                <h5>{{ sprint.name }}</h5>
+                <span class="badge bg-secondary">Completed</span>
+              </div>
+              <div class="sprint-dates">
+                {{ sprint.startDate | date }} - {{ sprint.endDate | date }}
+              </div>
+            </div>
+            <div class="sprint-progress">
+              <div class="progress">
+                <div class="progress-bar bg-success" 
+                     [style.width]="getSprintCompletionPercentage(sprint) + '%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noPastSprints>
+          <div class="empty-state">
+            <i class="bi bi-calendar-check"></i>
+            <p>No past sprints found</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Task Modal -->
+  <ng-template #addTaskModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Create issue</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <app-add-task [projectId]="projectId" 
+                   (taskCreated)="handleTaskCreated($event)" 
+                   (cancel)="modal.dismiss()">
+      </app-add-task>
+    </div>
+  </ng-template>
+
+  <!-- Add Sprint Modal -->
+  <ng-template #addSprintModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Create sprint</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <app-add-sprint [projectId]="projectId" 
+                     (sprintCreated)="handleSprintCreated($event)" 
+                     (cancel)="modal.dismiss()">
+      </app-add-sprint>
+    </div>
+  </ng-template>
 </div>

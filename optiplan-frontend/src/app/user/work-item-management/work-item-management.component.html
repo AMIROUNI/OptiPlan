@@ -1,0 +1,162 @@
+<div class="work-item-management-container " *ngIf="project">
+  <app-sidebar 
+    [project]="project" 
+    [tasks]="workItems"
+    (viewChange)="onViewChange($event)">
+  </app-sidebar>
+
+  <div class="main-content" *ngIf="project">
+    <app-navbar 
+      [project]="project"
+      (createClicked)="openCreateModal()">
+    </app-navbar>
+
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <app-board-view 
+      *ngIf="activeView === 'board' && !loading"
+      [workItems]="workItems"
+      (workItemSelected)="onWorkItemSelected($event)">
+    </app-board-view>
+
+    <app-backlog-view 
+      *ngIf="activeView === 'backlog' && !loading"
+      [workItems]="workItems"
+      (workItemSelected)="onWorkItemSelected($event)">
+    </app-backlog-view>
+
+    <app-reports-view 
+      *ngIf="activeView === 'reports' && !loading"
+      [workItems]="workItems">
+    </app-reports-view>
+  </div>
+
+  <!-- Work Item Detail Modal -->
+  <ng-template #detailModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">{{selectedWorkItem?.type}}-{{selectedWorkItem?.id?.substring(0, 4)}}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="selectedWorkItem" class="workitem-detail">
+        <div class="detail-header">
+          <h3>{{selectedWorkItem.title}}</h3>
+          <div class="detail-meta">
+            <span class="item-type" [ngClass]="'type-' + selectedWorkItem.type.toLowerCase()">
+              {{selectedWorkItem.type}}
+            </span>
+            <span class="item-status" [ngClass]="'status-' + selectedWorkItem.status.toLowerCase()">
+              {{selectedWorkItem.status}}
+            </span>
+          </div>
+        </div>
+        
+        <div class="detail-content">
+          <div class="detail-description">
+            <h4>Description</h4>
+            <p>{{selectedWorkItem.description || 'No description provided'}}</p>
+          </div>
+          
+          <div class="detail-properties">
+            <div class="property">
+              <label>Priority</label>
+              <span class="item-priority" [ngClass]="'priority-' + selectedWorkItem.priority.toLowerCase()">
+                <i [class]="getPriorityIcon(selectedWorkItem.priority)"></i> {{selectedWorkItem.priority}}
+              </span>
+            </div>
+            
+            <div class="property">
+              <label>Assignee</label>
+              <div class="assignee" *ngIf="selectedWorkItem.assignedUser">
+                <img [src]="selectedWorkItem.assignedUser.avatarUrl || 'assets/default-avatar.png'" 
+                     [alt]="selectedWorkItem.assignedUser.username" 
+                     class="avatar">
+                <span>{{selectedWorkItem.assignedUser.username}}</span>
+              </div>
+              <span *ngIf="!selectedWorkItem.assignedUser">Unassigned</span>
+            </div>
+            
+            <div class="property">
+              <label>Reporter</label>
+              <div class="assignee" *ngIf="selectedWorkItem.reporter">
+                <img [src]="selectedWorkItem.reporter.avatarUrl || 'assets/default-avatar.png'" 
+                     [alt]="selectedWorkItem.reporter.username" 
+                     class="avatar">
+                <span>{{selectedWorkItem.reporter.username}}</span>
+              </div>
+            </div>
+            
+            <div class="property">
+              <label>Created</label>
+              <span>{{selectedWorkItem.createdAt | date}}</span>
+            </div>
+            
+            <div class="property">
+              <label>Due Date</label>
+              <span>{{selectedWorkItem.dueDate ? (selectedWorkItem.dueDate | date) : 'No due date'}}</span>
+            </div>
+            
+            <div class="property">
+              <label>Estimated Hours</label>
+              <span>{{selectedWorkItem.estimatedHours || '-'}}h</span>
+            </div>
+            
+            <div class="property" *ngIf="selectedWorkItem.type === 'Story' || selectedWorkItem.type === 'Epic'">
+              <label>Story Points</label>
+              <span>{{selectedWorkItem.storyPoints || '-'}}</span>
+            </div>
+            
+            <div class="property">
+              <label>Labels</label>
+              <div class="labels" *ngIf="selectedWorkItem.labels">
+                <span *ngFor="let label of selectedWorkItem.labels.split(',')" class="badge">{{label.trim()}}</span>
+              </div>
+              <span *ngIf="!selectedWorkItem.labels">No labels</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-tabs">
+          <div class="tabs-container">
+            <div class="tab active">
+              <i class="bi bi-chat-left-text"></i> Comments
+            </div>
+            <div class="tab">
+              <i class="bi bi-paperclip"></i> Attachments
+            </div>
+            <div class="tab">
+              <i class="bi bi-clock-history"></i> History
+            </div>
+          </div>
+          
+          <div class="tab-content">
+            <div class="comment-section">
+              <div class="comment-list">
+                <div *ngFor="let comment of selectedWorkItem.comments" class="comment">
+                  <div class="comment-author">
+                    <img [src]="comment.author?.avatarUrl || 'assets/default-avatar.png'" 
+                         [alt]="comment.author?.username" 
+                         class="avatar">
+                    <div class="author-info">
+                      <strong>{{comment.author?.username}}</strong>
+                      <small>{{comment.createdAt | date:'short'}}</small>
+                    </div>
+                  </div>
+                  <div class="comment-text">
+                    {{comment.content}}
+                  </div>
+                </div>
+              </div>
+              <div class="comment-form">
+                <textarea placeholder="Add a comment..." rows="3"></textarea>
+                <button class="btn btn-primary">Comment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

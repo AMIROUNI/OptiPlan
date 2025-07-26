@@ -22,10 +22,10 @@ namespace OptiPlanBackend.Data
 
        
        
-        public DbSet<ProjectTask> Tasks { get; set; }  
+        public DbSet<WorkItem> WorkItems { get; set; }  
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
-        public DbSet<TaskHistory> TaskHistories { get; set; }
+        public DbSet<WorkItemHistory> TaskHistories { get; set; }
         
         public DbSet<Sprint> Sprints { get; set; }
 
@@ -41,10 +41,10 @@ namespace OptiPlanBackend.Data
             modelBuilder.Entity<TeamMembership>().ToTable("TeamMemberships");
             modelBuilder.Entity<UserProfile>().ToTable("UserProfiles");
             modelBuilder.Entity<Invitation>().ToTable("Invitations");
-            modelBuilder.Entity<Models.ProjectTask>().ToTable("Tasks");
+            modelBuilder.Entity<Models.WorkItem>().ToTable("Tasks");
             modelBuilder.Entity<Comment>().ToTable("Comments");
             modelBuilder.Entity<Attachment>().ToTable("Attachments");
-            modelBuilder.Entity<TaskHistory>().ToTable("TaskHistories");
+            modelBuilder.Entity<WorkItemHistory>().ToTable("TaskHistories");
 
             modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
@@ -63,15 +63,15 @@ namespace OptiPlanBackend.Data
                 .Property(u => u.Role)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
+            modelBuilder.Entity<OptiPlanBackend.Models.WorkItem>()
                 .Property(t => t.Status)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
+            modelBuilder.Entity<OptiPlanBackend.Models.WorkItem>()
                 .Property(t => t.Priority)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
+            modelBuilder.Entity<OptiPlanBackend.Models.WorkItem>()
                 .Property(t => t.Type)
                 .HasConversion<string>();
 
@@ -122,21 +122,21 @@ namespace OptiPlanBackend.Data
             // --- NEW TASK-RELATED RELATIONSHIPS ---
 
             // Project -> Tasks (One-to-Many)
-            modelBuilder.Entity<OptiPlanBackend.Models.ProjectTask>()
+            modelBuilder.Entity<OptiPlanBackend.Models.WorkItem>()
                 .HasOne(t => t.Project)
                 .WithMany(p => p.Tasks)  // Add ICollection<Task> Tasks to Project model
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Task -> Assigned User (Many-to-One)
-            modelBuilder.Entity<Models.ProjectTask>()
+            modelBuilder.Entity<Models.WorkItem>()
                 .HasOne(t => t.AssignedUser)
                 .WithMany(u => u.AssignedTasks)  // Add ICollection<Task> AssignedTasks to User model
                 .HasForeignKey(t => t.AssignedUserId)
                 .OnDelete(DeleteBehavior.SetNull);  // Keep tasks if user is deleted
 
             // Task -> Reporter (Many-to-One)
-            modelBuilder.Entity<Models.ProjectTask>()
+            modelBuilder.Entity<Models.WorkItem>()
                 .HasOne(t => t.Reporter)
                 .WithMany(u => u.ReportedTasks)  // Add ICollection<Task> ReportedTasks to User model
                 .HasForeignKey(t => t.ReporterId)
@@ -170,15 +170,14 @@ namespace OptiPlanBackend.Data
                 .HasForeignKey(a => a.UploaderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Task -> History (One-to-Many)
-            modelBuilder.Entity<TaskHistory>()
-                .HasOne(th => th.Task)
-                .WithMany(t => t.History)
-                .HasForeignKey(th => th.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<WorkItemHistory>()
+       .HasOne(h => h.WorkItem)
+       .WithMany(t => t.History)
+       .HasForeignKey(h => h.WorkItemId);
+
 
             // History -> ChangedBy (Many-to-One)
-            modelBuilder.Entity<TaskHistory>()
+            modelBuilder.Entity<WorkItemHistory>()
                 .HasOne(th => th.ChangedBy)
                 .WithMany()
                 .HasForeignKey(th => th.ChangedById)

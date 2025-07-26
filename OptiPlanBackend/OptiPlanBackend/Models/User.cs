@@ -33,8 +33,8 @@ namespace OptiPlanBackend.Models
 
 
 
-        public ICollection<ProjectTask> AssignedTasks { get; set; } = new List<ProjectTask>();
-        public ICollection<ProjectTask> ReportedTasks { get; set; } = new List<ProjectTask>();
+        public ICollection<WorkItem> AssignedTasks { get; set; } = new List<WorkItem>();
+        public ICollection<WorkItem> ReportedTasks { get; set; } = new List<WorkItem>();
 
         public ICollection<Invitation> SentInvitations { get; set; } = new List<Invitation>();  // As Inviter
         public ICollection<Invitation> ReceivedInvitations { get; set; } = new List<Invitation>();  // As Invitee

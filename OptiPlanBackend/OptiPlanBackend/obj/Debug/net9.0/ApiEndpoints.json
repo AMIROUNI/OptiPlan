@@ -246,69 +246,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
-    "Method": "Create",
-    "RelativePath": "api/ProjectTask/Create/{projectId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "projectTaskDto",
-        "Type": "OptiPlanBackend.Dto.ProjectTaskDto",
-        "IsRequired": true
-      },
-      {
-        "Name": "projectId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
-    "Method": "GetByProjectId",
-    "RelativePath": "api/ProjectTask/get-by-project-id/{projectId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "projectId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
-    "Method": "GetAll",
-    "RelativePath": "api/ProjectTask/GetAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OptiPlanBackend.Controllers.ProjectTaskController",
-    "Method": "GetById",
-    "RelativePath": "api/ProjectTask/GetById/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "OptiPlanBackend.Controllers.SprintController",
     "Method": "getSpritsByProjectId",
     "RelativePath": "api/Sprint/project/{projectId}",
@@ -394,6 +331,85 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "Create",
+    "RelativePath": "api/WorkItem/Create/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectTaskDto",
+        "Type": "OptiPlanBackend.Dto.ProjectTaskDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "GetByProjectId",
+    "RelativePath": "api/WorkItem/get-by-project-id/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "GetAll",
+    "RelativePath": "api/WorkItem/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "GetById",
+    "RelativePath": "api/WorkItem/GetById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "UpdateStatus",
+    "RelativePath": "api/WorkItem/update-status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "OptiPlanBackend.Dto.UpdateWorkItemStatusDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

@@ -1,4 +1,4 @@
-import { ProjectTask } from "./projectTask";
+import { WorkItem } from "./work-item";
 
 export interface Sprint {
   id: string;
@@ -10,5 +10,5 @@ export interface Sprint {
   projectId: string;
   // Optionnel : tu peux aussi inclure le projet complet si besoin
   // project?: Project;
-  tasks?: ProjectTask[]; // À définir dans une autre interface
+  tasks?: WorkItem[]; // À définir dans une autre interface
 }

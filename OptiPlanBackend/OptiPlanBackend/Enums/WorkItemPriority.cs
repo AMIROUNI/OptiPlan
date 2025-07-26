@@ -1,6 +1,6 @@
 ﻿namespace OptiPlanBackend.Enums
 {
-    public enum TaskPriority
+    public enum WorkItemPriority
     {
         Low,
         Medium,

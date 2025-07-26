@@ -1,6 +1,6 @@
 ﻿namespace OptiPlanBackend.Models
 {
-    public class TaskHistory
+    public class WorkItemHistory
     {
         public Guid Id { get; set; }
         public string FieldChanged { get; set; }  // e.g., "Status", "Assignee"
@@ -8,8 +8,8 @@
         public string NewValue { get; set; }
         public DateTime ChangedAt { get; set; } = DateTime.UtcNow;
 
-        public Guid TaskId { get; set; }
-        public ProjectTask Task { get; set; }
+        public Guid WorkItemId { get; set; }  
+        public WorkItem WorkItem { get; set; }
 
         public Guid ChangedById { get; set; }
         public User ChangedBy { get; set; }

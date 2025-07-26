@@ -1,0 +1,46 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <h2>OPTIPLAN</h2>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <h4 class="nav-section-title">PROJECT</h4>
+      <div class="nav-item" [class.active]="activeSection === 'board'" 
+           (click)="setActiveSection('board', 'board')">
+        <a href="#">
+          <i class="bi bi-kanban"></i>
+          <span>Board</span>
+        </a>
+      </div>
+      <div class="nav-item" [class.active]="activeSection === 'backlog'" 
+           (click)="setActiveSection('backlog', 'backlog')">
+        <a href="#">
+          <i class="bi bi-list-ul"></i>
+          <span>Backlog</span>
+        </a>
+      </div>
+      <div class="nav-item" [class.active]="activeSection === 'reports'" 
+           (click)="setActiveSection('reports', 'reports')">
+        <a href="#">
+          <i class="bi bi-bar-chart"></i>
+          <span>Reports</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="project-progress">
+      <h4>Project Progress</h4>
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+      <div class="progress-stats">
+        <span>{{ doneTasksCount }} Done</span>
+        <span>{{ blockedTasksCount }} Blocked</span>
+      </div>
+    </div>
+  </nav>
+</aside>

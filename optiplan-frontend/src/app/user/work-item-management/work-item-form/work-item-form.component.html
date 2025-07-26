@@ -1,0 +1,87 @@
+<div class="modal-header">
+  <h5 class="modal-title">Create Work Item</h5>
+  <button type="button" class="btn-close" (click)="cancel.emit()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="workItemForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Type</label>
+      <select class="form-select" formControlName="type" (change)="onTypeChange()">
+        <option *ngFor="let type of workItemTypes" [value]="type">{{type}}</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" class="form-control" formControlName="title" placeholder="Enter title">
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" formControlName="description" rows="3" placeholder="Enter description"></textarea>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Priority</label>
+          <select class="form-select" formControlName="priority">
+            <option *ngFor="let priority of priorities" [value]="priority">{{priority}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-select" formControlName="status">
+            <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row" *ngIf="workItemForm.value.type === 'Story' || workItemForm.value.type === 'Epic'">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Story Points</label>
+          <input type="number" class="form-control" formControlName="storyPoints" min="1">
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Estimated Hours</label>
+          <input type="number" class="form-control" formControlName="estimatedHours" min="1">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" class="form-control" formControlName="dueDate">
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Labels (comma separated)</label>
+      <input type="text" class="form-control" formControlName="labels" placeholder="bug,ui,backend">
+    </div>
+    
+    <div class="form-group">
+      <label>Assignee</label>
+      <select class="form-select" formControlName="assignedUserId">
+        <option value="">Unassigned</option>
+        <option *ngFor="let user of teamMembers" [value]="user.id">{{user.username}}</option>
+      </select>
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="workItemForm.invalid">
+        Create
+      </button>
+    </div>
+  </form>
+</div>

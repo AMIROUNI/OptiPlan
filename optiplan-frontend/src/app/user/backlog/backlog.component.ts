@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { ProjectTask } from '../../models/projectTask';
+import { WorkItem } from '../../models/work-item';
 
 @Component({
   selector: 'app-backlog',
@@ -29,7 +29,7 @@ export class BacklogComponent implements OnInit {
  
   sprints: Sprint[] = [];
   activeSprint: Sprint | null = null;
-  backlogTasks: ProjectTask[] = [];
+  backlogTasks: WorkItem[] = [];
   loading = true;
   error = '';
   
@@ -133,43 +133,14 @@ export class BacklogComponent implements OnInit {
     this.selectedSprintId = sprintId;
   }
 
-  getFilteredTasks(status: string): ProjectTask[] {
+  getFilteredTasks(status: string): WorkItem[] {
     return this.backlogTasks.filter(t => t.status === status);
   }
 
   // Mock data generation for demo purposes
-  private generateMockBacklogTasks(): ProjectTask[] {
+  private generateMockBacklogTasks(): WorkItem[] {
     return [
-      {
-        id: 'task-1',
-        title: 'Implement user authentication',
-        description: 'Set up JWT authentication for the API',
-        status: 'ToDo',
-        type: 'Feature',
-        priority: 'High',
-        projectId: 'project-1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        estimatedHours: 8,
-        completionPercentage: 0,
-        isBlocked: false,
-        isCompleted: false
-      },
-      {
-        id: 'task-2',
-        title: 'Design dashboard UI',
-        description: 'Create mockups for the main dashboard',
-        status: 'ToDo',
-        type: 'Task',
-        priority: 'Medium',
-        projectId: 'project-1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        estimatedHours: 5,
-        completionPercentage: 0,
-        isBlocked: false,
-        isCompleted: false
-      },
+    
      
     ];
   }

@@ -22,7 +22,7 @@ GetProjectsForUserAsync(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/user-create`, projectDto);
   }
 
-  GetById(id: string): Observable<any> {
+  getProject(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 

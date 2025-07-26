@@ -1,0 +1,11 @@
+<div class="content-header">
+  <div class="header-left">
+    <h2>{{project.title || 'Project'}}</h2>
+    <div class="project-key">PROJ-{{project.id.substring(0, 4)}}</div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-primary" (click)="openCreateModal()">
+      <i class="bi bi-plus-lg"></i> Create
+    </button>
+  </div>
+</div>

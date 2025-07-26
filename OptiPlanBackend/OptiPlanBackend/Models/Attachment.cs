@@ -8,7 +8,7 @@
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
 
         public Guid TaskId { get; set; }
-        public ProjectTask Task { get; set; }
+        public WorkItem Task { get; set; }
 
         public Guid UploaderId { get; set; }
         public User Uploader { get; set; }

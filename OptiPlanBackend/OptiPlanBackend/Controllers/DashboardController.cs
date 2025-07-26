@@ -10,13 +10,13 @@ namespace OptiPlanBackend.Controllers
         private readonly IDashboardService _dashboardService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ILogger<ProjectController> _logger;
-        private readonly ITaskService _taskService;
+        private readonly IWorkItemService _taskService;
 
         public DashboardController(
             IDashboardService dashboardService,
             ICurrentUserService currentUserService,
             ILogger<ProjectController> logger,
-            ITaskService taskService)
+            IWorkItemService taskService)
 
         {
             _dashboardService = dashboardService ?? throw new ArgumentNullException(nameof(dashboardService));

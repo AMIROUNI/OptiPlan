@@ -27,6 +27,6 @@ namespace OptiPlanBackend.Models
         public Project Project{ get; set; }
 
         // Navigation
-        public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
+        public ICollection<WorkItem> Tasks { get; set; } = new List<WorkItem>();
     }
 }

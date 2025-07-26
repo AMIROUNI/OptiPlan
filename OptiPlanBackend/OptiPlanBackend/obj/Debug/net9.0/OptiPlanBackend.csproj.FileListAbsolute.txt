@@ -1,5 +1,6 @@
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\appsettings.json
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.staticwebassets.runtime.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.staticwebassets.endpoints.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.exe
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.deps.json
@@ -139,6 +140,7 @@ C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.csproj.CoreCompileInputs.cache
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.sourcelink.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -153,6 +155,3 @@ C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.pdb
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.genruntimeconfig.cache
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\ref\OptiPlanBackend.dll
-C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.sourcelink.json
-C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\OptiPlanBackend.staticwebassets.runtime.json
-C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

@@ -79,25 +79,25 @@
       <!-- Tasks Tab -->
       <div class="tab-content" *ngIf="activeTab === 'tasks'" @slideIn>
         <div class="task-filters">
-          <button [class.active]="taskStatusFilter === 'all'" (click)="filterTasks('all')">
+          <button [class.active]="taskstatusFilter === 'all'" (click)="filterTasks('all')">
             All ({{ tasks.length }})
           </button>
-          <button [class.active]="taskStatusFilter === 'todo'" (click)="filterTasks('todo')">
+          <button [class.active]="taskstatusFilter === 'todo'" (click)="filterTasks('todo')">
             To Do ({{ getTodoTasksCount() }})
           </button>
-          <button [class.active]="taskStatusFilter === 'inprogress'" (click)="filterTasks('inprogress')">
+          <button [class.active]="taskstatusFilter === 'inprogress'" (click)="filterTasks('inprogress')">
             In Progress ({{ getInProgressTasksCount() }})
           </button>
-          <button [class.active]="taskStatusFilter === 'done'" (click)="filterTasks('done')">
+          <button [class.active]="taskstatusFilter === 'done'" (click)="filterTasks('done')">
             Done ({{ getDoneTasksCount() }})
           </button>
-          <button [class.active]="taskStatusFilter === 'review'" (click)="filterTasks('review')">
+          <button [class.active]="taskstatusFilter === 'review'" (click)="filterTasks('review')">
             In Review ({{ getInReviewTasksCount() }})
           </button>
         </div>
 
         <div class="task-list">
-          <div *ngFor="let task of filteredTasks" class="task-card" [class.blocked]="task.isBlocked" @stagger>
+          <div *ngFor="let task of filteredTasks" class="task-card" [class.blocked]="task.id" @stagger>
             <div class="task-header">
               <span class="task-id">#{{ task.id.slice(0, 6) }}</span>
               <span class="task-type">{{ task.type }}</span>
@@ -112,13 +112,13 @@
             <p class="task-description">{{ task.description || 'No description' }}</p>
 
             <div class="task-meta">
-              <span class="meta-item" *ngIf="task.AssignedUser">
+              <span class="meta-item" *ngIf="task.assignedUser">
                 <i class="icon-user"></i>
-                {{ task.AssignedUser.username }}
+                {{ task.assignedUser.username }}
               </span>
               <span class="meta-item" *ngIf="task.reporter">
                 <i class="icon-reporter"></i>
-                Reporter: {{ task.reporter?.username }}
+                Reporter: {{ task.reporter.username }}
               </span>
               <span class="meta-item">
                 <i class="icon-story-points"></i>

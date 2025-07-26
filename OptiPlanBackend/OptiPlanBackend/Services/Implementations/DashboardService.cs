@@ -57,8 +57,8 @@ namespace OptiPlanBackend.Services.Implementations
             await using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                var count = await _context.Tasks
-                    .CountAsync(t => t.AssignedUserId == userId && !t.IsCompleted);
+                var count = await _context.WorkItems
+                    .CountAsync(w => w.AssignedUserId == userId && !w.IsCompleted);
                 await transaction.CommitAsync();
                 return count;
             }
@@ -95,7 +95,7 @@ namespace OptiPlanBackend.Services.Implementations
         private async Task<int> GetOverdueTasks(Guid userId)
         {
             // Count tasks assigned to user that are overdue
-            return await _context.Tasks
+            return await _context.WorkItems
                 .CountAsync(t => t.AssignedUserId == userId &&
                                t.DueDate < DateTime.UtcNow &&
                                !t.IsCompleted);

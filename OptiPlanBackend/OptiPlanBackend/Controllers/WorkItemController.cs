@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OptiPlanBackend.Dto;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Interfaces;
 
@@ -7,17 +8,17 @@ namespace OptiPlanBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectTaskController : ControllerBase
+    public class WorkItemController : ControllerBase
     {
 
-        private readonly ITaskService _taskService;
-        private readonly ILogger<ProjectTaskController> _logger;
+        private readonly IWorkItemService _workItemService;
+        private readonly ILogger<WorkItemController> _logger;
         private readonly ICurrentUserService _currentUserService;
         private readonly IProjectService _projectService;
-        public ProjectTaskController(ITaskService taskService, ILogger<ProjectTaskController> logger, ICurrentUserService currentUserService,
+        public WorkItemController(IWorkItemService taskService, ILogger<WorkItemController> logger, ICurrentUserService currentUserService,
             IProjectService projectService)
         {
-            _taskService = taskService;
+            _workItemService = taskService;
             _logger = logger;
             _currentUserService = currentUserService;
             _projectService = projectService;
@@ -27,7 +28,7 @@ namespace OptiPlanBackend.Controllers
         {
             try
             {
-                var tasks = await _taskService.GetAllAsync();
+                var tasks = await _workItemService.GetAllAsync();
                 return Ok(tasks);
             }
             catch (Exception ex)
@@ -43,7 +44,7 @@ namespace OptiPlanBackend.Controllers
 
             try
             {
-                var task = await _taskService.GetByIdAsync(id);
+                var task = await _workItemService.GetByIdAsync(id);
                 if (task == null)
                 {
                     return NotFound();
@@ -61,7 +62,7 @@ namespace OptiPlanBackend.Controllers
 
         [HttpGet("get-by-project-id/{projectId}")]
         public async Task<IActionResult> GetByProjectId(Guid projectId)
-        { 
+        {
 
             if (!_currentUserService.UserId.HasValue)
             {
@@ -69,7 +70,7 @@ namespace OptiPlanBackend.Controllers
             }
             try
             {
-                var tasks = await _taskService.GetProjectTasksByProjectIdAsync(projectId);
+                var tasks = await _workItemService.GetProjectTasksByProjectIdAsync(projectId);
                 return Ok(tasks);
             }
             catch (Exception ex)
@@ -88,22 +89,22 @@ namespace OptiPlanBackend.Controllers
                 return Unauthorized("User is not authenticated");
             }
             var project = await _projectService.GetByIdAsync(projectId);
-            if(project == null)
+            if (project == null)
             {
                 return BadRequest("Project does not exisit");
 
             }
-            if( projectTaskDto == null)
+            if (projectTaskDto == null)
             {
                 return BadRequest("Project task data is required");
             }
             try
             {
 
-               _logger.LogInformation($"ReporterId: {_currentUserService.UserId.Value}");
+                _logger.LogInformation($"ReporterId: {_currentUserService.UserId.Value}");
                 projectTaskDto.ProjectId = projectId;
 
-                var createdTask = await _taskService.AddProjectTaskForAProject(projectTaskDto, _currentUserService.UserId.Value);
+                var createdTask = await _workItemService.AddWorkItemForAProject(projectTaskDto, _currentUserService.UserId.Value);
                 return CreatedAtAction(nameof(GetById), new { id = createdTask.Id }, createdTask);
             }
             catch (Exception ex)
@@ -112,6 +113,28 @@ namespace OptiPlanBackend.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
+
+
+
+        [HttpPut("update-status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateWorkItemStatusDto dto)
+        {
+            try
+            {
+                var success = await _workItemService.UpdateWorkItemStatusAsync(dto.WorkItemId, dto.NewStatus);
+                if (!success)
+                    return NotFound(new { message = "Work item not found." });
+
+                return Ok(new { message = "Status updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating work item status");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
+
+        }
+
 
     }
 }

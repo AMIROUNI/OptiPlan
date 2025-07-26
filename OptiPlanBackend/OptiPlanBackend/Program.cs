@@ -4,9 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using OptiPlanBackend.Data;
 using OptiPlanBackend.Repositories.Implementations;
-using OptiPlanBackend.Repositories.Implementations.OptiPlanBackend.Repositories.Implementations;
 using OptiPlanBackend.Repositories.Interfaces;
-using OptiPlanBackend.Repositories.Interfaces.OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
 using Scalar.AspNetCore;
@@ -64,7 +62,7 @@ builder.Services.AddControllers()
 //-------------------------------------------------------------------
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IProjectRepository), typeof(ProjectRepository));
-builder.Services.AddScoped(typeof(ITaskRepository), typeof(TaskRepository));
+builder.Services.AddScoped(typeof(IWorkItemRepository), typeof(WorkItemRepository));
 builder.Services.AddScoped(typeof(ISprintRepository), typeof(SprintRepository));
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -72,7 +70,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUploadService, UploadService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IWorkItemService, WorkItemService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped(typeof(ISprintService), typeof(SprintService));

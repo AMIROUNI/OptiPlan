@@ -1,6 +1,6 @@
 ﻿namespace OptiPlanBackend.Enums
 {
-    public enum TaskStatus
+    public enum WorkItemStatus
     {
         ToDo,
         InProgress,

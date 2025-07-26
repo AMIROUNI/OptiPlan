@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TaskService } from '../../../services/task.service';
+
 import { ProjectTaskDto } from '../../../models/dto/projectTask.dto';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import { WorkItem } from '../../../models/work-item';
+import { WorkItemService } from '../../../services/work-item.service';
 
 @Component({
   selector: 'app-add-task',
@@ -24,7 +26,7 @@ export class AddTaskComponent {
 
   constructor(
     private fb: FormBuilder,
-    private taskService: TaskService,
+    private workItemService: WorkItemService,
     private authService: AuthService
   ) {
     this.taskForm = this.fb.group({
@@ -67,7 +69,7 @@ export class AddTaskComponent {
       reporterId: this.userId
     };
 
-    this.taskService.createTaskForProject(this.projectId, taskData).subscribe({
+    this.workItemService.createWorkItem(this.projectId, taskData).subscribe({
      
       next: () => {
          console.log(taskData);

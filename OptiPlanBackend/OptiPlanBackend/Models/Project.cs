@@ -13,7 +13,7 @@
 
         public Team Team { get; set; }
 
-        public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
+        public ICollection<WorkItem> Tasks { get; set; } = new List<WorkItem>();
 
      
         public ICollection<Sprint> Sprints { get; set; } = new List<Sprint>();

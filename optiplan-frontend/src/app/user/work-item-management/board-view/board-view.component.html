@@ -1,0 +1,51 @@
+<div class="board-view">
+  <div class="board-columns">
+    <!-- Pour chaque statut, une colonne -->
+    <div class="board-column"
+         *ngFor="let status of statuses"
+         (dragover)="onDragOver($event)"   <!-- autorise le drop -->
+         (drop)="onDrop(status, $event)">  <!-- drop déclenche l'update -->
+
+      <div class="column-header">
+        <h3>{{status | titlecase}}</h3>
+        <span class="badge">{{getWorkItemsByStatus(status).length}}</span>
+      </div>
+
+      <div class="column-content">
+        <!-- Affiche les tâches pour ce statut -->
+        <div class="workitem-card"
+             *ngFor="let item of getWorkItemsByStatus(status)"
+             draggable="true"
+             (dragstart)="onDragStart($event, item)"
+             (click)="workItemSelected.emit(item)">
+
+          <div class="card-header" *ngIf="item.id">
+            <span class="item-key">{{item.type | slice:0:1}}-{{item.id.substring(0, 4)}}</span>
+            <span class="item-type" [ngClass]="'type-' + item.type.toLowerCase()">
+              {{item.type}}
+            </span>
+          </div>
+
+          <div class="card-title">
+            {{item.title}}
+          </div>
+
+          <div class="card-footer">
+            <div class="item-priority" [ngClass]="'priority-' + item.priority.toLowerCase()">
+              <i [class]="getPriorityIcon(item.priority)"></i>
+            </div>
+            <div class="item-estimate" *ngIf="item.estimatedHours">
+              {{item.estimatedHours}}h
+            </div>
+            <div class="item-assignee" *ngIf="item.assignedUser">
+              <img [src]="item.assignedUser.avatarUrl || 'assets/default-avatar.png'"
+                   [alt]="item.assignedUser.username"
+                   class="avatar">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
