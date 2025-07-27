@@ -1,5 +1,10 @@
 <div class="sprint-form-container">
-  <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
+  <div class="sprint-form-header">
+    <h2>Create New Sprint</h2>
+    <p>Plan your development cycle</p>
+  </div>
+
+  <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()" class="sprint-form-body">
     <!-- Name -->
     <div class="form-group mb-3">
       <label class="form-label">Sprint Name</label>
@@ -48,7 +53,7 @@
     <!-- Form Actions -->
     <div class="form-footer d-flex justify-content-end gap-2">
       <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button type="submit" class="btn btn-success" [disabled]="sprintForm.invalid || isLoading">
+      <button type="submit" class="btn btn-primary" [disabled]="sprintForm.invalid || isLoading">
         <span *ngIf="!isLoading">Create Sprint</span>
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       </button>

@@ -10,5 +10,6 @@
 
         public ICollection<TeamMembership> Members { get; set; } = new List<TeamMembership>();
         public ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
+        public DateTime CreatedAt { get; internal set; }
     }
 }

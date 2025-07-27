@@ -334,6 +334,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OptiPlanBackend.Controllers.UserController",
+    "Method": "GetTeamByProjectId",
+    "RelativePath": "api/User/team/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
     "Method": "Create",
     "RelativePath": "api/WorkItem/Create/{projectId}",

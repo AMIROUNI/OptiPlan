@@ -3,7 +3,7 @@
     <!-- Pour chaque statut, une colonne -->
     <div class="board-column"
          *ngFor="let status of statuses"
-         (dragover)="onDragOver($event)"   <!-- autorise le drop -->
+         (dragover)="onDragOver($event)" 
          (drop)="onDrop(status, $event)">  <!-- drop déclenche l'update -->
 
       <div class="column-header">

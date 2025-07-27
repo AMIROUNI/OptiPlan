@@ -21,6 +21,6 @@ export class UserService {
 
 
   getProjectTeam(projectid : string):Observable<Project[]>{
-    return this.http.get<Project[]>(`${this.apiUrl}/get-project-team/${projectid}`);
+    return this.http.get<Project[]>(`${this.apiUrl}/team/${projectid}`);
   }
 }

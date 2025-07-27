@@ -1,6 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic;
 using OptiPlanBackend.Data;
 using OptiPlanBackend.Models;
+using OptiPlanBackend.Repositories.Implementations;
+using OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,12 +13,16 @@ public class UserService : IUserService
 {
     private readonly UserDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IUserRepository _userRepository;
 
-    public UserService(UserDbContext context, IConfiguration configuration)
+    public UserService(UserDbContext context, IConfiguration configuration, IUserRepository userRepository)
     {
         _context = context;
         _configuration = configuration;
+        _userRepository = userRepository;
     }
+
+
 
     public async Task<User?> GetUserByIdAsync(Guid userId)
     {
@@ -99,5 +106,16 @@ public class UserService : IUserService
             Console.WriteLine($"Token validation failed: {ex.Message}");
             return null;
         }
+
+
+
+   
+    }
+
+
+    public async  Task<IEnumerable<User>> GetTeamByProjectId(Guid projectId)
+    {
+        return await _userRepository.GetTeamByProjectId(projectId);
+
     }
 }

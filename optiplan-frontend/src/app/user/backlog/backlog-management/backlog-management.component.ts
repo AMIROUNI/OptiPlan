@@ -6,7 +6,7 @@ import { SprintService } from '../../../services/sprint.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { AddTaskComponent } from "../add-task/add-task.component";
-import { AddSprintComponent } from "../add-sprint/add-sprint.component";
+import { AddSprintComponent } from "../../work-item-management/add-sprint/add-sprint.component";
 import { WorkItemService } from '../../../services/work-item.service';
 import { WorkItemStatus } from '../../../models/enums/work-item-status';
 

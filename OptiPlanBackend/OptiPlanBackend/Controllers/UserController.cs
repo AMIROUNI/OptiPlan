@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -51,5 +52,33 @@ namespace OptiPlanBackend.Controllers
                 return StatusCode(500, "An error occurred while processing your request");
             }
         }
+
+
+
+
+        [HttpGet("team/{projectId}")]
+        [Authorize]
+        public async Task<IActionResult> GetTeamByProjectId(Guid projectId)
+        {
+            try
+            {
+                var team = await userService.GetTeamByProjectId(projectId);
+                if (team == null || !team.Any())
+                {
+                    return NotFound("No team members found for this project");
+                }
+                return Ok(team);
+            }
+            catch (Exception ex)
+            {
+                // Log the full exception
+                Console.WriteLine($"Error in GetTeamByProjectId: {ex}");
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+
+
+
+
     }
 }

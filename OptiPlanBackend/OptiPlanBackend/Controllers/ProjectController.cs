@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OptiPlanBackend.Dto;
+using OptiPlanBackend.Enums;
+using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
 
@@ -14,12 +16,19 @@ namespace OptiPlanBackend.Controllers
         private readonly IProjectService _projectService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ILogger<ProjectController> _logger;
+        private readonly ITeamService _teamService;
+        private readonly ITeamMembershipService _teamMembershipService;
 
-        public ProjectController(IProjectService projectService, ICurrentUserService currentUserService, ILogger<ProjectController> logger)
+        public ProjectController(IProjectService projectService, ICurrentUserService currentUserService, ILogger<ProjectController> logger ,
+          ITeamService teamService,
+           ITeamMembershipService teamMembershipService)
         {
             _projectService = projectService;
             _currentUserService = currentUserService;
             _logger = (ILogger<ProjectController>)logger;
+            _teamService = teamService;
+            _teamMembershipService = teamMembershipService;
+
         }
 
 
@@ -58,13 +67,46 @@ namespace OptiPlanBackend.Controllers
 
             try
             {
+                // 1. Créer le projet
                 var createdProject = await _projectService.CreateProjectAsync(projectDto, _currentUserService.UserId.Value);
 
+                // 2. Créer l'équipe associée au projet
+                var team = new Team
+                {
+                    Id = Guid.NewGuid(),
+                    Name = createdProject.Title, // même nom que le projet
+                    ProjectId = createdProject.Id,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                var teamCreated = await _teamService.CreateAsync(team);
+                if (!teamCreated)
+                {
+                    return StatusCode(500, "Team creation failed");
+                }
+
+                // 3. Ajouter le créateur du projet comme membre de l'équipe avec rôle ProjectCreator
+                var teamMembership = new TeamMembership
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = _currentUserService.UserId.Value,
+                    TeamId = team.Id,
+                    Role = TeamRole.ProjectCreator,
+                    JoinedAt = DateTime.UtcNow
+                };
+
+                var memberAdded = await _teamMembershipService.CreateAsync(teamMembership);
+                if (!memberAdded)
+                {
+                    return StatusCode(500, "Failed to assign user to team");
+                }
+
+                // 4. Retourner le résultat
                 return CreatedAtAction(nameof(GetById), new { id = createdProject.Id }, createdProject);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while creating a project");
+                _logger.LogError(ex, "Error occurred while creating a project and assigning team");
                 return StatusCode(500, "Internal server error");
             }
         }

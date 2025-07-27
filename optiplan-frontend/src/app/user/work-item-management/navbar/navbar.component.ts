@@ -12,8 +12,13 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent {
   @Input() project!: Project;
   @Output() createClicked = new EventEmitter<void>();
+  @Output() createSprintClicked = new EventEmitter<void>();
 
   openCreateModal(): void {
     this.createClicked.emit();
+  }
+
+  openCreateSprintModal(): void {
+    this.createSprintClicked.emit();
   }
 }

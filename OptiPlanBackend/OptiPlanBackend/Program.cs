@@ -64,6 +64,10 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IProjectRepository), typeof(ProjectRepository));
 builder.Services.AddScoped(typeof(IWorkItemRepository), typeof(WorkItemRepository));
 builder.Services.AddScoped(typeof(ISprintRepository), typeof(SprintRepository));
+builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+builder.Services.AddScoped(typeof(ITeamMembershipRepository), typeof(TeamMembershipRepository));
+builder.Services.AddScoped(typeof(ITeamRepository), typeof(TeamRepository));
+
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -74,6 +78,8 @@ builder.Services.AddScoped<IWorkItemService, WorkItemService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped(typeof(ISprintService), typeof(SprintService));
+builder.Services.AddScoped(typeof(ITeamMembershipService), typeof(TeamMembershipService));
+builder.Services.AddScoped(typeof(ITeamService), typeof(TeamService));
 
 
 

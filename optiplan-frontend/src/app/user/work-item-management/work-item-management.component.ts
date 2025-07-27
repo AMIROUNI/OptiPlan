@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+
 import { NavbarComponent } from './navbar/navbar.component';
 import { BoardViewComponent } from './board-view/board-view.component';
 import { ReportsViewComponent } from './reports-view/reports-view.component';
@@ -15,6 +14,9 @@ import { WorkItemPriority } from '../../models/enums/work-item-priority';
 import { WorkItemService } from '../../services/work-item.service';
 import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service';
+import { WorkItemFormComponent } from './work-item-form/work-item-form.component';
+import { AddSprintComponent } from "./add-sprint/add-sprint.component";
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 @Component({
@@ -27,15 +29,13 @@ import { UserService } from '../../services/user.service';
     SidebarComponent,
     NavbarComponent,
     BoardViewComponent,
-    BacklogViewComponent
-    ,
-    ReportsViewComponent
+    BacklogViewComponent,
+    ReportsViewComponent,
+    WorkItemFormComponent,
+    AddSprintComponent
   ]
 })
 export class WorkItemManagementComponent implements OnInit {
-getPriorityIcon(arg0: WorkItemPriority) {
-throw new Error('Method not implemented.');
-}
   activeView: 'board' | 'backlog' | 'reports' = 'board';
   workItems: WorkItem[] = [];
   filteredWorkItems: WorkItem[] = [];
@@ -45,15 +45,10 @@ throw new Error('Method not implemented.');
   error: string | null = null;
   selectedWorkItem: WorkItem | null = null;
   showCreateModal = false;
-  
-
-  workItemTypes = Object.values(WorkItemType);
-  statuses = Object.values(WorkItemStatus);
-  priorities = Object.values(WorkItemPriority);
+  showCreateSprintModal = false;
 
   constructor(
     private route: ActivatedRoute,
-    private modalService: NgbModal,
     private workItemService: WorkItemService,
     private projectService: ProjectService,
     private userService: UserService
@@ -73,21 +68,20 @@ throw new Error('Method not implemented.');
         this.loadWorkItems(projectId);
         this.loadTeamMembers(projectId);
       },
-      error: (err) => {
+      error: () => {
         this.handleError('Failed to load project');
       }
     });
   }
 
   loadWorkItems(projectId: string): void {
-    console.log('Loading work items for project:', projectId);
     this.workItemService.getWorkItemsByProject(projectId).subscribe({
       next: (items) => {
         this.workItems = items;
         this.filteredWorkItems = [...items];
         this.loading = false;
       },
-      error: (err) => {
+      error: () => {
         this.handleError('Failed to load work items');
       }
     });
@@ -110,11 +104,25 @@ throw new Error('Method not implemented.');
 
   onWorkItemSelected(item: WorkItem): void {
     this.selectedWorkItem = item;
-   
   }
 
   openCreateModal(): void {
     this.showCreateModal = true;
+  }
+
+  openCreateSprintModal(): void {
+    this.showCreateSprintModal = true;
+  }
+
+  closeCreateSprintModal(): void {
+    this.showCreateSprintModal = false;
+  }
+
+  onSprintCreated(success: boolean): void {
+    if (success) {
+      this.closeCreateSprintModal();
+      // Optionally reload sprints or work items if needed
+    }
   }
 
   onWorkItemCreated(item: WorkItem): void {
@@ -129,8 +137,12 @@ throw new Error('Method not implemented.');
     console.error(message);
   }
 
-
-
- 
-
+  getPriorityIcon(priority: WorkItemPriority): string {
+    switch (priority) {
+      case WorkItemPriority.High: return 'bi bi-arrow-up';
+      case WorkItemPriority.Medium: return 'bi bi-arrow-right';
+      case WorkItemPriority.Low: return 'bi bi-arrow-down';
+      default: return '';
+    }
+  }
 }
