@@ -54,7 +54,6 @@ export class HeaderComponent implements OnInit {
     if (token) {
       try {
         const decoded: any = JSON.parse(atob(token.split('.')[1]));
-        this.userImg = decoded.AvatarUrl || null;
       } catch (error) {
         console.error('Error decoding token:', error);
         this.userImg = null;

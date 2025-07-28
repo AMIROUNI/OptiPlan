@@ -3,15 +3,28 @@
   import { SprintService } from '../../../services/sprint.service';
   import { SprintDto } from '../../../models/dto/sprint.dto';
   import { CommonModule } from '@angular/common';
+import { PopupComponent } from "../../../popup/popup.component";
 
   @Component({
     selector: 'app-add-sprint',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule],
+    imports: [ReactiveFormsModule, CommonModule, PopupComponent],
     templateUrl: './add-sprint.component.html',
     styleUrls: ['./add-sprint.component.css']
   })
   export class AddSprintComponent {
+
+
+    
+  // popup variables ///////////////////////////////////////////////////////////////
+  showPopup = false;
+  popupTitle = '';
+  popupMessage = '';
+  popupIsSuccess = false;
+  popupRedirectPath: string | null = null;
+  showCancelButton = false;
+
+  ///////////////////////////////////////////////////////////////
     @Input() projectId: string = '';
     @Output() sprintCreated = new EventEmitter<boolean>();
     @Output() cancel = new EventEmitter<boolean>();
@@ -33,10 +46,11 @@
     }
 
     onSubmit(): void {
-      if (this.sprintForm.invalid) {
+      console.log(this.sprintForm.value);
+     /* if (this.sprintForm.invalid) {
         this.sprintForm.markAllAsTouched();
         return;
-      }
+      }*/
 
       this.isLoading = true;
       this.errorMessage = '';
@@ -49,16 +63,22 @@
 
       };
 
+      console.log(sprintData);
+
       this.sprintService.CreateSprint(this.projectId, sprintData).subscribe({
         next: () => {
+          console.log('Sprint created successfully');
           this.isLoading = false;
-          this.sprintCreated.emit(true); // Emit true to close modal
+          this.showSuccessPopup('Sprint Created', 'Sprint created successfully.');
+         // this.sprintCreated.emit(true); // Emit true to close modal
           this.resetForm();
         },
         error: (err) => {
+          console.log('Failed to create sprint');
           this.isLoading = false;
           this.errorMessage = 'Failed to create sprint. Please try again.';
           console.error('Error creating sprint', err);
+          this.showErrorPopup('Error Creating Sprint', 'Failed to create sprint. Please try again.');
           this.sprintCreated.emit(false); // Emit false to keep modal open
         }
       });
@@ -76,4 +96,33 @@
         endDate: ''
       });
     }
+
+
+
+    
+
+   /// popup methods //////////////////////////////////////////
+
+   showSuccessPopup(title :string ,message: string) {
+    this.popupTitle = title;
+    this.popupMessage =  message;
+    this.popupIsSuccess = true;
+    this.popupRedirectPath = null;
+    this.showCancelButton = false;
+    this.showPopup = true;
+  }
+
+  showErrorPopup(title : string ,errorMessage: string) {
+    this.popupTitle =  title;
+    this.popupMessage = errorMessage;
+    this.popupIsSuccess = false;
+    this.popupRedirectPath = null;
+    this.showCancelButton = true;
+    this.showPopup = true;
+  }
+
+  closePopup() {
+    this.showPopup = false;
+  }
+////////////////////////////////////
   }

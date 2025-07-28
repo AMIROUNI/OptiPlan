@@ -1,87 +1,145 @@
-<div class="modal-header">
-  <h5 class="modal-title">Create Work Item</h5>
-  <button type="button" class="btn-close" (click)="cancel.emit()"></button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="workItemForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>Type</label>
-      <select class="form-select" formControlName="type" (change)="onTypeChange()">
-        <option *ngFor="let type of workItemTypes" [value]="type">{{type}}</option>
-      </select>
-    </div>
-    
-    <div class="form-group">
-      <label>Title</label>
-      <input type="text" class="form-control" formControlName="title" placeholder="Enter title">
-    </div>
-    
-    <div class="form-group">
-      <label>Description</label>
-      <textarea class="form-control" formControlName="description" rows="3" placeholder="Enter description"></textarea>
-    </div>
-    
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Priority</label>
-          <select class="form-select" formControlName="priority">
-            <option *ngFor="let priority of priorities" [value]="priority">{{priority}}</option>
-          </select>
-        </div>
+<div class="work-item-modal-overlay" (click)="onCancel()">
+  <div class="work-item-modal-container" (click)="$event.stopPropagation()">
+    <div class="work-item-modal-header" [style.background]="getTypeColor(workItemForm.value.type)">
+      <div class="header-content">
+        <h2>Create New Work Item</h2>
+        <p>Add details for this {{workItemForm.value.type}}</p>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Status</label>
-          <select class="form-select" formControlName="status">
-            <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    
-    <div class="row" *ngIf="workItemForm.value.type === 'Story' || workItemForm.value.type === 'Epic'">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Story Points</label>
-          <input type="number" class="form-control" formControlName="storyPoints" min="1">
-        </div>
-      </div>
-    </div>
-    
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Estimated Hours</label>
-          <input type="number" class="form-control" formControlName="estimatedHours" min="1">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Due Date</label>
-          <input type="date" class="form-control" formControlName="dueDate">
-        </div>
-      </div>
-    </div>
-    
-    <div class="form-group">
-      <label>Labels (comma separated)</label>
-      <input type="text" class="form-control" formControlName="labels" placeholder="bug,ui,backend">
-    </div>
-    
-    <div class="form-group">
-      <label>Assignee</label>
-      <select class="form-select" formControlName="assignedUserId">
-        <option value="">Unassigned</option>
-        <option *ngFor="let user of teamMembers" [value]="user.id">{{user.username}}</option>
-      </select>
-    </div>
-    
-    <div class="form-actions">
-      <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="workItemForm.invalid">
-        Create
+      <button class="modal-close-btn" (click)="cancel.emit()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
     </div>
-  </form>
+
+    <div class="work-item-modal-body">
+      <form [formGroup]="workItemForm" (ngSubmit)="onSubmit()">
+        <!-- Type Selector -->
+        <div class="form-section type-selector">
+          <div class="type-options">
+            <button *ngFor="let type of workItemTypes" 
+                    type="button"
+                    class="type-option"
+                    [style.background]="workItemForm.value.type === type ? getTypeColor(type) : 'transparent'"
+                    [style.border-color]="getTypeColor(type)"
+                    (click)="workItemForm.patchValue({type: type}); onTypeChange()">
+              {{type}}
+            </button>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label class="form-label">Title <span class="required">*</span></label>
+          <input type="text" class="form-control" formControlName="title" placeholder="What needs to be done?"
+                 [class.is-invalid]="workItemForm.get('title')?.invalid && workItemForm.get('title')?.touched">
+          <div *ngIf="workItemForm.get('title')?.invalid && workItemForm.get('title')?.touched" class="invalid-feedback">
+            <span *ngIf="workItemForm.get('title')?.hasError('required')">Title is required</span>
+            <span *ngIf="workItemForm.get('title')?.hasError('maxlength')">Maximum 100 characters</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" formControlName="description" rows="3" 
+                    placeholder="Add details about this work item..."
+                    [class.is-invalid]="workItemForm.get('description')?.invalid && workItemForm.get('description')?.touched"></textarea>
+          <div *ngIf="workItemForm.get('description')?.invalid && workItemForm.get('description')?.touched" class="invalid-feedback">
+            <span *ngIf="workItemForm.get('description')?.hasError('maxlength')">Maximum 500 characters</span>
+          </div>
+          <div class="char-counter">{{workItemForm.value.description?.length || 0}}/500</div>
+        </div>
+
+        <!-- Priority and Status -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Priority <span class="required">*</span></label>
+            <select class="form-control" formControlName="priority"
+                    [class.is-invalid]="workItemForm.get('priority')?.invalid && workItemForm.get('priority')?.touched">
+              <option *ngFor="let priority of priorities" [value]="priority">{{priority}}</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Status <span class="required">*</span></label>
+            <select class="form-control" formControlName="status"
+                    [class.is-invalid]="workItemForm.get('status')?.invalid && workItemForm.get('status')?.touched">
+              <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Story Points (for Stories/Epics) -->
+        <div class="form-group" *ngIf="workItemForm.value.type === 'Story' || workItemForm.value.type === 'Epic'">
+          <label class="form-label">Story Points</label>
+          <input type="number" class="form-control" formControlName="storyPoints" min="1" max="20"
+                 [class.is-invalid]="workItemForm.get('storyPoints')?.invalid && workItemForm.get('storyPoints')?.touched">
+          <div *ngIf="workItemForm.get('storyPoints')?.invalid && workItemForm.get('storyPoints')?.touched" class="invalid-feedback">
+            <span *ngIf="workItemForm.get('storyPoints')?.hasError('min')">Minimum 1 point</span>
+            <span *ngIf="workItemForm.get('storyPoints')?.hasError('max')">Maximum 20 points</span>
+          </div>
+        </div>
+
+        <!-- Estimated Hours and Due Date -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Estimated Hours</label>
+            <input type="number" class="form-control" formControlName="estimatedHours" min="0" max="1000"
+                   [class.is-invalid]="workItemForm.get('estimatedHours')?.invalid && workItemForm.get('estimatedHours')?.touched">
+            <div *ngIf="workItemForm.get('estimatedHours')?.invalid && workItemForm.get('estimatedHours')?.touched" class="invalid-feedback">
+              <span *ngIf="workItemForm.get('estimatedHours')?.hasError('min')">Must be positive</span>
+              <span *ngIf="workItemForm.get('estimatedHours')?.hasError('max')">Maximum 1000 hours</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Due Date</label>
+            <input type="date" class="form-control" formControlName="dueDate">
+          </div>
+        </div>
+
+        <!-- Labels -->
+        <div class="form-group">
+          <label class="form-label">Labels</label>
+          <input type="text" class="form-control" formControlName="labels" placeholder="bug, ui, backend"
+                 [class.is-invalid]="workItemForm.get('labels')?.invalid && workItemForm.get('labels')?.touched">
+          <div *ngIf="workItemForm.get('labels')?.invalid && workItemForm.get('labels')?.touched" class="invalid-feedback">
+            <span *ngIf="workItemForm.get('labels')?.hasError('maxlength')">Maximum 100 characters</span>
+          </div>
+        </div>
+
+        <!-- Assignee -->
+        <div class="form-group">
+          <label class="form-label">Assignee</label>
+          <select class="form-control" formControlName="assignedUserId">
+            <option value="">Unassigned</option>
+            <option *ngFor="let user of teamMembers" [value]="user.id">
+              {{user.username}} ({{user.email}})
+            </option>
+          </select>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error-message">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 5V8M8 11H8.01M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{errorMessage}}
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancel.emit()" [disabled]="isLoading">Cancel</button>
+          <button type="submit" class="btn btn-primary" 
+                  [disabled]="workItemForm.invalid || isLoading"
+                  [class.is-loading]="isLoading">
+            <span *ngIf="!isLoading">Create {{workItemForm.value.type}}</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

@@ -1,67 +1,157 @@
-<div class="sprint-form-container">
-  <div class="sprint-form-header">
-    <h2>Create New Sprint</h2>
-    <p>Plan your development cycle</p>
-  </div>
-
-  <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()" class="sprint-form-body">
-    <!-- Name -->
-    <div class="form-group mb-3">
-      <label class="form-label">Sprint Name</label>
-      <input type="text" class="form-control" formControlName="name"
-             [class.is-invalid]="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched">
-      <div *ngIf="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched" class="invalid-feedback">
-        <span *ngIf="sprintForm.get('name')?.hasError('required')">Name is required</span>
-        <span *ngIf="sprintForm.get('name')?.hasError('maxlength')">Maximum 50 characters</span>
-      </div>
+<div class="sprint-modal-overlay" (click)="onCancel()">
+  <div class="sprint-modal-container" (click)="$event.stopPropagation()">
+    <div class="sprint-modal-header">
+      <h2>Create New Sprint</h2>
+      <p>Plan your development cycle</p>
+      <button class="sprint-modal-close" (click)="onCancel()">&times;</button>
     </div>
-
-    <!-- Description -->
-    <div class="form-group mb-3">
-      <label class="form-label">Description</label>
-      <textarea class="form-control" rows="3" formControlName="description"
-                [class.is-invalid]="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched"></textarea>
-      <div *ngIf="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched" class="invalid-feedback">
-        <span *ngIf="sprintForm.get('description')?.hasError('maxlength')">Maximum 200 characters</span>
-      </div>
-    </div>
-
-    <!-- Dates -->
-    <div class="row mb-4">
-      <div class="col-md-6">
+    
+    <div class="sprint-modal-body">
+      <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
+        <!-- Name -->
         <div class="form-group">
-          <label class="form-label">Start Date</label>
-          <input type="date" class="form-control" formControlName="startDate"
-                 [class.is-invalid]="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched">
-          <div *ngIf="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched" class="invalid-feedback">
-            Start date is required
+          <label class="form-label">Sprint Name</label>
+          <input type="text" class="form-control" formControlName="name"
+                [class.is-invalid]="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched">
+          <div *ngIf="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched" class="invalid-feedback">
+            <span *ngIf="sprintForm.get('name')?.hasError('required')">Name is required</span>
+            <span *ngIf="sprintForm.get('name')?.hasError('maxlength')">Maximum 50 characters</span>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
+
+        <!-- Description -->
         <div class="form-group">
-          <label class="form-label">End Date</label>
-          <input type="date" class="form-control" formControlName="endDate"
-                 [class.is-invalid]="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched">
-          <div *ngIf="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched" class="invalid-feedback">
-            End date is required
+          <label class="form-label">Description (Optional)</label>
+          <textarea class="form-control" rows="3" formControlName="description"
+                  [class.is-invalid]="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched"></textarea>
+          <div *ngIf="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched" class="invalid-feedback">
+            <span *ngIf="sprintForm.get('description')?.hasError('maxlength')">Maximum 200 characters</span>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Form Actions -->
-    <div class="form-footer d-flex justify-content-end gap-2">
+        <!-- Dates -->
+        <div class="date-row">
+          <div class="date-col">
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input type="date" class="form-control" formControlName="startDate"
+                    [class.is-invalid]="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched">
+              <div *ngIf="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched" class="invalid-feedback">
+                Start date is required
+              </div>
+            </div>
+          </div>
+          <div class="date-col">
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input type="date" class="form-control" formControlName="endDate"
+                    [class.is-invalid]="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched">
+              <div *ngIf="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched" class="invalid-feedback">
+                End date is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          <i class="bi bi-exclamation-circle-fill"></i> {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+    
+    <div class="sprint-modal-footer">
       <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="sprintForm.invalid || isLoading">
+      <button type="submit" class="btn btn-primary" 
+              [disabled]="sprintForm.invalid || isLoading"
+              (click)="onSubmit()">
         <span *ngIf="!isLoading">Create Sprint</span>
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       </button>
     </div>
-
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-      {{ errorMessage }}
+  </div>
+</div><div class="sprint-modal-overlay" (click)="onCancel()">
+  <div class="sprint-modal-container" (click)="$event.stopPropagation()">
+    <div class="sprint-modal-header">
+      <h2>Create New Sprint</h2>
+      <p>Plan your development cycle</p>
+      <button class="sprint-modal-close" (click)="onCancel()">&times;</button>
     </div>
-  </form>
+    
+    <div class="sprint-modal-body">
+      <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
+        <!-- Name -->
+        <div class="form-group">
+          <label class="form-label">Sprint Name</label>
+          <input type="text" class="form-control" formControlName="name"
+                [class.is-invalid]="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched">
+          <div *ngIf="sprintForm.get('name')?.invalid && sprintForm.get('name')?.touched" class="invalid-feedback">
+            <span *ngIf="sprintForm.get('name')?.hasError('required')">Name is required</span>
+            <span *ngIf="sprintForm.get('name')?.hasError('maxlength')">Maximum 50 characters</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label">Description (Optional)</label>
+          <textarea class="form-control" rows="3" formControlName="description"
+                  [class.is-invalid]="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched"></textarea>
+          <div *ngIf="sprintForm.get('description')?.invalid && sprintForm.get('description')?.touched" class="invalid-feedback">
+            <span *ngIf="sprintForm.get('description')?.hasError('maxlength')">Maximum 200 characters</span>
+          </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="date-row">
+          <div class="date-col">
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input type="date" class="form-control" formControlName="startDate"
+                    [class.is-invalid]="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched">
+              <div *ngIf="sprintForm.get('startDate')?.invalid && sprintForm.get('startDate')?.touched" class="invalid-feedback">
+                Start date is required
+              </div>
+            </div>
+          </div>
+          <div class="date-col">
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input type="date" class="form-control" formControlName="endDate"
+                    [class.is-invalid]="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched">
+              <div *ngIf="sprintForm.get('endDate')?.invalid && sprintForm.get('endDate')?.touched" class="invalid-feedback">
+                End date is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          <i class="bi bi-exclamation-circle-fill"></i> {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+    
+    <div class="sprint-modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" 
+              [disabled]="sprintForm.invalid || isLoading"
+              (click)="onSubmit()">
+        <span *ngIf="!isLoading">Create Sprint</span>
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
 </div>
+
+
+
+
+<app-popup *ngIf="showPopup"
+           [title]="popupTitle"
+           [message]="popupMessage"
+           [isSuccess]="popupIsSuccess"
+           [redirectPath]="popupRedirectPath"
+           [showCancelButton]="showCancelButton"
+           (closed)="closePopup()">
+</app-popup>

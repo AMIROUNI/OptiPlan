@@ -11,9 +11,16 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class SidebarComponent {
+
   @Input() project!: Project;
   @Input() tasks: WorkItem[] = [];
   @Output() viewChange = new EventEmitter<'board' | 'backlog' | 'reports'>();
+
+
+  ngOnInit(): void {
+    console.log(this.tasks);
+  }
+
 
   isCollapsed = false;
   activeSection: string = 'board';
@@ -42,4 +49,5 @@ export class SidebarComponent {
   get blockedTasksCount(): number {
     return this.tasks.filter(t => t.isBlocked).length;
   }
+
 }

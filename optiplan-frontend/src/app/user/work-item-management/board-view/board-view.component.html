@@ -1,29 +1,33 @@
-<div class="board-view">
-  <div class="board-columns">
-    <!-- Pour chaque statut, une colonne -->
+<div class="board-view" style="width: 80%;">
+  <div class="board-columns" >
+    <!-- For each status, a column -->
     <div class="board-column"
          *ngFor="let status of statuses"
          (dragover)="onDragOver($event)" 
-         (drop)="onDrop(status, $event)">  <!-- drop déclenche l'update -->
+         (drop)="onDrop(status, $event)"   >
 
       <div class="column-header">
-        <h3>{{status | titlecase}}</h3>
+        <h3 [title]="status">{{status | titlecase}}</h3>
         <span class="badge">{{getWorkItemsByStatus(status).length}}</span>
       </div>
 
-      <div class="column-content">
-        <!-- Affiche les tâches pour ce statut -->
+      <div class="column-content" >
+        <!-- Display tasks for this status -->
         <div class="workitem-card"
              *ngFor="let item of getWorkItemsByStatus(status)"
              draggable="true"
              (dragstart)="onDragStart($event, item)"
-             (click)="workItemSelected.emit(item)">
+             (click)="workItemSelected.emit(item)"
+             [class]="'type-' + item.type.toLowerCase()">
 
           <div class="card-header" *ngIf="item.id">
             <span class="item-key">{{item.type | slice:0:1}}-{{item.id.substring(0, 4)}}</span>
             <span class="item-type" [ngClass]="'type-' + item.type.toLowerCase()">
               {{item.type}}
             </span>
+            <button class="delete-item" (click)="deleteWorkItem(item.id); $event.stopPropagation()">
+              <i class="bi bi-x"></i>
+            </button>
           </div>
 
           <div class="card-title">
@@ -41,6 +45,7 @@
               <img [src]="item.assignedUser.avatarUrl || 'assets/default-avatar.png'"
                    [alt]="item.assignedUser.username"
                    class="avatar">
+           
             </div>
           </div>
 
@@ -49,3 +54,14 @@
     </div>
   </div>
 </div>
+
+
+
+<app-popup *ngIf="showPopup"
+           [title]="popupTitle"
+           [message]="popupMessage"
+           [isSuccess]="popupIsSuccess"
+           [redirectPath]="popupRedirectPath"
+           [showCancelButton]="showCancelButton"
+           (closed)="closePopup()">
+</app-popup>

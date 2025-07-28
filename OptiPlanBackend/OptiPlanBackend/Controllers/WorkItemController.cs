@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OptiPlanBackend.Dto;
 using OptiPlanBackend.Models;
@@ -134,6 +135,30 @@ namespace OptiPlanBackend.Controllers
             }
 
         }
+
+
+        [HttpDelete("delete/{workItemId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteWorkItem(Guid workItemId)
+        {
+            try
+            {
+                var workItem = await _workItemService.GetByIdAsync(workItemId);
+                if (workItem == null)
+                {
+                    return NotFound($"No work item with ID {workItemId}");
+                }
+
+                await _workItemService.DeleteAsync(workItem);
+                return Ok(true);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Internal server error while deleting work item.");
+                return StatusCode(500, false);
+            }
+        }
+
 
 
     }

@@ -10,6 +10,9 @@ import { UpdateWorkItemStatusDto } from '../models/dto/updateWorkItemStatus.dto'
   providedIn: 'root'
 })
 export class WorkItemService {
+  deleteWorkItem(id: string) {
+    return this.http.delete<any>(`${this.apiUrl}/delete/${id}`);
+  }
 
  private apiUrl = `${environment.apiUrl}/WorkItem`; 
   constructor(private http : HttpClient ) { }
@@ -21,7 +24,7 @@ export class WorkItemService {
   }
 
 
-  createWorkItem(projectId: string, task: ProjectTaskDto) {
+  createWorkItem(projectId: string, task: WorkItem) {
     console.log('Sending task data:', task);
     return this.http.post<any>(`${this.apiUrl}/create/${projectId}`, task);
   }

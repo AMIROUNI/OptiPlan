@@ -27,19 +27,20 @@ namespace OptiPlanBackend.Services.Implementations
 
         }
 
-        public Task<bool> DeleteAsync(WorkItem project)
+        public async Task<bool> DeleteAsync(WorkItem workItem)
         {
-            throw new NotImplementedException();
+             _workItemRepository.Delete(workItem);
+            return await _workItemRepository.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<WorkItem>> GetAllAsync()
+        public async Task<IEnumerable<WorkItem>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _workItemRepository.GetAllAsync();
         }
 
-        public Task<WorkItem?> GetByIdAsync(Guid id)
+        public async Task<WorkItem?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _workItemRepository.GetByIdAsync(id);
         }
 
         public Task<IEnumerable<WorkItem>> GetByOwnerIdAsync(Guid ownerId)
@@ -52,9 +53,10 @@ namespace OptiPlanBackend.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(WorkItem task)
+        public async Task<bool> UpdateAsync(WorkItem task)
         {
-            throw new NotImplementedException();
+            _workItemRepository.Update(task);
+            return await _workItemRepository.SaveChangesAsync();
         }
 
         async Task<WorkItem?> IWorkItemService.GetByIdAsync(Guid id)

@@ -372,6 +372,22 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "Method": "DeleteWorkItem",
+    "RelativePath": "api/WorkItem/delete/{workItemId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "workItemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
     "Method": "GetByProjectId",
     "RelativePath": "api/WorkItem/get-by-project-id/{projectId}",
     "HttpMethod": "GET",
