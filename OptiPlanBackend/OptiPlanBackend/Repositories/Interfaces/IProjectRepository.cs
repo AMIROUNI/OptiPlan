@@ -6,5 +6,8 @@ namespace OptiPlanBackend.Repositories.Interfaces
     {
         Task<IEnumerable<Project>> GetByOwnerIdAsync(Guid ownerId);
         public  Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId);
+
+        public Task<Team> GetTeamByProjectId(Guid id);
+        public  Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId);
     }
 }

@@ -8,6 +8,7 @@ import { CreateProjectComponent } from './user/dashboard/create-project/create-p
 import { ProjectDetailsComponent } from './user/project-details/project-details.component';
 import { AddSprintComponent } from './user/work-item-management/add-sprint/add-sprint.component';
 import { WorkItemManagementComponent } from './user/work-item-management/work-item-management.component';
+import { InvitationListComponent } from './invitation-list/invitation-list.component';
 
 export const routes: Routes = [
     {path:'register',component: RegisterComponent},
@@ -18,6 +19,7 @@ export const routes: Routes = [
     {path:'create-project', component: CreateProjectComponent},
     {path:'project-details/:id',component:ProjectDetailsComponent},
     {path: 'work-item/:id',component:WorkItemManagementComponent},
+    {path:'invitation-list',component:InvitationListComponent},
 
     //**************************************************     */
       {path:'add-sprint/:id', component:AddSprintComponent},

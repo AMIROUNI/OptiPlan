@@ -33,6 +33,11 @@
       [workItems]="workItems">
     </app-reports-view>
 
+     <app-invite-user
+     *ngIf="activeView === 'invitation' && !loading"
+     >
+    </app-invite-user>
+
     <!-- Add Work Item Modal -->
     <app-work-item-form
       *ngIf="showCreateModal"

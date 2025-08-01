@@ -1,2 +1,3 @@
 wwwroot\avatars\908a32fd-9e5a-4482-8ad8-3c8834dce4e2.png
 wwwroot\avatars\2872afdd-eb6c-4b87-bf97-873384ea0088.png
+wwwroot\avatars\7d9d41a9-4e35-43b4-917a-b60b4e7ed1ed.jpg

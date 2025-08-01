@@ -71,6 +71,16 @@ namespace OptiPlanBackend.Services.Implementations
         {
             return await _projectRepository.GetProjectsForUserAsync(userId);
         }
+
+        public async Task<Team> GetTeamByProjectId(Guid projectId)
+        {
+            return await _projectRepository.GetTeamByProjectId(projectId);
+        }
+
+        public async Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId)
+        {
+            return await _projectRepository.GetTeamMembershipsByProjectIdAsync(projectId);
+        }
     }
 
 }

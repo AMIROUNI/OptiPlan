@@ -79,6 +79,25 @@ namespace OptiPlanBackend.Controllers
 
 
 
+        [HttpGet("get-all-with-out-admins")]
+        [Authorize]
+        public async Task<IActionResult> GetAllWithOutAdmins()
+        {
+            try
+            {
+                var users = await  userService.getAllUserNotADMIN();
+                return Ok(users);
+
+            }
+
+            catch(Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+
+
 
     }
 }

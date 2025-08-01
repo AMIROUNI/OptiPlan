@@ -155,4 +155,6 @@ C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.pdb
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.genruntimeconfig.cache
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\ref\OptiPlanBackend.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\DotNetEnv.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Sprache.dll
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

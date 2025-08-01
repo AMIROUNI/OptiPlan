@@ -13,6 +13,8 @@ namespace OptiPlanBackend.Services.Interfaces
         Task<bool> DeleteAsync(Project project);
         System.Threading.Tasks.Task<Project> CreateProjectAsync(ProjectDto projectDto, Guid value);
         public Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId);
+        public  Task<Team> GetTeamByProjectId(Guid projectId);
+        public  Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId);
     }
 
 }

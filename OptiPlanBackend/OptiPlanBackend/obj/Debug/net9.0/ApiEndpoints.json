@@ -204,6 +204,64 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OptiPlanBackend.Controllers.InvitationController",
+    "Method": "AcceptInvitation",
+    "RelativePath": "api/Invitation/accept/{InvitationId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "InvitationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.InvitationController",
+    "Method": "GetInvitations",
+    "RelativePath": "api/Invitation/get",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.InvitationController",
+    "Method": "Reject",
+    "RelativePath": "api/Invitation/reject/{InvitationId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "InvitationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.InvitationController",
+    "Method": "Send",
+    "RelativePath": "api/Invitation/send",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OptiPlanBackend.Dto.InvitationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OptiPlanBackend.Controllers.ProjectController",
     "Method": "GetById",
     "RelativePath": "api/Project/{id}",
@@ -227,6 +285,38 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectController",
+    "Method": "GetTeamMemberShips",
+    "RelativePath": "api/Project/get-team-memberships/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ProjectController",
+    "Method": "GetTeam",
+    "RelativePath": "api/Project/get-team/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -321,6 +411,16 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.UserController",
+    "Method": "GetAllWithOutAdmins",
+    "RelativePath": "api/User/get-all-with-out-admins",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

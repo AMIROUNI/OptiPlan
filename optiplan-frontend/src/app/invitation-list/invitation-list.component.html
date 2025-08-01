@@ -1,0 +1,119 @@
+<div class="invitation-management-container">
+  <header class="management-header">
+    <h1 class="management-title">
+      <i class="bi bi-person-lines-fill"></i> Team Invitations
+    </h1>
+    <p class="management-subtitle">Manage your project and team invitations</p>
+  </header>
+
+  <div class="invitation-content">
+    <div class="invitation-tabs">
+      <div class="tab-nav">
+        <button class="tab-button" 
+                [class.active]="activeTab === InvitationStatus.Pending"
+                (click)="changeTab(InvitationStatus.Pending)">
+          <i class="bi bi-hourglass"></i> Pending
+          <span class="tab-badge">{{countInvitations(InvitationStatus.Pending)}}</span>
+        </button>
+        <button class="tab-button" 
+                [class.active]="activeTab === InvitationStatus.Accepted"
+                (click)="changeTab(InvitationStatus.Accepted)">
+          <i class="bi bi-check-circle"></i> Accepted
+          <span class="tab-badge">{{countInvitations(InvitationStatus.Accepted)}}</span>
+        </button>
+        <button class="tab-button" 
+                [class.active]="activeTab === InvitationStatus.Rejected"
+                (click)="changeTab(InvitationStatus.Rejected)">
+          <i class="bi bi-x-circle"></i> Rejected
+          <span class="tab-badge">{{countInvitations(InvitationStatus.Rejected)}}</span>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p>Loading invitations...</p>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && filteredInvitations.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i class="bi bi-envelope-open"></i>
+      </div>
+      <h3>No {{activeTab.toLowerCase()}} invitations</h3>
+      <p>You don't have any {{activeTab.toLowerCase()}} invitations at this time</p>
+    </div>
+
+    <div class="invitation-list-container">
+      <div class="invitation-list">
+        <div *ngFor="let invitation of filteredInvitations; " class="invitation-card">
+          <div class="card-header">
+            <div class="project-info">
+              <h3 class="project-name">{{invitation.team.project.title || 'Project'}}</h3>
+              <p class="team-name">{{invitation.team.name || 'Team'}}</p>
+            </div>
+            <div class="invitation-status">
+              <span class="status-badge" [ngClass]="getStatusBadgeClass(invitation.status)">
+                {{invitation.status}}
+              </span>
+              <span class="role-badge" [ngClass]="getRoleBadgeClass(invitation.role)">
+                {{invitation.role}}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="inviter-info">
+              <img [src]="invitation.inviter.avatarUrl || 'assets/default-avatar.png'" 
+                   alt="Inviter avatar" 
+                   class="inviter-avatar">
+              <div class="inviter-details">
+                <p class="invited-by">Invited by</p>
+                <p class="inviter-name">{{invitation.inviter.username || 'Unknown user'}}</p>
+              </div>
+            </div>
+
+            <div class="invitation-details">
+              <div class="detail-item">
+                <i class="bi bi-envelope"></i>
+                <span>{{invitation.email}}</span>
+              </div>
+              <div class="detail-item">
+                <i class="bi bi-calendar"></i>
+                <span>Sent: {{invitation.sentAt | date:'mediumDate'}}</span>
+              </div>
+              <div *ngIf="invitation.respondedAt" class="detail-item">
+                <i class="bi bi-clock-history"></i>
+                <span>Responded: {{invitation.respondedAt | date:'mediumDate'}}</span>
+              </div>
+            </div>
+
+            <div *ngIf="invitation.status === InvitationStatus.Pending" class="action-buttons">
+              <button class="accept-button" 
+                      (click)="acceptInvitation(invitation.id)"
+                      [disabled]="isProcessing(invitation.id)">
+                <span *ngIf="!isProcessing(invitation.id)">
+                  <i class="bi bi-check-lg"></i> Accept Invitation
+                </span>
+                <span *ngIf="isProcessing(invitation.id)">
+                  <i class="bi bi-arrow-repeat spinner"></i> Processing...
+                </span>
+              </button>
+              <button class="reject-button" 
+                      (click)="rejectInvitation(invitation.id)"
+                      [disabled]="isProcessing(invitation.id)">
+                <span *ngIf="!isProcessing(invitation.id)">
+                  <i class="bi bi-x-lg"></i> Reject
+                </span>
+                <span *ngIf="isProcessing(invitation.id)">
+                  <i class="bi bi-arrow-repeat spinner"></i> Processing...
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

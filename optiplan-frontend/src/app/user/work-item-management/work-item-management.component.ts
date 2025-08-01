@@ -17,6 +17,7 @@ import { UserService } from '../../services/user.service';
 import { WorkItemFormComponent } from './work-item-form/work-item-form.component';
 import { AddSprintComponent } from "./add-sprint/add-sprint.component";
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { InviteUserComponent } from "./invite-user/invite-user.component";
 
 
 @Component({
@@ -32,11 +33,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     BacklogViewComponent,
     ReportsViewComponent,
     WorkItemFormComponent,
-    AddSprintComponent
-  ]
+    AddSprintComponent,
+    InviteUserComponent
+]
 })
 export class WorkItemManagementComponent implements OnInit {
-  activeView: 'board' | 'backlog' | 'reports' = 'board';
+  activeView: 'board' | 'backlog' | 'reports' |'invitation' = 'board';
   workItems: WorkItem[] = [];
   filteredWorkItems: WorkItem[] = [];
   project: Project | null = null;
@@ -98,7 +100,7 @@ export class WorkItemManagementComponent implements OnInit {
     });
   }
 
-  onViewChange(view: 'board' | 'backlog' | 'reports'): void {
+  onViewChange(view: 'board' | 'backlog' | 'reports' | 'invitation'): void {
     this.activeView = view;
   }
 

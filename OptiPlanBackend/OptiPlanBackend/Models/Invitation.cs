@@ -15,6 +15,11 @@ namespace OptiPlanBackend.Models
         public Guid? InviteeId { get; set; }
         public User? Invitee { get; set; }
 
+
+
+
+        public TeamRole Role { get; set; } = TeamRole.Guest;
+
         // Email for non-registered users
         [Required]
         [EmailAddress]

@@ -116,7 +116,9 @@ namespace OptiPlanBackend.Services.Implementations
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Role, user.Role.ToString()),
         new Claim("AvatarUrl", user.AvatarUrl ?? string.Empty) ,
-        new Claim("id",user.Id.ToString())
+        new Claim("id",user.Id.ToString()),
+         new Claim("email",user.Email.ToString())
+
     };
 
             var key = new SymmetricSecurityKey(

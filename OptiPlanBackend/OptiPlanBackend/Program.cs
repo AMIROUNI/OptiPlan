@@ -7,10 +7,12 @@ using OptiPlanBackend.Repositories.Implementations;
 using OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
+using OptiPlanBackend.Settings;
 using Scalar.AspNetCore;
 using System;
 using System.Text;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,23 @@ builder.Services.AddCors(options =>
 });
 
 
+
+
+// Load .env file
+DotNetEnv.Env.Load();
+
+builder.Services.Configure<SmtpSettings>(options =>
+{
+    options.Email = Environment.GetEnvironmentVariable("SMTP_EMAIL");
+    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
+    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
+});
+
+
+
+// Add JSON options for handling circular references and enum serialization
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -67,6 +86,8 @@ builder.Services.AddScoped(typeof(ISprintRepository), typeof(SprintRepository));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(ITeamMembershipRepository), typeof(TeamMembershipRepository));
 builder.Services.AddScoped(typeof(ITeamRepository), typeof(TeamRepository));
+builder.Services.AddScoped(typeof(IInvitationRepository),typeof( InvitationRepository));
+
 
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -77,9 +98,12 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IWorkItemService, WorkItemService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped(typeof(ISprintService), typeof(SprintService));
 builder.Services.AddScoped(typeof(ITeamMembershipService), typeof(TeamMembershipService));
 builder.Services.AddScoped(typeof(ITeamService), typeof(TeamService));
+
 
 
 

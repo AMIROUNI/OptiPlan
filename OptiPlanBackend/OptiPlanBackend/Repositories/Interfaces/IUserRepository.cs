@@ -6,5 +6,8 @@ namespace OptiPlanBackend.Repositories.Interfaces
     {
 
         public Task<IEnumerable<User>> GetTeamByProjectId(Guid projectId);
+        public  Task<User> findUserByUsername(string username);
+
+        public  Task<IEnumerable<User>> getAllUserNotADMIN();
     }
 }

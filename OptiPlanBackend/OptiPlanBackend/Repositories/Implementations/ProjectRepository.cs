@@ -23,22 +23,49 @@ namespace OptiPlanBackend.Repositories.Implementations
 
         public async Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId)
         {
-            return await _context.Projects
+            var allProjects = await _context.Projects
                 .Include(p => p.Owner)
                 .Include(p => p.Team)
                     .ThenInclude(t => t.Members)
                 .Include(p => p.Team)
                     .ThenInclude(t => t.Invitations)
-                .Where(p =>
-                    p.OwnerId == userId ||  // User is the owner
-                    p.Team.Members.Any(m => m.UserId == userId) ||  // User is a team member
-                    p.Team.Invitations.Any(i =>
-                        i.InviteeId == userId &&
-                        i.Status == InvitationStatus.Accepted)  // User has accepted invitation
-                )
                 .AsNoTracking()
                 .ToListAsync();
+
+            return allProjects.Where(p =>
+                p.OwnerId == userId ||
+                (p.Team != null &&
+                    (
+                        p.Team.Members.Any(m => m.UserId == userId) ||
+                        p.Team.Invitations.Any(i =>
+                            i.InviteeId == userId &&
+                            i.Status == InvitationStatus.Accepted
+                        )
+                    )
+                )
+            );
         }
+
+
+        public async Task<Team> GetTeamByProjectId(Guid projectId)
+        {
+            return await _context.Teams
+                .Include(t => t.Project)
+                .FirstOrDefaultAsync(t => t.Project.Id == projectId);
+        }
+        public async Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId)
+        {
+            var team = await _context.Teams
+                .Include(t => t.Members)
+                    .ThenInclude(m => m.User) // Optional: if you need user info
+                .FirstOrDefaultAsync(t => t.ProjectId == projectId);
+
+            if (team == null)
+                return Enumerable.Empty<TeamMembership>();
+
+            return team.Members;
+        }
+
 
     }
 }

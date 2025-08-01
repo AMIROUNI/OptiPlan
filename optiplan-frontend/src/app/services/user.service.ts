@@ -23,4 +23,10 @@ export class UserService {
   getProjectTeam(projectid : string):Observable<Project[]>{
     return this.http.get<Project[]>(`${this.apiUrl}/team/${projectid}`);
   }
+
+
+
+  getAllUserNotAdmis(){
+    return this.http.get<User>(`${this.apiUrl}/get-all-with-out-admins`);
+  }
 }

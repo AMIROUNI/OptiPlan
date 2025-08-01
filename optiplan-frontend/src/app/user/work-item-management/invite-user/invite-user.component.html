@@ -1,0 +1,102 @@
+<div class="invite-user-container">
+    <div class="header-section">
+      <h1><i class="bi bi-people-fill"></i> Invite Team Members</h1>
+      <p class="subtitle">Select users to invite to your project</p>
+    </div>
+  
+    <div class="search-section">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          (input)="search(searchQuery)"
+          placeholder="Search by name, email, job title..."
+          aria-label="Search users"
+        >
+      </div>
+      <div class="role-actions">
+        <select class="role-select" aria-label="Select role" [(ngModel)]="selectedRole">
+          <option [ngValue]="TeamRole.TeamMember">Team Member</option>
+          <option [ngValue]="TeamRole.TeamLeader">Team Leader</option>
+          <option [ngValue]="TeamRole.Guest">Guest</option>
+        </select>
+        <button 
+          class="send-btn"
+          (click)="sendInvitations(selectedRole)"
+          [disabled]="selectedUsers.size === 0 || isSending"
+          aria-label="Send invitations"
+        >
+          <span *ngIf="!isSending" class="btn-content">
+            <i class="bi bi-send"></i> Invite ({{selectedUsers.size}})
+          </span>
+          <span *ngIf="isSending" class="btn-content">
+            <span class="spinner"></span> Sending...
+          </span>
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-error" role="alert">
+      <i class="bi bi-exclamation-triangle-fill"></i> 
+      <span>{{errorMessage}}</span>
+      <button class="close-btn" (click)="errorMessage = null" aria-label="Close error message">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  
+    <div *ngIf="successMessage" class="alert alert-success" role="alert">
+      <i class="bi bi-check-circle-fill"></i> 
+      <span>{{successMessage}}</span>
+      <button class="close-btn" (click)="successMessage = null" aria-label="Close success message">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  
+    <div class="user-list-container">
+      <div *ngIf="isLoading" class="loading-overlay">
+        <div class="spinner-container">
+          <div class="spinner"></div>
+          <p>Loading users...</p>
+        </div>
+      </div>
+  
+      <div *ngIf="!isLoading && filteredUsers.length === 0" class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <h3>No users found</h3>
+        <p>Try adjusting your search query</p>
+      </div>
+  
+      <div class="user-grid"  >
+        <div *ngFor="let user of filteredUsers; trackBy: trackByUserId" 
+             class="user-card" 
+             [class.selected]="selectedUsers.has(user.id)"
+             (click)="toggleUserSelection(user.id)"
+             (click)="getTheEmail(user.email)"
+             [attr.aria-selected]="selectedUsers.has(user.id)"
+             tabindex="0"
+             (keyup.enter)="toggleUserSelection(user.id)">
+          <div class="user-avatar">
+            <img [src]="getAvatarUrl(user)" alt="{{user.fullName || 'User'}} avatar" loading="lazy">
+            <div class="selection-badge">
+              <i class="bi bi-check-lg"></i>
+            </div>
+          </div>
+          <div class="user-details">
+            <h3 class="user-name">{{user.fullName || 'No name provided'}}</h3>
+            <p class="user-email" >{{user.email}}</p>
+            <div class="user-meta">
+              <span *ngIf="user.jobTitle" class="meta-tag">
+                <i class="bi bi-briefcase"></i> {{user.jobTitle}}
+              </span>
+              <span *ngIf="user.companyName" class="meta-tag">
+                <i class="bi bi-building"></i> {{user.companyName}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

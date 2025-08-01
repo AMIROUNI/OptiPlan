@@ -118,4 +118,9 @@ public class UserService : IUserService
         return await _userRepository.GetTeamByProjectId(projectId);
 
     }
+
+    public async Task<IEnumerable<User>> getAllUserNotADMIN()
+    {
+        return await _userRepository.getAllUserNotADMIN();
+    }
 }

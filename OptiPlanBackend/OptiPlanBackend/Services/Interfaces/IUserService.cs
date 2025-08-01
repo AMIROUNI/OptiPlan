@@ -9,5 +9,6 @@ namespace OptiPlanBackend.Services.Interfaces
         public Task<User?> GetUserByTokenAsync(string token);
 
         public  Task<IEnumerable<User>> GetTeamByProjectId(Guid projectId);
+        public  Task<IEnumerable<User>> getAllUserNotADMIN();
     }
 }

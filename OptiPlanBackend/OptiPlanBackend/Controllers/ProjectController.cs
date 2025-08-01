@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OptiPlanBackend.Dto;
 using OptiPlanBackend.Enums;
 using OptiPlanBackend.Models;
@@ -67,6 +68,7 @@ namespace OptiPlanBackend.Controllers
 
             try
             {
+               
                 // 1. Créer le projet
                 var createdProject = await _projectService.CreateProjectAsync(projectDto, _currentUserService.UserId.Value);
 
@@ -127,6 +129,47 @@ namespace OptiPlanBackend.Controllers
             {
                 _logger.LogError(ex, "Error occurred while fetching user projects");
                 return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+        [HttpGet("get-team/{projectId}")]
+        public async Task<IActionResult> GetTeam(Guid projectId)
+        {
+            try
+            {
+                var team = await _projectService.GetTeamByProjectId(projectId);
+                if (team == null)
+                    return BadRequest("this team is not exsite");
+                return Ok(team);
+
+            }
+            catch(Exception e) {
+                _logger.LogError($"{e.Message}");
+                 return StatusCode(500,e.Message);
+            
+            }
+        }
+
+
+    
+
+
+     [HttpGet("get-team-memberships/{projectId}")]
+        public async Task<IActionResult> GetTeamMemberShips(Guid projectId)
+        {
+            try
+            {
+                var teamMembreships = await _projectService.GetTeamMembershipsByProjectIdAsync(projectId);
+                return Ok(teamMembreships);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"{e.Message}");
+                return StatusCode(500, e.Message);
+
             }
         }
 

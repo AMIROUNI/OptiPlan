@@ -32,6 +32,16 @@
       </div>
     </div>
 
+
+    <div class="nav-item" [class.active]="activeSection === 'invitation'" 
+           (click)="setActiveSection('invitation', 'invitation')">
+        <a >
+          <i class="bi bi-bar-chart"></i>
+          <span>invitation</span>
+        </a>
+     </div>
+  
+
     <div class="project-progress">
       <h4>Project Progress</h4>
       <div class="progress-container">

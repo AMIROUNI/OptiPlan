@@ -30,5 +30,18 @@ namespace OptiPlanBackend.Repositories.Implementations
 
             return users;
         }
+         
+        public async Task<User> findUserByUsername(string username)
+        {
+            return (User) await FindAsync(u => u.Username == username);
+        }
+
+
+
+        public async Task<IEnumerable<User>> getAllUserNotADMIN()
+        {
+            return  await _context.Users.Where(u => u.Role != Enums.Role.Admin)
+                .ToListAsync();
+        }
     }
 }

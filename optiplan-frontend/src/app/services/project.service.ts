@@ -28,6 +28,14 @@ GetProjectsForUserAsync(): Observable<any> {
 
 
 
+  getTeamByProjectId(projectId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-team/${projectId}`);
+  }
+
+
+getTeamMemberShips(projectId: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/get-team-memberships/${projectId}`);
+}
 
 
 }

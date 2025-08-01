@@ -14,7 +14,7 @@ export class SidebarComponent {
 
   @Input() project!: Project;
   @Input() tasks: WorkItem[] = [];
-  @Output() viewChange = new EventEmitter<'board' | 'backlog' | 'reports'>();
+  @Output() viewChange = new EventEmitter<'board' | 'backlog' | 'reports' | 'invitation'>();
 
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class SidebarComponent {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  setActiveSection(section: string, viewType?: 'board' | 'backlog' | 'reports'): void {
+  setActiveSection(section: string, viewType?: 'board' | 'backlog' | 'reports' | 'invitation'): void {
     this.activeSection = section;
     if (viewType) {
       this.viewChange.emit(viewType);
