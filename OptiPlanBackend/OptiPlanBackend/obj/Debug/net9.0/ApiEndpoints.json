@@ -1,5 +1,47 @@
 [
   {
+    "ContainingType": "OptiPlanBackend.Controllers.AttachmentController",
+    "Method": "Create",
+    "RelativePath": "api/Attachment/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "WorkItemId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.AttachmentController",
+    "Method": "GetAllAttachentForWrokItem",
+    "RelativePath": "api/Attachment/get/{workItemId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wrokItemId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "workItemId",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OptiPlanBackend.Controllers.AuthController",
     "Method": "AuthenticatedOnlyEndpoint",
     "RelativePath": "api/Auth",
@@ -171,6 +213,38 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.CommentController",
+    "Method": "Create",
+    "RelativePath": "api/Comment/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "comment",
+        "Type": "OptiPlanBackend.Models.Comment",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.CommentController",
+    "Method": "GetAllByWorkIteamId",
+    "RelativePath": "api/Comment/get/{workIteamId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "workIteamId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.DashboardController",
@@ -450,7 +524,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "Create",
     "RelativePath": "api/WorkItem/Create/{projectId}",
     "HttpMethod": "POST",
@@ -471,7 +545,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "DeleteWorkItem",
     "RelativePath": "api/WorkItem/delete/{workItemId}",
     "HttpMethod": "DELETE",
@@ -487,7 +561,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "GetByProjectId",
     "RelativePath": "api/WorkItem/get-by-project-id/{projectId}",
     "HttpMethod": "GET",
@@ -503,7 +577,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "GetAll",
     "RelativePath": "api/WorkItem/GetAll",
     "HttpMethod": "GET",
@@ -513,7 +587,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "GetById",
     "RelativePath": "api/WorkItem/GetById/{id}",
     "HttpMethod": "GET",
@@ -529,7 +603,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "OptiPlanBackend.Controllers.WorkItemController",
+    "ContainingType": "WorkItemController",
     "Method": "UpdateStatus",
     "RelativePath": "api/WorkItem/update-status",
     "HttpMethod": "PUT",

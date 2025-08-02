@@ -87,6 +87,8 @@ builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(ITeamMembershipRepository), typeof(TeamMembershipRepository));
 builder.Services.AddScoped(typeof(ITeamRepository), typeof(TeamRepository));
 builder.Services.AddScoped(typeof(IInvitationRepository),typeof( InvitationRepository));
+builder.Services.AddScoped(typeof(ICommentRepository),typeof( CommentRepository));
+builder.Services.AddScoped(typeof(IAttachmentRepository), typeof(AttachmentRepository));
 
 
 //-------------------------------------------------------------------
@@ -103,6 +105,8 @@ builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped(typeof(ISprintService), typeof(SprintService));
 builder.Services.AddScoped(typeof(ITeamMembershipService), typeof(TeamMembershipService));
 builder.Services.AddScoped(typeof(ITeamService), typeof(TeamService));
+builder.Services.AddScoped(typeof(ICommentService), typeof(CommentService));
+builder.Services.AddScoped(typeof(IAttachmentService), typeof(AttachmentService));
 
 
 

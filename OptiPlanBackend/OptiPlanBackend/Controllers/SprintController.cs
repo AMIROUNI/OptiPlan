@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using OptiPlanBackend.Dtos;
-using OptiPlanBackend.Services.Implementations;
+using OptiPlanBackend.Enums;
 using OptiPlanBackend.Services.Interfaces;
-using System.Net.NetworkInformation;
 
 namespace OptiPlanBackend.Controllers
 {
@@ -16,21 +14,21 @@ namespace OptiPlanBackend.Controllers
         private readonly ILogger<SprintController> _logger;
         private readonly ICurrentUserService _currentUserService;
         private readonly IProjectService _projectService;
+        private readonly ITeamService _teamService;
 
-        public SprintController(ISprintService sprintService, ILogger<SprintController> logger
-            , ICurrentUserService currentUserService, IProjectService projectService)
+        public SprintController(ISprintService sprintService, ILogger<SprintController> logger,
+            ICurrentUserService currentUserService, IProjectService projectService, ITeamService teamService)
         {
             this.sprintService = sprintService;
             _logger = logger;
             _currentUserService = currentUserService;
             _projectService = projectService;
+            _teamService = teamService;
         }
-
 
         [HttpGet("project/{projectId}")]
         public async Task<IActionResult> getSpritsByProjectId(Guid projectId)
         {
-
             if (!_currentUserService.UserId.HasValue)
             {
                 _logger.LogWarning("Unauthorized access attempt to get sprints by project ID.");
@@ -39,53 +37,41 @@ namespace OptiPlanBackend.Controllers
 
             try
             {
-
-                var rojectSprints = await sprintService.GetSprintsByProjectId(projectId);
-                return Ok(rojectSprints);
+                var projectSprints = await sprintService.GetSprintsByProjectId(projectId);
+                return Ok(projectSprints);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving sprints for project ID {ProjectId}", projectId);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving sprints.");
             }
-
-
-
-
-
-
-
         }
-
-
-
-
 
         [HttpPost("project/{projectId}")]
         public async Task<IActionResult> CreateSprintForProject(Guid projectId, [FromBody] SprintDto sprintDto)
         {
+            if (!_currentUserService.UserId.HasValue)
+                return Unauthorized("User is not authenticated.");
+
+            var userId = _currentUserService.UserId.Value;
 
             var project = await _projectService.GetByIdAsync(projectId);
             if (project == null)
-            {
-                _logger.LogWarning(" project does not exsit {ProjectId}.", projectId);
-                return BadRequest(" project does not exsit");
+                return BadRequest("Project does not exist.");
 
-            }
-            if (!_currentUserService.UserId.HasValue)
-            {
-                _logger.LogWarning("Unauthorized access attempt to create sprint for project ID {ProjectId}.", projectId);
-                return Unauthorized("User is not authenticated.");
-            }
             if (sprintDto == null)
-            {
-                _logger.LogWarning("Invalid sprint data provided for project ID {ProjectId}.", projectId);
                 return BadRequest("Sprint data is required.");
-            }
+
+            var userRole = await _teamService.GetUserRoleInProjectAsync(userId, projectId);
+            _logger.LogWarning(userRole.ToString());
+            if (userRole is null)
+                return StatusCode(StatusCodes.Status403Forbidden, "You are not a member of this project.");
+
+            if (userRole != TeamRole.ProjectCreator && userRole != TeamRole.ProjectManager && userRole != TeamRole.TeamLeader)
+                return StatusCode(StatusCodes.Status403Forbidden, "Only leaders/managers can create sprints.");
 
             try
             {
-               
                 var createdSprint = await sprintService.CreateSprintForProject(projectId, sprintDto);
                 return CreatedAtAction(nameof(getSpritsByProjectId), new { projectId = projectId }, createdSprint);
             }
@@ -94,11 +80,6 @@ namespace OptiPlanBackend.Controllers
                 _logger.LogError(ex, "Error creating sprint for project ID {ProjectId}", projectId);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the sprint.");
             }
-
-
         }
     }
-
-
-
 }

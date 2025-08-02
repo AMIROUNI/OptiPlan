@@ -1,11 +1,14 @@
 ﻿
 using OptiPlanBackend.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OptiPlanBackend.Models
-{
+{ 
     public class WorkItem
     {
+
+        [Key]
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }

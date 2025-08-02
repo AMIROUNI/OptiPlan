@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Models;
+﻿using OptiPlanBackend.Enums;
+using OptiPlanBackend.Models;
 
 namespace OptiPlanBackend.Services.Interfaces
 {
@@ -10,5 +11,7 @@ namespace OptiPlanBackend.Services.Interfaces
         Task<bool> CreateAsync(Team team);
         Task<bool> UpdateAsync(Team team);
         Task<bool> DeleteAsync(Team team);
+
+        Task<TeamRole?> GetUserRoleInProjectAsync(Guid userId, Guid projectId);
     }
 }

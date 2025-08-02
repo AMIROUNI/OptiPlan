@@ -1,4 +1,6 @@
-﻿namespace OptiPlanBackend.Models
+﻿using System.Text.Json.Serialization;
+
+namespace OptiPlanBackend.Models
 {
     public class Comment
     {
@@ -6,10 +8,14 @@
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public Guid TaskId { get; set; }
-        public WorkItem Task { get; set; }
+        public Guid WorkItemId { get; set; }
+
+
+        [JsonIgnore]
+        public WorkItem? WorkItem { get; set; }
 
         public Guid AuthorId { get; set; }
-        public User Author { get; set; }
+        [JsonIgnore]
+        public User? Author { get; set; }
     }
 }

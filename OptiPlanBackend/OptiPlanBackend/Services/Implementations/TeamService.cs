@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using OptiPlanBackend.Enums;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Repositories.Implementations;
 using OptiPlanBackend.Repositories.Interfaces;
@@ -38,10 +39,20 @@ namespace OptiPlanBackend.Services.Implementations
             return await _teamRepository.GetByIdAsync(id);
         }
 
+        public async Task<TeamRole?> GetUserRoleInProjectAsync(Guid userId, Guid projectId)
+        {
+             return await  _teamRepository.GetUserRoleInProjectAsync(userId, projectId);
+        }
+
         public async Task<bool> UpdateAsync(Team team)
         {
              _teamRepository.Update(team);
             return await _teamRepository.SaveChangesAsync();
         }
+
+
+        
+
+
     }
 }

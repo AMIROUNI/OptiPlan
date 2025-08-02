@@ -12,8 +12,8 @@ using OptiPlanBackend.Data;
 namespace OptiPlanBackend.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20250730154628_AddTeamMembershipRole")]
-    partial class AddTeamMembershipRole
+    [Migration("20250802131613_m2")]
+    partial class m2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,20 +39,20 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UploaderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("WorkItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
-
                     b.HasIndex("UploaderId");
+
+                    b.HasIndex("WorkItemId");
 
                     b.ToTable("Attachments", (string)null);
                 });
@@ -73,14 +73,14 @@ namespace OptiPlanBackend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TaskId")
+                    b.Property<Guid>("WorkItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("WorkItemId");
 
                     b.ToTable("Comments", (string)null);
                 });
@@ -488,21 +488,21 @@ namespace OptiPlanBackend.Migrations
 
             modelBuilder.Entity("OptiPlanBackend.Models.Attachment", b =>
                 {
-                    b.HasOne("OptiPlanBackend.Models.WorkItem", "Task")
-                        .WithMany("Attachments")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OptiPlanBackend.Models.User", "Uploader")
                         .WithMany()
                         .HasForeignKey("UploaderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Task");
+                    b.HasOne("OptiPlanBackend.Models.WorkItem", "WorkItem")
+                        .WithMany("Attachments")
+                        .HasForeignKey("WorkItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Uploader");
+
+                    b.Navigation("WorkItem");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Comment", b =>
@@ -513,15 +513,15 @@ namespace OptiPlanBackend.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("OptiPlanBackend.Models.WorkItem", "Task")
+                    b.HasOne("OptiPlanBackend.Models.WorkItem", "WorkItem")
                         .WithMany("Comments")
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("WorkItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
 
-                    b.Navigation("Task");
+                    b.Navigation("WorkItem");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>

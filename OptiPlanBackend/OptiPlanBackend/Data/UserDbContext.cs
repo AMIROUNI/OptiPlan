@@ -20,9 +20,11 @@ namespace OptiPlanBackend.Data
         public DbSet<TeamMembership> TeamMemberships { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
 
-       
-       
-        public DbSet<WorkItem> WorkItems { get; set; }  
+
+
+        public DbSet<WorkItem> WorkItems { get; set; }
+
+
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<WorkItemHistory> TaskHistories { get; set; }
@@ -41,10 +43,10 @@ namespace OptiPlanBackend.Data
             modelBuilder.Entity<TeamMembership>().ToTable("TeamMemberships");
             modelBuilder.Entity<UserProfile>().ToTable("UserProfiles");
             modelBuilder.Entity<Invitation>().ToTable("Invitations");
-            modelBuilder.Entity<Models.WorkItem>().ToTable("Tasks");
+            modelBuilder.Entity<Models.WorkItem>().ToTable("WorkItems");
             modelBuilder.Entity<Comment>().ToTable("Comments");
             modelBuilder.Entity<Attachment>().ToTable("Attachments");
-            modelBuilder.Entity<WorkItemHistory>().ToTable("TaskHistories");
+            modelBuilder.Entity<WorkItemHistory>().ToTable("WorkItemHistories");
 
             modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
@@ -144,9 +146,9 @@ namespace OptiPlanBackend.Data
 
             // Task -> Comments (One-to-Many)
             modelBuilder.Entity<Comment>()
-                .HasOne(c => c.Task)
+                .HasOne(c => c.WorkItem)
                 .WithMany(t => t.Comments)
-                .HasForeignKey(c => c.TaskId)
+                .HasForeignKey(c => c.WorkItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Comment -> Author (Many-to-One)
@@ -158,9 +160,9 @@ namespace OptiPlanBackend.Data
 
             // Task -> Attachments (One-to-Many)
             modelBuilder.Entity<Attachment>()
-                .HasOne(a => a.Task)
+                .HasOne(a => a.WorkItem)
                 .WithMany(t => t.Attachments)
-                .HasForeignKey(a => a.TaskId)
+                .HasForeignKey(a => a.WorkItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Attachment -> Uploader (Many-to-One)
