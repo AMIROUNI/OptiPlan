@@ -8,6 +8,6 @@ namespace OptiPlanBackend.Repositories.Interfaces
         public  Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId);
 
         public Task<Team> GetTeamByProjectId(Guid id);
-        public  Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId);
+        public  Task<IEnumerable<User>> GetUsersByProjectIdAsync(Guid projectId);
     }
 }

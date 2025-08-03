@@ -45,32 +45,33 @@
       <p>You don't have any {{activeTab.toLowerCase()}} invitations at this time</p>
     </div>
 
-    <div class="invitation-list-container">
+    <div class="invitation-list-container" *ngIf="!isLoading && filteredInvitations.length > 0">
       <div class="invitation-list">
-        <div *ngFor="let invitation of filteredInvitations; " class="invitation-card">
+        <div *ngFor="let invitation of filteredInvitations; let i = index" class="invitation-card" [style.--index]="i">
+          
           <div class="card-header">
             <div class="project-info">
-              <h3 class="project-name">{{invitation.team.project.title || 'Project'}}</h3>
-              <p class="team-name">{{invitation.team.name || 'Team'}}</p>
+              <h3 class="project-name">{{invitation.team?.project?.title || 'Project'}}</h3>
+              <p class="team-name">{{invitation.team?.name || 'Team'}}</p>
             </div>
             <div class="invitation-status">
               <span class="status-badge" [ngClass]="getStatusBadgeClass(invitation.status)">
-                {{invitation.status}}
+                {{invitation.status || 'Unknown'}}
               </span>
               <span class="role-badge" [ngClass]="getRoleBadgeClass(invitation.role)">
-                {{invitation.role}}
+                {{invitation.role || 'Unknown'}}
               </span>
             </div>
           </div>
 
           <div class="card-body">
             <div class="inviter-info">
-              <img [src]="invitation.inviter.avatarUrl || 'assets/default-avatar.png'" 
+              <img [src]="invitation.inviter?.avatarUrl || 'assets/default-avatar.png'" 
                    alt="Inviter avatar" 
                    class="inviter-avatar">
               <div class="inviter-details">
                 <p class="invited-by">Invited by</p>
-                <p class="inviter-name">{{invitation.inviter.username || 'Unknown user'}}</p>
+                <p class="inviter-name">{{invitation.inviter?.username || 'Unknown user'}}</p>
               </div>
             </div>
 
@@ -112,6 +113,7 @@
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>

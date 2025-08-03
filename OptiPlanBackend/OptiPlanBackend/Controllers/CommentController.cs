@@ -27,10 +27,6 @@ namespace OptiPlanBackend.Controllers
             { 
 
                 var comments = await _commentService.GetCommentsByWorkItemIdAsync(workIteamId);
-                if (comments == null || !comments.Any())
-                {
-                    return NotFound("No comments found for the specified work item.");
-                }
                 return Ok(comments);
 
             }

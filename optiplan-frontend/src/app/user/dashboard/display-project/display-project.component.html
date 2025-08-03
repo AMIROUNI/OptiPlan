@@ -17,7 +17,7 @@
   </div>
 
   <div *ngIf="!isLoading" class="projects-grid">
-    <div *ngFor="let project of projects" class="project-card">
+    <div *ngFor="let project of projects" class="project-card" style="margin: 2em;">
       <div class="project-card-header" [routerLink]="['/work-item', project.id]">
         <h3 class="project-title">{{project.title}}</h3>
         <div class="project-actions">

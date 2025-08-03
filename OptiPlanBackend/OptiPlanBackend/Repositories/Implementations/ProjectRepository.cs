@@ -53,18 +53,22 @@ namespace OptiPlanBackend.Repositories.Implementations
                 .Include(t => t.Project)
                 .FirstOrDefaultAsync(t => t.Project.Id == projectId);
         }
-        public async Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId)
+        public async Task<IEnumerable<User>> GetUsersByProjectIdAsync(Guid projectId)
         {
             var team = await _context.Teams
                 .Include(t => t.Members)
-                    .ThenInclude(m => m.User) // Optional: if you need user info
+                    .ThenInclude(m => m.User)
                 .FirstOrDefaultAsync(t => t.ProjectId == projectId);
 
             if (team == null)
-                return Enumerable.Empty<TeamMembership>();
+                return Enumerable.Empty<User>();
 
-            return team.Members;
+            // On retourne uniquement les Users
+            return team.Members
+                       .Where(m => m.Status == MembershipStatus.Accepted) // facultatif : filtrer les membres actifs
+                       .Select(m => m.User);
         }
+
 
 
     }

@@ -1,0 +1,508 @@
+/* Modern Work Item Details Modal - Visible Body Fix */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .modal-content {
+    width: 720px;
+    max-width: 90vw;
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-overlay.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .modal-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  
+  .modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  
+  .close-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+  
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    background: #ffffff; /* Changed from #f9fafc to white for better contrast */
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Added gap between sections */
+  }
+  
+  /* Work Item Details Section - Made more prominent */
+  .work-item-details {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #2575fc;
+  }
+  
+  .work-item-details h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a365d;
+    margin: 0 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .detail-row {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: #4a5568;
+    width: 140px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  
+  .detail-value {
+    color: #2d3748;
+    flex: 1;
+    line-height: 1.5;
+  }
+  
+  .assigned-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #f7fafc;
+    border-radius: 24px;
+    width: fit-content;
+    margin-top: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Comments Section - Enhanced visibility */
+  .comments-section {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a365d;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .comment-input {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-direction: column;
+  }
+  
+  .comment-input textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    resize: none;
+    min-height: 100px;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: #f8fafc;
+    font-size: 0.95rem;
+  }
+  
+  .comment-input textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    background: white;
+  }
+  
+  .comment-input button {
+    padding: 12px 24px;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-end;
+    font-size: 0.95rem;
+  }
+  
+  .comment-input button:hover:not(:disabled) {
+    background: #3182ce;
+    transform: translateY(-1px);
+  }
+  
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .comment {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .comment-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .comment-author .avatar {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .comment-author-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.95rem;
+  }
+  
+  .comment-time {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-left: auto;
+  }
+  
+  .comment-content {
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 12px 0 0;
+    font-size: 0.95rem;
+  }
+  
+  /* Attachments Section - Improved layout */
+  .attachments-section {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .attachment-upload {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-direction: column;
+  }
+  
+  .file-input-wrapper {
+    width: 100%;
+    position: relative;
+  }
+  
+  .file-input-label {
+    display: block;
+    padding: 16px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }
+  
+  .file-input-label:hover {
+    background: #edf2f7;
+    border-color: #a0aec0;
+  }
+  
+  .attachment-upload button {
+    padding: 12px 24px;
+    background: #48bb78;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-end;
+    font-size: 0.95rem;
+  }
+  
+  .attachments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .attachment {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    gap: 16px;
+  }
+  
+  .attachment-icon {
+    color: #4299e1;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  .attachment-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .attachment-name {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .attachment-name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .attachment-name a:hover {
+    text-decoration: underline;
+    color: #4299e1;
+  }
+  
+  .attachment-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: #718096;
+  }
+  
+  /* Assign User Section - Clearer layout */
+  .assign-user-section {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .assign-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .user-select {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+  }
+  
+  .user-select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    background: white;
+  }
+  
+  .assign-button {
+    padding: 12px 24px;
+    background: #9f7aea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+  }
+  
+  /* Empty States - More visible */
+  .empty-state {
+    text-align: center;
+    padding: 40px 24px;
+    color: #718096;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px dashed #e2e8f0;
+    margin-top: 12px;
+  }
+  
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: #cbd5e0;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  /* Loading State - Centered properly */
+  .loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+  }
+  
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid rgba(66, 153, 225, 0.2);
+    border-radius: 50%;
+    border-top-color: #4299e1;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 95%;
+      max-height: 90vh;
+    }
+    
+    .detail-row {
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .detail-label {
+      width: 100%;
+    }
+    
+    .assign-controls {
+      flex-direction: column;
+    }
+    
+    .assign-button,
+    .comment-input button,
+    .attachment-upload button {
+      width: 100%;
+    }
+  }
+  
+  /* Animation Enhancements */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .comment,
+  .attachment {
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  /* Accessibility Improvements */
+  button:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  input[type="file"]:focus-visible + label {
+    outline: 3px solid #4299e1;
+    outline-offset: 2px;
+  }

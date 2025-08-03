@@ -10,30 +10,32 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { PopupComponent } from "../../../popup/popup.component";
+import { WorkItemDetailsComponent } from "../work-item-details/work-item-details.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board-view',
   templateUrl: './board-view.component.html',
   styleUrls: ['./board-view.component.css'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, DialogModule, ButtonModule, PopupComponent],
+  imports: [CommonModule, DragDropModule, DialogModule, ButtonModule, PopupComponent, WorkItemDetailsComponent],
   providers: [ConfirmationService]
 })
 export class BoardViewComponent {
+  // popup variables
+  showPopup = false;
+  popupTitle = '';
+  popupMessage = '';
+  popupIsSuccess = false;
+  popupRedirectPath: string | null = null;
+  showCancelButton = false;
+  showWorkItemModal = false;
 
-
-   // popup variables ///////////////////////////////////////////////////////////////
-   showPopup = false;
-   popupTitle = '';
-   popupMessage = '';
-   popupIsSuccess = false;
-   popupRedirectPath: string | null = null;
-   showCancelButton = false;
- 
-   ///////////////////////////////////////////////////////////////
   @Input() workItems: WorkItem[] = [];
   @Output() workItemSelected = new EventEmitter<WorkItem>();
   @Output() workItemDeleted = new EventEmitter<string>();
+  selectedWorkItemId: string | undefined = "";
+  projectID!: string;
 
   statuses = Object.values(WorkItemStatus);
   displayDeleteDialog = false;
@@ -41,9 +43,17 @@ export class BoardViewComponent {
 
   constructor(
     private workItemService: WorkItemService,
-    private confirmationService: ConfirmationService
-  ) {}
-
+    private confirmationService: ConfirmationService,
+    private route: ActivatedRoute
+  ) {
+    // Initialize workItems with sample data or fetch from service
+  
+    
+  }
+  ngOnInit(): void {
+    this.projectID = this.route.snapshot.params['id'];
+    console.log("projectID", this.projectID);
+  }
   getWorkItemsByStatus(status: WorkItemStatus): WorkItem[] {
     return this.workItems.filter(item => item.status === status);
   }
@@ -81,6 +91,7 @@ export class BoardViewComponent {
       this.workItemService.updateStatus(dto).subscribe({
         next: () => {
           item.status = status;
+          this.workItems = [...this.workItems]; // Trigger change detection
         },
         error: (err) => {
           console.error('Failed to update work item status', err);
@@ -90,14 +101,12 @@ export class BoardViewComponent {
   }
 
   deleteWorkItem(itemId: string): void {
-    console.log("delete now ok");
-    
-  
     this.workItemService.deleteWorkItem(itemId).subscribe({
       next: (rep) => {
         console.log("delete it", rep);
+        this.workItems = this.workItems.filter(item => item.id !== itemId);
+        this.workItemDeleted.emit(itemId);
         this.showSuccessPopup('Work Item Deleted', 'Work item deleted successfully.');
-   
       },
       error: (error) => {
         console.error("delete error", error);
@@ -106,22 +115,18 @@ export class BoardViewComponent {
     });
   }
 
-
-
-
-   /// popup methods //////////////////////////////////////////
-
-   showSuccessPopup(title :string ,message: string) {
+  // Popup methods
+  showSuccessPopup(title: string, message: string) {
     this.popupTitle = title;
-    this.popupMessage =  message;
+    this.popupMessage = message;
     this.popupIsSuccess = true;
     this.popupRedirectPath = null;
     this.showCancelButton = false;
     this.showPopup = true;
   }
 
-  showErrorPopup(title : string ,errorMessage: string) {
-    this.popupTitle =  title;
+  showErrorPopup(title: string, errorMessage: string) {
+    this.popupTitle = title;
     this.popupMessage = errorMessage;
     this.popupIsSuccess = false;
     this.popupRedirectPath = null;
@@ -132,12 +137,24 @@ export class BoardViewComponent {
   closePopup() {
     this.showPopup = false;
   }
-////////////////////////////////////
-  
- }
-    
-    
-    
-    
 
+  // Work Item Modal Methods
+  onWorkItemSelected(itemid: string): void {
+    console.log("onWorkItemSelected", itemid);
+    this.selectedWorkItemId = itemid;
+    this.showWorkItemModal = true; 
+  }
+
+  openWorkItemModal(): void {
+    this.selectedWorkItemId = this.workItems.find(item => item.id === this.selectedWorkItemId)?.id;
+  }
+
+  closeWorkItemModal(): void {
+    this.selectedWorkItemId = undefined;
+    this.showWorkItemModal = false; 
+  }
+
+
+ 
   
+}

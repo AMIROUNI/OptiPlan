@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OptiPlanBackend.Models;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace OptiPlanBackend.Dto
 {
     public class AttachmentDto
     {
-        [FromForm]
+        public IFormFile File { get; set; } = null!;
         public Guid WorkItemId { get; set; }
-
-        [FromForm]
-        public IFormFile File { get; set; }
     }
-
 }

@@ -21,7 +21,7 @@ namespace OptiPlanBackend.Services.Interfaces
         public  Task<IEnumerable<IGrouping<(Guid ProjectId, string ProjectTitle), WorkItem>>>
            GetUserTasksGroupedByProjectForMonth(Guid userId, int month, int year);
 
-        public Task<IEnumerable<WorkItem>> GetProjectTasksByProjectIdAsync(Guid projectId);
+        public Task<IEnumerable<WorkItem>> GetWorkItemByProjectIdAsync(Guid projectId);
 
         public  Task<WorkItem> AddWorkItemForAProject(Dto.ProjectTaskDto projectTaskDto,Guid userId);
         public Task<bool> UpdateWorkItemStatusAsync(Guid workItemId, WorkItemStatus newStatus);

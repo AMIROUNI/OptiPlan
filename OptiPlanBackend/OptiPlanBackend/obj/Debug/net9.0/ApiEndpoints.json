@@ -8,13 +8,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "WorkItemId",
-        "Type": "System.Guid",
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       },
       {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "Name": "WorkItemId",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
@@ -22,20 +22,15 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.AttachmentController",
-    "Method": "GetAllAttachentForWrokItem",
+    "Method": "GetAllAttachmentsForWorkItem",
     "RelativePath": "api/Attachment/get/{workItemId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "wrokItemId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
         "Name": "workItemId",
-        "Type": "",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -525,6 +520,27 @@
   },
   {
     "ContainingType": "WorkItemController",
+    "Method": "AssignUserToWorkItem",
+    "RelativePath": "api/WorkItem/assign-user/{workItemId}/{userID}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "workItemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "userID",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WorkItemController",
     "Method": "Create",
     "RelativePath": "api/WorkItem/Create/{projectId}",
     "HttpMethod": "POST",
@@ -613,6 +629,22 @@
       {
         "Name": "dto",
         "Type": "OptiPlanBackend.Dto.UpdateWorkItemStatusDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.WorkItemHistoryController",
+    "Method": "GetWorkItemHistoryForWorkItem",
+    "RelativePath": "api/WorkItemHistory/get/{workItemID}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "workItemID",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],

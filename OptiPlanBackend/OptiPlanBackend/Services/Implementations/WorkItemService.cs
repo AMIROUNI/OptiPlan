@@ -71,9 +71,9 @@ namespace OptiPlanBackend.Services.Implementations
             return await _workItemRepository.GetUserTasksGroupedByProjectForMonth(userId, month, year);
         }
 
-        public async Task<IEnumerable<WorkItem>> GetProjectTasksByProjectIdAsync(Guid projectId)
+        public async Task<IEnumerable<WorkItem>> GetWorkItemByProjectIdAsync(Guid projectId)
         {
-            return await _workItemRepository.GetProjectTasksByProjectIdAsync(projectId);
+            return await _workItemRepository.GetWorkItemByProjectIdAsync(projectId);
 
         }
 

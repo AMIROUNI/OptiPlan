@@ -25,8 +25,7 @@ namespace OptiPlanBackend.Repositories.Implementations
 
         public async Task<IEnumerable<Attachment>> GetByAttachmentsByWorkItemIdAsync(Guid workItemId)
         {
-            return await FindAsync(a => a.WorkItemId == workItemId);
-
+            return await _context.Attachments.Where(a => a.WorkItemId == workItemId).ToListAsync();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace OptiPlanBackend.Services.Interfaces
         System.Threading.Tasks.Task<Project> CreateProjectAsync(ProjectDto projectDto, Guid value);
         public Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId);
         public  Task<Team> GetTeamByProjectId(Guid projectId);
-        public  Task<IEnumerable<TeamMembership>> GetTeamMembershipsByProjectIdAsync(Guid projectId);
+        public  Task<IEnumerable<User>> GetUsersByProjectIdAsync(Guid projectId);
     }
 
 }

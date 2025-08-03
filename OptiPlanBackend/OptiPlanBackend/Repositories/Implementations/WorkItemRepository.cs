@@ -42,9 +42,12 @@ using System;
         
 
 
-        public async Task<IEnumerable<WorkItem>> GetProjectTasksByProjectIdAsync(Guid projectId)
+        public async Task<IEnumerable<WorkItem>> GetWorkItemByProjectIdAsync(Guid projectId)
             {
-                return await FindAsync(pt => pt.ProjectId == projectId);
+                return await _context.WorkItems
+                .Where(wi => wi.ProjectId == projectId)
+                .Include(wi=>wi.AssignedUser)
+                .ToListAsync();
 
             }
 

@@ -44,27 +44,23 @@ namespace OptiPlanBackend.Controllers
 
         [HttpGet("get/{workItemId}")]
         [Authorize]
-        public async Task<IActionResult> GetAllAttachentForWrokItem(Guid wrokItemId)
+        public async Task<IActionResult> GetAllAttachmentsForWorkItem([FromRoute] Guid workItemId)
         {
             try
             {
-              /*  var workItem = await _workItemService.GetByIdAsync(wrokItemId);
-                if (workItem == null)
-                    return NotFound("workItem does not exsite");  */
+                _logger.LogWarning($"Fetching attachments for WorkItemId: {workItemId}");
 
-                var attachement = await _attachmentService.GetByAttachmentsByWorkItemIdAsync(wrokItemId);
+                var attachement = await _attachmentService.GetByAttachmentsByWorkItemIdAsync(workItemId);
 
                 return Ok(attachement);
-
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Error while getting attachments");
                 return StatusCode(500, ex.Message);
             }
-
         }
+
 
 
 
@@ -112,7 +108,7 @@ namespace OptiPlanBackend.Controllers
                         return Ok(existing); 
                     }
 
-                    return Conflict("A file with this name already exists but is not linked in DB.");
+                   // return Conflict("A file with this name already exists but is not linked in DB.");
                 }
 
                 //  Sauvegarde physique
@@ -124,6 +120,7 @@ namespace OptiPlanBackend.Controllers
                 attachment.FilePath = Path.Combine("Attachments", attachment.FileName); // relative
 
                 _attachmentService.CreateAsync(attachment);
+                _logger.LogWarning(attachment.ToString());
 
                 return Ok(attachment);
             }

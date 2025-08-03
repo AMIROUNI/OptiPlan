@@ -1,24 +1,25 @@
 <div class="board-view" style="width: 80%;">
-  <div class="board-columns" >
+  <div class="board-columns">
     <!-- For each status, a column -->
     <div class="board-column"
          *ngFor="let status of statuses"
          (dragover)="onDragOver($event)" 
-         (drop)="onDrop(status, $event)"   >
+         (drop)="onDrop(status, $event)">
 
       <div class="column-header">
         <h3 [title]="status">{{status | titlecase}}</h3>
         <span class="badge">{{getWorkItemsByStatus(status).length}}</span>
       </div>
 
-      <div class="column-content" >
+      <div class="column-content">
         <!-- Display tasks for this status -->
         <div class="workitem-card"
              *ngFor="let item of getWorkItemsByStatus(status)"
              draggable="true"
              (dragstart)="onDragStart($event, item)"
-             (click)="workItemSelected.emit(item)"
-             [class]="'type-' + item.type.toLowerCase()">
+          
+             [class]="'type-' + item.type.toLowerCase()"
+            (click)="onWorkItemSelected(item.id)" >
 
           <div class="card-header" *ngIf="item.id">
             <span class="item-key">{{item.type | slice:0:1}}-{{item.id.substring(0, 4)}}</span>
@@ -45,7 +46,6 @@
               <img [src]="item.assignedUser.avatarUrl || 'assets/default-avatar.png'"
                    [alt]="item.assignedUser.username"
                    class="avatar">
-           
             </div>
           </div>
 
@@ -55,13 +55,20 @@
   </div>
 </div>
 
+<app-work-item-details 
+  *ngIf="selectedWorkItemId && showWorkItemModal" 
+  [workItemId]="selectedWorkItemId" 
+  [projectID]="projectID"
+  (closeModal)="closeWorkItemModal()">
+</app-work-item-details>
 
 
-<app-popup *ngIf="showPopup"
-           [title]="popupTitle"
-           [message]="popupMessage"
-           [isSuccess]="popupIsSuccess"
-           [redirectPath]="popupRedirectPath"
-           [showCancelButton]="showCancelButton"
-           (closed)="closePopup()">
+<app-popup 
+  *ngIf="showPopup"
+  [title]="popupTitle"
+  [message]="popupMessage"
+  [isSuccess]="popupIsSuccess"
+  [redirectPath]="popupRedirectPath"
+  [showCancelButton]="showCancelButton"
+  (closed)="closePopup()">
 </app-popup>

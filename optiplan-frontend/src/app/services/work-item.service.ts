@@ -55,4 +55,11 @@ export class WorkItemService {
 
 
 
+  AssignUserToWorkItem(userId: string, workItemId: string): Observable<any> {
+    console.log("Assign user : ", userId,"workItemId : ", workItemId);
+    return this.http.put<any>(`${this.apiUrl}/assign-user/${workItemId}/${userId}`, null);
+  }
+
+
+
 }

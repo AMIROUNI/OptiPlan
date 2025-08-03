@@ -16,7 +16,10 @@ namespace OptiPlanBackend.Repositories.Implementations
 
         public async Task<IEnumerable<Invitation>> GetByUserIdAsync(Guid userId)
         {
-             return await FindAsync(i => i.InviteeId == userId);
+             return await _context.Invitations
+                .Where(i => i.InviteeId == userId)
+                .Include(i=>i.Inviter)
+                .ToListAsync();
         }
 
         public async Task<Team> GetTeamWithProjectAsync(Guid teamId)

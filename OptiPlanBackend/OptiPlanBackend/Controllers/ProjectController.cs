@@ -68,42 +68,37 @@ namespace OptiPlanBackend.Controllers
 
             try
             {
-               
                 // 1. Créer le projet
                 var createdProject = await _projectService.CreateProjectAsync(projectDto, _currentUserService.UserId.Value);
 
-                // 2. Créer l'équipe associée au projet
+                // 2. Créer l'équipe associée
                 var team = new Team
                 {
                     Id = Guid.NewGuid(),
-                    Name = createdProject.Title, // même nom que le projet
+                    Name = createdProject.Title,
                     ProjectId = createdProject.Id,
                     CreatedAt = DateTime.UtcNow
                 };
 
                 var teamCreated = await _teamService.CreateAsync(team);
                 if (!teamCreated)
-                {
                     return StatusCode(500, "Team creation failed");
-                }
 
-                // 3. Ajouter le créateur du projet comme membre de l'équipe avec rôle ProjectCreator
                 var teamMembership = new TeamMembership
                 {
                     Id = Guid.NewGuid(),
                     UserId = _currentUserService.UserId.Value,
                     TeamId = team.Id,
                     Role = TeamRole.ProjectCreator,
+                    Status = MembershipStatus.Accepted, 
                     JoinedAt = DateTime.UtcNow
                 };
 
                 var memberAdded = await _teamMembershipService.CreateAsync(teamMembership);
                 if (!memberAdded)
-                {
                     return StatusCode(500, "Failed to assign user to team");
-                }
 
-                // 4. Retourner le résultat
+                // 4. Retourner le projet créé
                 return CreatedAtAction(nameof(GetById), new { id = createdProject.Id }, createdProject);
             }
             catch (Exception ex)
@@ -112,6 +107,7 @@ namespace OptiPlanBackend.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
 
 
         [HttpGet("get-projects-for-user")]
@@ -161,7 +157,7 @@ namespace OptiPlanBackend.Controllers
         {
             try
             {
-                var teamMembreships = await _projectService.GetTeamMembershipsByProjectIdAsync(projectId);
+                var teamMembreships = await _projectService.GetUsersByProjectIdAsync(projectId);
                 return Ok(teamMembreships);
 
             }

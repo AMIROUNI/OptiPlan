@@ -1,0 +1,77 @@
+<div class="modal-overlay" [class.active]="showModal" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <h2 class="modal-title">Work Item Details</h2>
+        <button class="close-button" (click)="close()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+  
+      <div class="modal-body" *ngIf="isLoading">Loading...</div>
+      <div class="modal-body" *ngIf="!isLoading && workItem">
+        <div class="work-item-details">
+          <h3>{{ workItem.title }}</h3>
+          <p><strong>Status:</strong> {{ workItem.status }}</p>
+          <p><strong>Description:</strong> {{ workItem.description || 'No description' }}</p>
+          <div class="assigned-user">
+            <strong>Assigned To:</strong>
+            <span *ngIf="workItem.assignedUser">
+              <img [src]="workItem.assignedUser.avatarUrl || 'assets/default-avatar.png'" class="avatar" alt="Assigned User Avatar">
+              {{ workItem.assignedUser.username }}
+            </span>
+            <span *ngIf="!workItem.assignedUser">Unassigned</span>
+          </div>
+          <p><strong>Created At:</strong> {{ workItem.createdAt | date:'medium' }}</p>
+        </div>
+  
+        <!-- Comments Section -->
+        <div class="comments-section">
+          <h4>Comments</h4>
+          <div class="comment-input">
+            <textarea [(ngModel)]="newCommentText" placeholder="Add a comment..."></textarea>
+            <button (click)="createComment()" [disabled]="!newCommentText.trim()">Add Comment</button>
+          </div>
+          <div class="comments-list" *ngIf="comments.length > 0">
+            <div class="comment" *ngFor="let comment of comments">
+              <div class="comment-author">
+                <img [src]="getAvatarUrl(comment.author?.avatarUrl) " class="avatar" alt="Author Avatar">
+                <span>{{ comment.author?.username || 'Unknown' }}</span>
+              </div>
+              <p>{{ comment.content }}</p>
+              <small>{{ comment.createdAt | date:'medium' }}</small>
+            </div>
+          </div>
+          <p *ngIf="comments.length === 0">No comments yet.</p>
+        </div>
+  
+        <!-- Attachments Section -->
+        <div class="attachments-section">
+          <h4>Attachments</h4>
+          <div class="attachment-upload">
+            <input type="file" (change)="onFileSelected($event)" />
+            <button (click)="uploadAttachment()" [disabled]="!selectedFile">Upload Attachment</button>
+          </div>
+          <div class="attachments-list" *ngIf="attachments.length > 0">
+            <div class="attachment" *ngFor="let attachment of attachments">
+              <a [href]="attachment.url" target="_blank">{{ attachment.name }}</a>
+              <small>{{ attachment.uploadedAt | date:'medium' }}</small>
+            </div>
+          </div>
+          <p *ngIf="attachments.length === 0">No attachments yet.</p>
+        </div>
+  
+        <!-- Assign User Section -->
+        <div class="assign-user-section">
+          <h4>Assign User</h4>
+          <select [(ngModel)]="selectedUserId" *ngIf="teamMembers.length > 0">
+            <option value="">Select a team member</option>
+            <option *ngFor="let member of teamMembers" [value]="member.id">
+              {{ member.username }} ({{ member.fullName }})
+            </option>
+          </select>
+          <button (click)="assignUser()" [disabled]="!selectedUserId">Assign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -37,6 +37,7 @@ export class InvitationListComponent implements OnInit {
     this.invitationService.GetAllInvitationForUser().subscribe({
       next: (invitations) => {
         this.invitations = invitations;
+        console.log(this.invitations)
         this.isLoading = false;
       },
       error: (err) => {

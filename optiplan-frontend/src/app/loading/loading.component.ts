@@ -51,6 +51,6 @@ export class LoadingComponent implements OnInit {
         clearInterval(interval);
         this.router.navigate(['/landing']); 
       }
-    }, 500);
+    }, 100);
   }
 }

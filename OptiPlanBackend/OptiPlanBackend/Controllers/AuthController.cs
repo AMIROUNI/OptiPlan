@@ -15,17 +15,25 @@ namespace OptiPlanBackend.Controllers
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<User>> Register([FromForm] RegisterDto request, [FromForm] IFormFile? avatar)
         {
-            if (avatar != null)
+            try
             {
-                var avatarUrl = await uploadService.UploadImageAsync(avatar, "avatars");
-                request.AvatarUrl = avatarUrl!;
+                if (avatar != null)
+                {
+                    var avatarUrl = await uploadService.UploadImageAsync(avatar, "avatars");
+                    request.AvatarUrl = avatarUrl!;
+                }
+
+                var user = await authService.RegisterAsync(request);
+                if (user is null)
+                    return BadRequest("Username or email are  already exists.");
+
+                return Ok(user);
             }
-
-            var user = await authService.RegisterAsync(request);
-            if (user is null)
-                return BadRequest("Username already exists.");
-
-            return Ok(user);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during registration: {ex.Message}");
+                return StatusCode(500, "Internal server error during registration.");
+            }
         }
 
 

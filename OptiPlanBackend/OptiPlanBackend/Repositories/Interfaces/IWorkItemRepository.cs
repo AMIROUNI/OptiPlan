@@ -13,7 +13,7 @@ namespace OptiPlanBackend.Repositories.Interfaces
 
 
 
-            public Task<IEnumerable<WorkItem>> GetProjectTasksByProjectIdAsync(Guid projectId);
+            public Task<IEnumerable<WorkItem>> GetWorkItemByProjectIdAsync(Guid projectId);
 
 
 

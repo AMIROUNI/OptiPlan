@@ -41,7 +41,8 @@ namespace OptiPlanBackend.Services.Implementations
 
         public async Task<User?> RegisterAsync(RegisterDto request)
         {
-            if (await context.Users.AnyAsync(u => u.Username == request.Username))
+            if (await context.Users.AnyAsync(u => u.Username == request.Username
+            && u.Email == request.Email))
             {
                 return null;
             }
