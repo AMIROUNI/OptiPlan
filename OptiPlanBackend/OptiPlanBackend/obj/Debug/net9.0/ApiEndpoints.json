@@ -210,6 +210,86 @@
     ]
   },
   {
+    "ContainingType": "OptiPlanBackend.Controllers.ChatbotController",
+    "Method": "AskBot",
+    "RelativePath": "api/Chatbot/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OptiPlanBackend.Dto.ChatRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ChatbotController",
+    "Method": "DeleteConversation",
+    "RelativePath": "api/Chatbot/delete-conversation/{conversationId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "conversationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ChatbotController",
+    "Method": "GetConversationIncludMessages",
+    "RelativePath": "api/Chatbot/get-conversation/{conversationId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "conversationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ChatbotController",
+    "Method": "GetConversationsByUserId",
+    "RelativePath": "api/Chatbot/get-conversations/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.ChatbotController",
+    "Method": "NewConversation",
+    "RelativePath": "api/Chatbot/new-conversation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OptiPlanBackend.Dto.NewConversationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OptiPlanBackend.Controllers.CommentController",
     "Method": "Create",
     "RelativePath": "api/Comment/create",

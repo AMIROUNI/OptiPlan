@@ -1,0 +1,64 @@
+<div class="chat-container" >
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Conversations</h2>
+        <button class="new-chat-btn" (click)="startNewConversation()">
+          <span>+ New Chat</span>
+        </button>
+      </div>
+      <div class="conversation-list">
+        <div *ngFor="let conv of conversations" 
+             class="conversation-item" 
+             [class.active]="currentConversationId === conv.id"
+             (click)="loadConversation(conv.id)">
+          <div class="conversation-content">
+            <h3>{{ conv.title }}</h3>
+            <span class="conversation-date">{{ conv.createdAt | date:'short' }}</span>
+          </div>
+          <button class="delete-btn" (click)="deleteConversation(conv.id); $event.stopPropagation()">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+     
+    </aside>
+  
+    <main class="chat-main">
+      <div *ngIf="!currentConversationId" class="welcome-screen">
+        <h1>Welcome to the Chat Bot</h1>
+        <p>Start a new conversation or select an existing one from the sidebar</p>
+        <button class="start-chat-btn" (click)="startNewConversation()">Start New Chat</button>
+      </div>
+  
+      <div *ngIf="currentConversationId" class="chat-area">
+        <div class="chat-messages">
+          <div *ngFor="let msg of messages" class="message" [class.user-message]="msg.isUser">
+            <div class="message-content">
+              <div class="message-text">{{ msg.content }}</div>
+              <div class="message-time">{{ formatDate(msg.timestamp) }}</div>
+            </div>
+          </div>
+          <div *ngIf="isLoading" class="message bot-message">
+            <div class="message-content">
+              <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" class="message-input">
+          <input type="text" formControlName="message" placeholder="Type your message here..." autocomplete="off">
+          <button type="submit" [disabled]="chatForm.invalid || isLoading">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>

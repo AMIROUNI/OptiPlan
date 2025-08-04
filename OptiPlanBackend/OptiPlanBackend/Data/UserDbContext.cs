@@ -20,15 +20,13 @@ namespace OptiPlanBackend.Data
         public DbSet<TeamMembership> TeamMemberships { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
 
-
-
         public DbSet<WorkItem> WorkItems { get; set; }
-
-
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<WorkItemHistory> TaskHistories { get; set; }
-        
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
         public DbSet<Sprint> Sprints { get; set; }
 
 

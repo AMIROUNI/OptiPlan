@@ -1,0 +1,381 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\dto\\newconversationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\dto\\newconversationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\models\\conversation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\models\\conversation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\implementations\\conversationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\implementations\\conversationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\interfaces\\iconversationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\interfaces\\iconversationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\repositories\\interfaces\\iconversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\repositories\\interfaces\\iconversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\repositories\\implementations\\conversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\repositories\\implementations\\conversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\dto\\chatrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\dto\\chatrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\implementations\\chatmessageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\implementations\\chatmessageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\repositories\\implementations\\chatmessagerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\repositories\\implementations\\chatmessagerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\interfaces\\ichatmessageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\interfaces\\ichatmessageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\interfaces\\ichatbotservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\interfaces\\ichatbotservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\implementations\\chatbotservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\implementations\\chatbotservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\services\\interfaces\\iattachmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\services\\interfaces\\iattachmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\models\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\models\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\repositories\\interfaces\\ichatmessagerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\repositories\\interfaces\\ichatmessagerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|c:\\users\\amir\\desktop\\optiplan\\optiplanbackend\\optiplanbackend\\optiplanbackend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AA08A876-0C29-42D8-887D-FDE95038B8FB}|OptiPlanBackend\\OptiPlanBackend.csproj|solutionrelative:optiplanbackend\\optiplanbackend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NewConversationDto.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Dto\\NewConversationDto.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Dto\\NewConversationDto.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Dto\\NewConversationDto.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Dto\\NewConversationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T16:12:18.645Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IConversationService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IConversationService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Interfaces\\IConversationService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IConversationService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Interfaces\\IConversationService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:21:17.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ChatbotController.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Controllers\\ChatbotController.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Controllers\\ChatbotController.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Controllers\\ChatbotController.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Controllers\\ChatbotController.cs",
+              "ViewState": "AgIAAM4AAAAAAAAAAAAAANwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T12:46:01.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ConversationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Implementations\\ConversationRepository.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Repositories\\Implementations\\ConversationRepository.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Implementations\\ConversationRepository.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Repositories\\Implementations\\ConversationRepository.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAqwBgAAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:08:28.28Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Program.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Program.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Program.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Program.cs",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAAAI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T12:44:57.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Conversation.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\Conversation.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Models\\Conversation.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\Conversation.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Models\\Conversation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:55:13.44Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConversationService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ConversationService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Implementations\\ConversationService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ConversationService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Implementations\\ConversationService.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAQwCoAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:20:56.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IConversationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Interfaces\\IConversationRepository.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Repositories\\Interfaces\\IConversationRepository.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Interfaces\\IConversationRepository.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Repositories\\Interfaces\\IConversationRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:07:48.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ChatRequestDto.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Dto\\ChatRequestDto.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Dto\\ChatRequestDto.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Dto\\ChatRequestDto.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Dto\\ChatRequestDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:43:48.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ChatMessageService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ChatMessageService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Implementations\\ChatMessageService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ChatMessageService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Implementations\\ChatMessageService.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAUwCwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:14:21.17Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ChatMessageRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Implementations\\ChatMessageRepository.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Repositories\\Implementations\\ChatMessageRepository.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Implementations\\ChatMessageRepository.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Repositories\\Implementations\\ChatMessageRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:00:34.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IChatMessageService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IChatMessageService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Interfaces\\IChatMessageService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IChatMessageService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Interfaces\\IChatMessageService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:13:22.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IChatBotService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IChatBotService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Interfaces\\IChatBotService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IChatBotService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Interfaces\\IChatBotService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T12:37:48.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ChatBotService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ChatBotService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Implementations\\ChatBotService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Implementations\\ChatBotService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Implementations\\ChatBotService.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T12:38:33.562Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "IAttachmentService.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IAttachmentService.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Services\\Interfaces\\IAttachmentService.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Services\\Interfaces\\IAttachmentService.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Services\\Interfaces\\IAttachmentService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAcAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T14:14:28.496Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IChatMessageRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Interfaces\\IChatMessageRepository.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Repositories\\Interfaces\\IChatMessageRepository.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Repositories\\Interfaces\\IChatMessageRepository.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Repositories\\Interfaces\\IChatMessageRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:59:24.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ChatMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\ChatMessage.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Models\\ChatMessage.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\ChatMessage.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Models\\ChatMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:55:42.344Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UserDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Data\\UserDbContext.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Data\\UserDbContext.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Data\\UserDbContext.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Data\\UserDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:57:22.642Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\User.cs",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\Models\\User.cs",
+              "RelativeToolTip": "OptiPlanBackend\\Models\\User.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAqwCgAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:53:12.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "OptiPlanBackend",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\OptiPlanBackend.csproj",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\OptiPlanBackend.csproj",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\OptiPlanBackend.csproj",
+              "RelativeToolTip": "OptiPlanBackend\\OptiPlanBackend.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-04T12:39:00.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\.env",
+              "RelativeDocumentMoniker": "OptiPlanBackend\\.env",
+              "ToolTip": "C:\\Users\\Amir\\Desktop\\OptiPlan\\OptiPlanBackend\\OptiPlanBackend\\.env",
+              "RelativeToolTip": "OptiPlanBackend\\.env",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-08-03T21:34:08.172Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

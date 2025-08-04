@@ -54,6 +54,33 @@ namespace OptiPlanBackend.Migrations
                     b.ToTable("Attachments", (string)null);
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,6 +107,29 @@ namespace OptiPlanBackend.Migrations
                     b.HasIndex("WorkItemId");
 
                     b.ToTable("Comments", (string)null);
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Conversation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
@@ -502,6 +552,17 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("WorkItem");
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.ChatMessage", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Comment", b =>
                 {
                     b.HasOne("OptiPlanBackend.Models.User", "Author")
@@ -519,6 +580,17 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("WorkItem");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.Conversation", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.User", "User")
+                        .WithMany("Conversations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
@@ -677,6 +749,11 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("WorkItem");
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Project", b =>
                 {
                     b.Navigation("Sprints");
@@ -702,6 +779,8 @@ namespace OptiPlanBackend.Migrations
             modelBuilder.Entity("OptiPlanBackend.Models.User", b =>
                 {
                     b.Navigation("AssignedTasks");
+
+                    b.Navigation("Conversations");
 
                     b.Navigation("OwnedProjects");
 

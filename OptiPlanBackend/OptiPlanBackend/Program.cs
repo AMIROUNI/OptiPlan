@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore.Migrations;
+using OptiPlanBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +92,8 @@ builder.Services.AddScoped(typeof(IInvitationRepository),typeof( InvitationRepos
 builder.Services.AddScoped(typeof(ICommentRepository),typeof( CommentRepository));
 builder.Services.AddScoped(typeof(IAttachmentRepository), typeof(AttachmentRepository));
 builder.Services.AddScoped(typeof(IWorkItemHistoryRepository), typeof(WorkItemHistoryRepository));
+builder.Services.AddScoped(typeof(IConversationRepository), typeof(ConversationRepository));
+builder.Services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageRepository));
 
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -108,6 +111,10 @@ builder.Services.AddScoped(typeof(ITeamMembershipService), typeof(TeamMembership
 builder.Services.AddScoped(typeof(ITeamService), typeof(TeamService));
 builder.Services.AddScoped(typeof(ICommentService), typeof(CommentService));
 builder.Services.AddScoped(typeof(IAttachmentService), typeof(AttachmentService));
+builder.Services.AddScoped(typeof(IConversationService), typeof(ConversationService));
+builder.Services.AddScoped(typeof(IChatMessageService), typeof(ChatMessageService));
+builder.Services.AddHttpClient<IChatBotService, ChatBotService>(); 
+
 builder.Services.AddScoped(typeof(IWorkItemHistoryService), typeof(WorkItemHistoryService));
 
 

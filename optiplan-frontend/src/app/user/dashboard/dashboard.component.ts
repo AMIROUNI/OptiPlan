@@ -9,7 +9,7 @@ import { DisplayProjectComponent } from "./display-project/display-project.compo
 
 @Component({
   selector: 'app-dashboard',
-  imports: [KpiCardsComponent, WelcomeCardComponent, GenericChartComponent, CommonModule, DisplayProjectComponent],
+  imports: [KpiCardsComponent, WelcomeCardComponent, GenericChartComponent, CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

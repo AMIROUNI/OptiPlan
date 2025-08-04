@@ -10,3 +10,5 @@ wwwroot\avatars\908a32fd-9e5a-4482-8ad8-3c8834dce4e2.png
 wwwroot\avatars\c5b5f26a-2862-40ae-9df5-9e33e97af26d.png
 wwwroot\avatars\d0793048-c994-4670-afa7-1b7bd1639ab5.png
 wwwroot\avatars\eb32a7cc-4a05-40c8-8026-bbe21ac86547.png
+wwwroot\avatars\109f5018-ae27-44cf-a48a-756cbec21ad9.jpg
+wwwroot\avatars\912f0ef4-77dd-4138-834b-acfb82c9f4f5.jpg
