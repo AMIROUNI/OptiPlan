@@ -157,7 +157,17 @@ namespace OptiPlanBackend.Controllers
         {
             try
             {
-                var teamMembreships = await _projectService.GetUsersByProjectIdAsync(projectId);
+                
+                var project = await _projectService.GetByIdAsync(projectId);
+                if (project == null)
+                    return NotFound("no project with this id ");
+
+                if (project.Team == null)
+                {
+                    _logger.LogWarning("Project.Team is null for projectId: {ProjectId}", projectId);
+                }
+
+                var teamMembreships = await _projectService.GetAllUsersInProject(projectId);
                 return Ok(teamMembreships);
 
             }

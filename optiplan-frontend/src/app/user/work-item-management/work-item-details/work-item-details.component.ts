@@ -1,3 +1,4 @@
+// work-item-details.component.ts
 import {
   Component,
   Input,
@@ -23,13 +24,17 @@ import { ProjectService } from '../../../services/project.service';
 import { User } from '../../../models/user';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { WorkItemHistory } from '../../../models/work-item-history';
+import { WorkItemHistoryService } from '../../../services/work-item-history.service';
+import { saveAs } from 'file-saver';
+import { FileSizePipe } from "../../../pipes/file-size.pipe";
 
 @Component({
   selector: 'app-work-item-details',
   templateUrl: './work-item-details.component.html',
   styleUrls: ['./work-item-details.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, FileSizePipe]
 })
 export class WorkItemDetailsComponent implements OnInit, OnChanges {
   @Input() workItemId!: string;
@@ -39,6 +44,7 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
   workItem: WorkItem | null = null;
   comments: Comment[] = [];
   attachments: any[] = [];
+  historyItems: WorkItemHistory[] = [];
   isLoading = false;
   newCommentText = '';
   selectedFile: File | null = null;
@@ -48,6 +54,7 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
   defaultAvatar = 'assets/images/default-profile.png';
   apiUrl = environment.apiUrl;
   @Input() projectID!: string;
+  activeTab: 'details' | 'comments' | 'attachments' | 'history' = 'details';
 
   constructor(
     private workItemService: WorkItemService,
@@ -55,12 +62,11 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
     private commentService: CommentService,
     private projectService: ProjectService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private workItemHistoryService: WorkItemHistoryService
   ) {}
 
-  ngOnInit(): void {
- 
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['workItemId'] && this.workItemId) {
@@ -77,7 +83,6 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
 
   loadWorkItemDetails(): void {
     this.isLoading = true;
-    console.log("loadWorkItemDetails", this.projectID);
     this.workItemService.getWorkItemsByProject(this.projectID).pipe(
       catchError(error => {
         this.toastr.error('Failed to load work item details', 'Error');
@@ -87,39 +92,50 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
     ).subscribe(data => {
       if (data) {
         this.workItem = data.find((item: WorkItem) => item.id === this.workItemId) || null;
-        console.log("workItem", this.workItem);
         if (this.workItem?.projectId) {
           this.loadTeamMembers();
         }
         this.loadComments();
         this.loadAttachments();
+        this.loadWorkItemHistory();
       }
       this.isLoading = false;
     });
   }
 
+  loadWorkItemHistory(): void {
+    if (!this.workItemId) return;
+    this.workItemHistoryService.GetWorkItemHistoryForWorkItem(this.workItemId).subscribe({
+      next: (history) => {
+        this.historyItems = history;
+        console.log("Work item history loaded", this.historyItems);
+      },
+      error: (err) => {
+        console.error('Error loading work item history:', err);
+        this.toastr.error('Failed to load work item history', 'Error');
+      }
+    });
+  }
+
   loadTeamMembers(): void {
-    console.log("loadTeamMembers", this.workItem?.projectId);
     if (this.workItem?.projectId) {
       this.projectService.getTeamMemberShips(this.workItem.projectId).subscribe({
-        next: (members) => {this.teamMembers = members; console.log("teamMembers", this.teamMembers)},
+        next: (members) => this.teamMembers = members,
         error: (err) => console.error('Error loading team members:', err)
       });
     }
   }
 
   loadComments(): void {
-    console.log("loadComments", this.workItemId);
     this.commentService.GetCommentsByWorkItemIdAsync(this.workItemId).subscribe({
-      next: (comments) => {this.comments = comments; console.log("comments", this.comments)},
+      next: (comments) =>{ this.comments = comments; console.log(comments)  },
       error: (err) => console.error('Error loading comments:', err)
     });
   }
 
   loadAttachments(): void {
-    console.log("loadAttachments", this.workItemId);
     this.attachmentService.GetAttachmentsByWorkItemId(this.workItemId).subscribe({
-      next: (attachments) => {this.attachments = attachments; console.log("attachments", this.attachments)},
+      next: (attachments) => this.attachments = attachments,
       error: (err) => console.error('Error loading attachments:', err)
     });
   }
@@ -158,18 +174,28 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
     });
   }
 
+  downloadAttachment(attachment: any): void {
+    this.attachmentService.DownloadAttachment(attachment.id).subscribe({
+      next: (data) => {
+        const blob = new Blob([data], { type: attachment.contentType });
+        saveAs(blob, attachment.name);
+      },
+      error: (err) => {
+        this.toastr.error('Failed to download attachment', 'Error');
+        console.error('Error downloading attachment:', err);
+      }
+    });
+  }
+
   assignUser(): void {
     if (!this.selectedUserId) return;
     this.workItemService.AssignUserToWorkItem(this.selectedUserId, this.workItemId).subscribe({
- 
       next: () => {
-
         this.toastr.success('User assigned successfully');
         this.selectedUserId = '';
         this.loadWorkItemDetails();
       },
       error: (err) => {
-        console.log("assignUser *******************************", this.selectedUserId, this.workItemId);
         this.toastr.error('Failed to assign user', 'Error');
         console.error('Error assigning user:', err);
       }
@@ -189,9 +215,16 @@ export class WorkItemDetailsComponent implements OnInit, OnChanges {
     this.selectedUserId = '';
   }
 
-
   getAvatarUrl(userImg: string | undefined): string {
     if (!userImg) return this.defaultAvatar;
-    return  userImg.startsWith('http') ? userImg : `${this.apiUrl}/${userImg}`;
+    return userImg.startsWith('http') ? userImg : `${this.apiUrl}/${userImg}`;
+  }
+
+  formatFieldName(field: string): string {
+    return field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+  }
+
+  setActiveTab(tab: 'details' | 'comments' | 'attachments' | 'history'): void {
+    this.activeTab = tab;
   }
 }

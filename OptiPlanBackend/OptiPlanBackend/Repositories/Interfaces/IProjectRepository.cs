@@ -1,4 +1,5 @@
 ﻿
+using OptiPlanBackend.Dto;
 using OptiPlanBackend.Models;
 namespace OptiPlanBackend.Repositories.Interfaces
 {
@@ -8,6 +9,7 @@ namespace OptiPlanBackend.Repositories.Interfaces
         public  Task<IEnumerable<Project>> GetProjectsForUserAsync(Guid userId);
 
         public Task<Team> GetTeamByProjectId(Guid id);
-        public  Task<IEnumerable<User>> GetUsersByProjectIdAsync(Guid projectId);
+        public Task<IEnumerable<SimpleUserDto>> GetAllUsersOfProjectAsync(Guid projectId);
+        public  Task<IEnumerable<User>> GetAllUsersInProject(Guid projectId);
     }
 }

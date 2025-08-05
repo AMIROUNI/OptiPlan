@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,6 +26,17 @@ export class AttachmentService {
 
   GetAttachmentsByWorkItemId(workItemId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get/${workItemId}`);
+  }
+
+
+  DownloadAttachment(attachmentId: string): Observable<Blob> {
+    const headers = new HttpHeaders({
+      'Accept': 'application/octet-stream'
+    });
+    return this.http.get(`${this.apiUrl}/download/${attachmentId}`, {
+      headers: headers,
+      responseType: 'blob'
+    });
   }
 
 

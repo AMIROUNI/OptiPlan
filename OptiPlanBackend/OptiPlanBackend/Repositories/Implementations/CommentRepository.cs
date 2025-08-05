@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OptiPlanBackend.Data;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Repositories.Interfaces;
 
@@ -15,7 +16,10 @@ namespace OptiPlanBackend.Repositories.Implementations
 
         public  async Task<IEnumerable<Comment>> GetCommentsByWorkItemIdAsync(Guid workItemId)
         {
-            return await FindAsync(c => c.WorkItemId == workItemId);
+            return await  _context.Comments
+                .Where(c=>c.WorkItemId == workItemId)
+                .Include(c=>c.Author)
+                .ToListAsync();
         }
 
     }

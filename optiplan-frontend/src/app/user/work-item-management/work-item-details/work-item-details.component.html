@@ -1,77 +1,197 @@
+<!-- work-item-details.component.html -->
 <div class="modal-overlay" [class.active]="showModal" (click)="close()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <header class="modal-header">
-        <h2 class="modal-title">Work Item Details</h2>
-        <button class="close-button" (click)="close()">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </header>
-  
-      <div class="modal-body" *ngIf="isLoading">Loading...</div>
-      <div class="modal-body" *ngIf="!isLoading && workItem">
-        <div class="work-item-details">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <h2 class="modal-title">Work Item Details</h2>
+      <button class="close-button" (click)="close()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </header>
+
+    <div class="modal-body" *ngIf="isLoading">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading work item details...</p>
+      </div>
+    </div>
+
+    <div class="modal-body" *ngIf="!isLoading && workItem">
+      <!-- Work Item Card -->
+      <div class="work-item-card">
+        <div class="work-item-header">
           <h3>{{ workItem.title }}</h3>
-          <p><strong>Status:</strong> {{ workItem.status }}</p>
-          <p><strong>Description:</strong> {{ workItem.description || 'No description' }}</p>
-          <div class="assigned-user">
-            <strong>Assigned To:</strong>
-            <span *ngIf="workItem.assignedUser">
-              <img [src]="workItem.assignedUser.avatarUrl || 'assets/default-avatar.png'" class="avatar" alt="Assigned User Avatar">
-              {{ workItem.assignedUser.username }}
-            </span>
-            <span *ngIf="!workItem.assignedUser">Unassigned</span>
-          </div>
-          <p><strong>Created At:</strong> {{ workItem.createdAt | date:'medium' }}</p>
+          <span class="work-item-status" [class]="workItem.status.toLowerCase()">
+            {{ workItem.status }}
+          </span>
         </div>
-  
-        <!-- Comments Section -->
+        
+        <div class="work-item-content">
+          <p class="work-item-description">{{ workItem.description || 'No description provided' }}</p>
+          
+          <div class="work-item-meta">
+            <div class="meta-item">
+              <span class="meta-label">Type:</span>
+              <span class="meta-value">{{ workItem.type }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Priority:</span>
+              <span class="meta-value">{{ workItem.priority }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Created:</span>
+              <span class="meta-value">{{ workItem.createdAt | date:'mediumDate' }}</span>
+            </div>
+          </div>
+          
+          <div class="assigned-user" *ngIf="workItem.assignedUser">
+            <span class="meta-label">Assigned to:</span>
+            <div class="user-info">
+              <img [src]="getAvatarUrl(workItem.assignedUser.avatarUrl)" class="avatar" alt="User avatar">
+              <span>{{ workItem.assignedUser.username }}</span>
+            </div>
+          </div>
+          <div class="assigned-user" *ngIf="!workItem.assignedUser">
+            <span class="meta-label">Assigned to:</span>
+            <span class="meta-value">Unassigned</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="section-tabs">
+        <button 
+          [class.active]="activeTab === 'details'" 
+          (click)="setActiveTab('details')">
+          Details
+        </button>
+        <button 
+          [class.active]="activeTab === 'comments'" 
+          (click)="setActiveTab('comments')">
+          Comments ({{ comments.length }})
+        </button>
+        <button 
+          [class.active]="activeTab === 'attachments'" 
+          (click)="setActiveTab('attachments')">
+          Attachments ({{ attachments.length }})
+        </button>
+        <button 
+          [class.active]="activeTab === 'history'" 
+          (click)="setActiveTab('history')">
+          History ({{ historyItems.length }})
+        </button>
+      </nav>
+
+      <!-- Details Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'details'">
+        <div class="assign-user-section">
+          <h4>Assign to Team Member</h4>
+          <div class="assign-controls">
+            <select [(ngModel)]="selectedUserId">
+              <option value="">Select a team member</option>
+              <option *ngFor="let member of teamMembers" [value]="member.id">
+                {{ member.username }} ({{ member.fullName }})
+              </option>
+            </select>
+            <button (click)="assignUser()" [disabled]="!selectedUserId">Assign</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'comments'">
         <div class="comments-section">
-          <h4>Comments</h4>
           <div class="comment-input">
             <textarea [(ngModel)]="newCommentText" placeholder="Add a comment..."></textarea>
-            <button (click)="createComment()" [disabled]="!newCommentText.trim()">Add Comment</button>
+            <button (click)="createComment()" [disabled]="!newCommentText.trim()">Post Comment</button>
           </div>
+          
           <div class="comments-list" *ngIf="comments.length > 0">
             <div class="comment" *ngFor="let comment of comments">
-              <div class="comment-author">
-                <img [src]="getAvatarUrl(comment.author?.avatarUrl) " class="avatar" alt="Author Avatar">
-                <span>{{ comment.author?.username || 'Unknown' }}</span>
+              <div class="comment-header">
+                <img [src]="getAvatarUrl(comment.author?.avatarUrl)" class="avatar" alt="Author avatar">
+                <div class="comment-author">
+                  <span class="author-name">{{ comment.author?.username || 'Unknown' }}</span>
+                  <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+                </div>
               </div>
-              <p>{{ comment.content }}</p>
-              <small>{{ comment.createdAt | date:'medium' }}</small>
+              <p class="comment-content">{{ comment.content }}</p>
             </div>
           </div>
-          <p *ngIf="comments.length === 0">No comments yet.</p>
-        </div>
-  
-        <!-- Attachments Section -->
-        <div class="attachments-section">
-          <h4>Attachments</h4>
-          <div class="attachment-upload">
-            <input type="file" (change)="onFileSelected($event)" />
-            <button (click)="uploadAttachment()" [disabled]="!selectedFile">Upload Attachment</button>
+          
+          <div class="empty-state" *ngIf="comments.length === 0">
+            <i class="bi bi-chat-square-text"></i>
+            <p>No comments yet. Be the first to comment!</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Attachments Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'attachments'">
+        <div class="attachments-section">
+          <div class="attachment-upload">
+            <label class="file-input-label">
+              <input type="file" (change)="onFileSelected($event)" style="display: none;">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <span>Choose a file or drag it here</span>
+            </label>
+            <button (click)="uploadAttachment()" [disabled]="!selectedFile">
+              <i class="bi bi-upload"></i> Upload
+            </button>
+          </div>
+          
           <div class="attachments-list" *ngIf="attachments.length > 0">
             <div class="attachment" *ngFor="let attachment of attachments">
-              <a [href]="attachment.url" target="_blank">{{ attachment.name }}</a>
-              <small>{{ attachment.uploadedAt | date:'medium' }}</small>
+              <div class="attachment-icon">
+                <i class="bi bi-file-earmark"></i>
+              </div>
+              <div class="attachment-info">
+                <a (click)="downloadAttachment(attachment)" class="attachment-name">
+                  {{ attachment.name }}
+                </a>
+                <div class="attachment-meta">
+                  <span>{{ attachment.uploadedAt | date:'short' }}</span>
+                  <span>{{ attachment.size | fileSize }}</span>
+                </div>
+              </div>
             </div>
           </div>
-          <p *ngIf="attachments.length === 0">No attachments yet.</p>
+          
+          <div class="empty-state" *ngIf="attachments.length === 0">
+            <i class="bi bi-folder"></i>
+            <p>No attachments yet. Upload files to share with your team.</p>
+          </div>
         </div>
-  
-        <!-- Assign User Section -->
-        <div class="assign-user-section">
-          <h4>Assign User</h4>
-          <select [(ngModel)]="selectedUserId" *ngIf="teamMembers.length > 0">
-            <option value="">Select a team member</option>
-            <option *ngFor="let member of teamMembers" [value]="member.id">
-              {{ member.username }} ({{ member.fullName }})
-            </option>
-          </select>
-          <button (click)="assignUser()" [disabled]="!selectedUserId">Assign</button>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'history'">
+        <div class="history-section">
+          <div class="history-list" *ngIf="historyItems.length > 0">
+            <div class="history-item" *ngFor="let history of historyItems">
+              <div class="history-header">
+                <img [src]="getAvatarUrl(history.changedBy?.avatarUrl)" class="avatar" alt="User avatar">
+                <div class="history-user">
+                  <span class="user-name">{{ history.changedBy?.username || 'System' }}</span>
+                  <span class="history-date">{{ history.changedAt | date:'medium' }}</span>
+                </div>
+              </div>
+              <div class="history-content">
+                <span class="history-action">Changed</span>
+                <strong>{{ formatFieldName(history.fieldChanged) }}</strong>
+                <span class="history-change">
+                  from "<span class="old-value">{{ history.oldValue || 'Empty' }}</span>"
+                  to "<span class="new-value">{{ history.newValue || 'Empty' }}</span>"
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="empty-state" *ngIf="historyItems.length === 0">
+            <i class="bi bi-clock-history"></i>
+            <p>No history yet. Changes will appear here.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

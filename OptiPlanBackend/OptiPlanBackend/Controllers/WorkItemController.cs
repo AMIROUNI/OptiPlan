@@ -120,13 +120,14 @@ public class WorkItemController : ControllerBase
         {
             projectTaskDto.ProjectId = projectId;
             var createdTask = await _workItemService.AddWorkItemForAProject(projectTaskDto, userId);
+            var user = await _userService.GetUserByIdAsync(userId);
 
             // Ajouter l’historique
             var history = new WorkItemHistory
             {
                 FieldChanged = "WorkItem Created",
                 OldValue = "",
-                NewValue = $"Title: {createdTask.Title}, Status: {createdTask.Status}, AssignedUser: {createdTask.AssignedUserId}",
+                NewValue = $"Title: {createdTask.Title}, Status: {createdTask.Status}, AssignedUser: {user?.Username}",
                 ChangedAt = DateTime.UtcNow,
                 ChangedById = userId,
                 WorkItemId = createdTask.Id

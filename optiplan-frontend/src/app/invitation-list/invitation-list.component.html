@@ -51,8 +51,8 @@
           
           <div class="card-header">
             <div class="project-info">
-              <h3 class="project-name">{{invitation.team.project.title || 'Project'}}</h3>
-              <p class="team-name">{{invitation.team.name || 'Team'}}</p>
+              <h3 class="project-name">{{invitation.team?.project?.title || 'Project'}}</h3>
+              <p class="team-name">{{invitation.team?.name || 'Team'}}</p>
             </div>
             <div class="invitation-status">
               <span class="status-badge" [ngClass]="getStatusBadgeClass(invitation.status)">

@@ -196,6 +196,15 @@ namespace OptiPlanBackend.Data
                 .WithMany(u => u.ReceivedInvitations)
                 .HasForeignKey(i => i.InviteeId)
                 .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
+
+
+
+              modelBuilder.Entity<Project>()
+               .HasOne(p => p.Team)
+               .WithOne(t => t.Project)
+               .HasForeignKey<Team>(t => t.ProjectId)
+               .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

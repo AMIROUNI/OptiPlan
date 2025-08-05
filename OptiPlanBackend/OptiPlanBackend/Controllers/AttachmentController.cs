@@ -30,7 +30,7 @@ namespace OptiPlanBackend.Controllers
             IWorkItemService workItemService,
             ILogger<AttachmentController> logger,
             IUploadService uploadService,
-            IUserService userService) 
+            IUserService userService)
         {
             _currentUserService = currentUserService;
             _attachmentService = attachmentService;
@@ -73,54 +73,39 @@ namespace OptiPlanBackend.Controllers
                 var userId = _currentUserService.UserId;
                 if (!userId.HasValue)
                     return Unauthorized();
-                _logger.LogWarning("***************************** {userId}", userId);
-                var userExists = await  _userService.GetUserByIdAsync(userId.Value);
+
+                var userExists = await _userService.GetUserByIdAsync(userId.Value);
                 if (userExists == null)
                     return BadRequest("Uploader user does not exist in the database.");
-
-                var attachment = new Attachment
-                {
-                    Id = Guid.NewGuid(),
-                    FileName = attachmentDto.File.FileName,
-                    UploadedAt = DateTime.UtcNow,
-                    WorkItemId = attachmentDto.WorkItemId,
-                    UploaderId = userId.Value
-                };
 
                 var uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "Attachments");
 
                 if (!Directory.Exists(uploadDir))
                     Directory.CreateDirectory(uploadDir);
 
-                var filePath = Path.Combine(uploadDir, attachment.FileName);
+                // Créer un nom de fichier unique
+                var fileExt = Path.GetExtension(attachmentDto.File.FileName);
+                var uniqueFileName = $"{Path.GetFileNameWithoutExtension(attachmentDto.File.FileName)}_{Guid.NewGuid()}{fileExt}";
 
-              
-                if (System.IO.File.Exists(filePath))
-                {
-                    _logger.LogWarning("File already exists: " + filePath);
+                var filePath = Path.Combine(uploadDir, uniqueFileName);
 
-                    // Vérifie s’il est déjà en base
-                    var existing = await  _attachmentService.GetAttachmentByWorkItemIdAndFileNameAndUploaderId(attachment.WorkItemId,
-                        attachment.FileName,attachment.UploaderId);
-
-                    if (existing != null)
-                    {
-                        return Ok(existing); 
-                    }
-
-                   // return Conflict("A file with this name already exists but is not linked in DB.");
-                }
-
-                //  Sauvegarde physique
+                // Sauvegarde physique du fichier
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await attachmentDto.File.CopyToAsync(stream);
                 }
 
-                attachment.FilePath = Path.Combine("Attachments", attachment.FileName); // relative
+                var attachment = new Attachment
+                {
+                    Id = Guid.NewGuid(),
+                    FileName = uniqueFileName,
+                    FilePath = Path.Combine("Attachments", uniqueFileName),
+                    UploadedAt = DateTime.UtcNow,
+                    WorkItemId = attachmentDto.WorkItemId,
+                    UploaderId = userId.Value
+                };
 
-                _attachmentService.CreateAsync(attachment);
-                _logger.LogWarning(attachment.ToString());
+                await _attachmentService.CreateAsync(attachment);
 
                 return Ok(attachment);
             }
@@ -130,9 +115,6 @@ namespace OptiPlanBackend.Controllers
                 return StatusCode(500, "Failed to upload attachment: " + ex.Message);
             }
         }
-
-
-
 
     }
 }
