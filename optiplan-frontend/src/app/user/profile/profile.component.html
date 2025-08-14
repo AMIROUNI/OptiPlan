@@ -1,0 +1,121 @@
+<div class="profile-container">
+    <div class="profile-header">
+      <div class="cover-photo"></div>
+      <div class="profile-info">
+        <div class="avatar-container">
+          <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile Avatar" class="avatar">
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-outline-primary" (click)="toggleEdit()">
+            <fa-icon [icon]="isEditing ? faSave : faEdit"></fa-icon>
+            {{ isEditing ? 'Save Changes' : 'Edit Profile' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="profile-content">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="profile-card">
+            <h2 class="profile-name">{{ profile?.fullName || 'No name provided' }}</h2>
+            <p class="profile-title">{{ profile?.jobTitle || 'No job title provided' }}</p>
+            
+            <div class="profile-bio">
+              <h4><fa-icon [icon]="faUser"></fa-icon> About</h4>
+              <div *ngIf="!isEditing; else editBio">
+                <p>{{ profile?.bio || 'No bio provided' }}</p>
+              </div>
+              <ng-template #editBio>
+                <textarea class="form-control" formControlName="bio" rows="3"></textarea>
+              </ng-template>
+            </div>
+  
+            <div class="profile-details">
+              <h4><fa-icon [icon]="faBriefcase"></fa-icon> Work Information</h4>
+              <div *ngIf="!isEditing; else editWork">
+                <p><strong>Company:</strong> {{ profile?.companyName || 'Not specified' }}</p>
+                <p><strong>Department:</strong> {{ profile?.department || 'Not specified' }}</p>
+              </div>
+              <ng-template #editWork>
+                <div class="mb-3">
+                  <label class="form-label">Company</label>
+                  <input type="text" class="form-control" formControlName="companyName">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Department</label>
+                  <input type="text" class="form-control" formControlName="department">
+                </div>
+              </ng-template>
+            </div>
+  
+            <div class="profile-contact">
+              <h4><fa-icon [icon]="faPhone"></fa-icon> Contact Information</h4>
+              <div *ngIf="!isEditing; else editContact">
+                <p><strong>Phone:</strong> {{ profile?.phoneNumber || 'Not specified' }}</p>
+                <p><strong>Country:</strong> {{ profile?.country || 'Not specified' }}</p>
+              </div>
+              <ng-template #editContact>
+                <div class="mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" class="form-control" formControlName="phoneNumber">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Country</label>
+                  <input type="text" class="form-control" formControlName="country">
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="skills-card">
+            <div class="skills-header">
+              <h4><fa-icon [icon]="faCode"></fa-icon> Skills</h4>
+              <button class="btn btn-sm btn-primary" (click)="addSkill()" [disabled]="!newSkillForm.valid">
+                <fa-icon [icon]="faPlus"></fa-icon> Add
+              </button>
+            </div>
+            
+            <div class="add-skill-form">
+              <input type="text" class="form-control mb-2" placeholder="Skill name" formControlName="name">
+              <div class="row">
+                <div class="col">
+                  <label>Proficiency</label>
+                  <select class="form-select" formControlName="proficiencyLevel">
+                    <option *ngFor="let level of [1,2,3,4,5,6,7,8,9,10]" [value]="level">{{ level }}</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <label>Years</label>
+                  <input type="number" class="form-control" formControlName="yearsExperience" min="1">
+                </div>
+              </div>
+            </div>
+  
+            <div class="skills-list">
+              <div class="skill-item" *ngFor="let skill of skills">
+                <div class="skill-info">
+                  <h5>{{ skill.name }}</h5>
+                  <div class="skill-meta">
+                    <span>Years: {{ skill.yearsExperience }}</span>
+                    <div class="skill-rating">
+                      <span class="star-filled" *ngFor="let star of getProficiencyStars(skill.proficiencyLevel)">★</span>
+                      <span class="star-empty" *ngFor="let star of getEmptyStars(skill.proficiencyLevel)">☆</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-danger" (click)="deleteSkill(skill.id)">
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+              </div>
+              <div *ngIf="skills.length === 0" class="no-skills">
+                No skills added yet.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

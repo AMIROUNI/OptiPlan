@@ -13,6 +13,7 @@ import { DisplayProjectComponent } from './user/dashboard/display-project/displa
 import { ChatBotUserComponent } from './chat-bot-user/chat-bot-user.component';
 import { ChatUserComponent } from './chat-user/chat-user.component';
 import { ChatBoxComponent } from './chat-box/chat-box.component';
+import { ProfileComponent } from './user/profile/profile.component';
 
 export const routes: Routes = [
     {path:'register',component: RegisterComponent},
@@ -26,6 +27,7 @@ export const routes: Routes = [
     {path:'invitation-list',component:InvitationListComponent},
     {path:'my-projects',component:DisplayProjectComponent},
     {path:'chat-bot',component:ChatBotUserComponent},
+    {path:'profile',component:ProfileComponent},
     
 
     //**************************************************     */

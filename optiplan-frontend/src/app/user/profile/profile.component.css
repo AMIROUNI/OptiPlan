@@ -1,0 +1,513 @@
+/* ============== Base Styles ============== */
+.profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #2b2d42;
+    --primary-color: #4361ee;
+    --primary-light: #ebf0ff;
+    --secondary-color: #3a0ca3;
+    --text-primary: #2b2d42;
+    --text-secondary: #4a5568;
+    --text-tertiary: #718096;
+    --border-color: #e2e8f0;
+    --bg-hover: #f8fafc;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  
+  /* ============== Header Section ============== */
+  .profile-header {
+    position: relative;
+    margin-bottom: 6rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    background: white;
+  }
+  
+  .cover-photo {
+    height: 280px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .cover-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+  }
+  
+  .profile-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2.5rem;
+    position: relative;
+  }
+  
+  .avatar-container {
+    position: absolute;
+    top: -90px;
+    left: 2.5rem;
+    z-index: 2;
+  }
+  
+  .avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 6px solid white;
+    background-color: #f8f9fa;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+  }
+  
+  .avatar:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  }
+  
+  .profile-actions {
+    margin-bottom: 2rem;
+    z-index: 1;
+  }
+  
+  /* ============== Profile Content ============== */
+  .profile-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .profile-card, .skills-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+  }
+  
+  .profile-card:hover, .skills-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  .profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  
+  .profile-title {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  
+  /* ============== Sections ============== */
+  .profile-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .profile-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .section-title i {
+    color: var(--primary-color);
+  }
+  
+  .section-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+  
+  /* ============== Bio Section ============== */
+  .profile-bio .section-content {
+    white-space: pre-line;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  
+  /* ============== Details Section ============== */
+  .detail-item {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  
+  .detail-icon {
+    margin-right: 1rem;
+    color: var(--primary-color);
+    min-width: 24px;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 120px;
+  }
+  
+  .detail-value {
+    color: var(--text-secondary);
+    flex: 1;
+  }
+  
+  /* ============== Skills Section ============== */
+  .skills-card {
+    position: sticky;
+    top: 1.5rem;
+  }
+  
+  .skills-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .add-skill-form {
+    background: var(--primary-light);
+    padding: 1.25rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px dashed var(--border-color);
+  }
+  
+  .skills-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+  
+  .skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    margin-bottom: 0.5rem;
+  }
+  
+  .skill-item:hover {
+    background-color: var(--bg-hover);
+  }
+  
+  .skill-info {
+    flex: 1;
+  }
+  
+  .skill-name {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  
+  .skill-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+  }
+  
+  .skill-rating {
+    display: flex;
+    gap: 0.25rem;
+  }
+  
+  .star-filled {
+    color: #fbbf24;
+  }
+  
+  .star-empty {
+    color: #e5e7eb;
+  }
+  
+  /* ============== Form Elements ============== */
+  .form-control, .form-select {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    width: 100%;
+    background: white;
+    color: var(--text-primary);
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    outline: none;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  /* ============== Buttons ============== */
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  
+  .btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+  
+  .btn-danger {
+    background-color: #f8f9fa;
+    color: #e53e3e;
+    border: 2px solid #fed7d7;
+  }
+  
+  .btn-danger:hover {
+    background-color: #fff5f5;
+  }
+  
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  /* ============== Edit Mode Styles ============== */
+  .edit-mode .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* ============== Empty States ============== */
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-tertiary);
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+  }
+  
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #e2e8f0;
+  }
+  
+  .empty-state p {
+    margin-top: 0.5rem;
+  }
+  
+  /* ============== Animations ============== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .profile-card, .skills-card {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+  
+  /* ============== Scrollbar Styling ============== */
+  .skills-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .skills-list::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+  }
+  
+  .skills-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+  }
+  
+  .skills-list::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+  
+  /* ============== Responsive Design ============== */
+  @media (max-width: 992px) {
+    .profile-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .skills-card {
+      position: static;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-header {
+      margin-bottom: 5rem;
+    }
+    
+    .profile-info {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 1.5rem;
+    }
+    
+    .avatar-container {
+      position: static;
+      margin-bottom: 1rem;
+      margin-top: -4rem;
+    }
+    
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-width: 4px;
+    }
+    
+    .profile-actions {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    
+    .profile-name {
+      font-size: 1.75rem;
+    }
+    
+    .profile-title {
+      font-size: 1rem;
+    }
+    
+    .detail-item {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .detail-label {
+      min-width: auto;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .profile-container {
+      padding: 0 1rem;
+    }
+    
+    .cover-photo {
+      height: 200px;
+    }
+    
+    .profile-card, .skills-card {
+      padding: 1.5rem;
+    }
+    
+    .add-skill-form {
+      padding: 1rem;
+    }
+    
+    .btn {
+      padding: 0.625rem 1.25rem;
+    }
+    
+    .section-title {
+      font-size: 1.1rem;
+    }
+  }
+  
+  /* ============== Micro-interactions ============== */
+  .skill-item {
+    transition: transform 0.2s ease;
+  }
+  
+  .skill-item:active {
+    transform: scale(0.98);
+  }
+  
+  .btn:active {
+    transform: translateY(1px);
+  }
+  
+  /* ============== Accessibility Improvements ============== */
+  a, button, input, select, textarea {
+    &:focus-visible {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+  }
+  
+  /* ============== Print Styles ============== */
+  @media print {
+    .profile-actions, .skills-header button {
+      display: none;
+    }
+    
+    .profile-container {
+      padding: 0;
+    }
+    
+    .profile-card, .skills-card {
+      box-shadow: none;
+      border: 1px solid #ddd;
+      page-break-inside: avoid;
+    }
+    
+    .profile-content {
+      display: block;
+    }
+    
+    .cover-photo {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }

@@ -6,6 +6,7 @@ import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';   // ✅ importer ici
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
@@ -13,8 +14,9 @@ bootstrapApplication(AppComponent, {
     ...(appConfig.providers || []),
     provideHttpClient(),
     importProvidersFrom(
-      BrowserAnimationsModule,       // ✅ animations nécessaires pour toastr
-      ToastrModule.forRoot({         // ✅ configuration toastr (optionnelle)
+      BrowserAnimationsModule,
+      ReactiveFormsModule,        // ✅ nécessaire pour FormBuilder
+      ToastrModule.forRoot({
         positionClass: 'toast-bottom-right',
         timeOut: 3000,
         closeButton: true

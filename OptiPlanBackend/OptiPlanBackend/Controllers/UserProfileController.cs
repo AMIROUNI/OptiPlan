@@ -45,8 +45,29 @@ namespace OptiPlanBackend.Controllers
                 }
 
                 var userProfile = await _userProfileService.GetUserByIdAsync(userId);
+                var user = await _userService.GetUserByIdAsync(userId);
 
-               return Ok(userProfile);
+                var userProfileDto = new UserProfileDto
+                {
+                    Bio = userProfile.Bio,
+                    Skills = userProfile.Skills.Select(s => new SkillDto
+                    {
+                        Name = s.Name,
+                        ProficiencyLevel = s.ProficiencyLevel,
+                        YearsExperience = s.YearsExperience
+                    }).ToList(),
+
+                    FullName = user.FullName,
+                    JobTitle = user.JobTitle,
+                    PhoneNumber = user.PhoneNumber,
+                    AvatarUrl = user.AvatarUrl,
+                    CompanyName = user.CompanyName,
+                    Department = user.Department,
+                    Country = user.Country
+
+                };
+
+                return Ok(userProfileDto);
             }
             catch (Exception ex)
             {
@@ -78,7 +99,17 @@ namespace OptiPlanBackend.Controllers
                 userProfileToUpdate.Bio = userProfile.Bio;
                 userProfileToUpdate.UpdatedAt= DateTime.UtcNow;
                 var result = await _userProfileService.UpdateAsync(userProfileToUpdate);
-                if (!result)
+                var UpdatedUser = await _userService.GetUserByIdAsync(userId);
+                UpdatedUser.FullName = userProfile.FullName;
+                UpdatedUser.PhoneNumber = userProfile.PhoneNumber;
+                UpdatedUser.AvatarUrl = userProfile.AvatarUrl;
+                UpdatedUser.Department = userProfile.Department;
+                UpdatedUser.CompanyName = userProfile.CompanyName;
+                UpdatedUser.Country = userProfile.Country;
+                UpdatedUser.JobTitle = userProfile.JobTitle;
+               var  result2 = await _userService.UpdateAsync(UpdatedUser);
+
+                if (!(result && result2))
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Error updating user profile");
                 }
