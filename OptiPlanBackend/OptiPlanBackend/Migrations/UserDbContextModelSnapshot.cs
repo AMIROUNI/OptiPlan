@@ -132,6 +132,60 @@ namespace OptiPlanBackend.Migrations
                     b.ToTable("Conversations");
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.DirectChat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("User1Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("User2Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("User1Id");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("DirectChats");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.DirectMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DirectChatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DirectChatId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("DirectMessages");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -377,6 +431,9 @@ namespace OptiPlanBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("firstLogin")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -593,6 +650,46 @@ namespace OptiPlanBackend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OptiPlanBackend.Models.DirectChat", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId");
+
+                    b.HasOne("OptiPlanBackend.Models.User", "User1")
+                        .WithMany()
+                        .HasForeignKey("User1Id");
+
+                    b.HasOne("OptiPlanBackend.Models.User", "User2")
+                        .WithMany()
+                        .HasForeignKey("User2Id");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User1");
+
+                    b.Navigation("User2");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.DirectMessage", b =>
+                {
+                    b.HasOne("OptiPlanBackend.Models.DirectChat", "DirectChat")
+                        .WithMany("Messages")
+                        .HasForeignKey("DirectChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OptiPlanBackend.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DirectChat");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("OptiPlanBackend.Models.Invitation", b =>
                 {
                     b.HasOne("OptiPlanBackend.Models.User", "Invitee")
@@ -750,6 +847,11 @@ namespace OptiPlanBackend.Migrations
                 });
 
             modelBuilder.Entity("OptiPlanBackend.Models.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("OptiPlanBackend.Models.DirectChat", b =>
                 {
                     b.Navigation("Messages");
                 });

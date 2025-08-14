@@ -1,10 +1,14 @@
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using OptiPlanBackend.Data;
+using OptiPlanBackend.Hubs;
 using OptiPlanBackend.Repositories.Implementations;
 using OptiPlanBackend.Repositories.Interfaces;
+using OptiPlanBackend.Services;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
 using OptiPlanBackend.Settings;
@@ -12,9 +16,6 @@ using Scalar.AspNetCore;
 using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore.Migrations;
-using OptiPlanBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,20 +29,39 @@ builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserDatabase")));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["AppSettings:Audience"],
-            ValidateLifetime = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)),
-            ValidateIssuerSigningKey = true
-        };
-    });
+   .AddJwtBearer(options =>
+   {
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+           ValidateAudience = true,
+           ValidAudience = builder.Configuration["AppSettings:Audience"],
+           ValidateLifetime = true,
+           IssuerSigningKey = new SymmetricSecurityKey(
+               Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)),
+           ValidateIssuerSigningKey = true
+       };
+
+       //  Support for SignalR (access_token in query string)
+       options.Events = new JwtBearerEvents
+       {
+           OnMessageReceived = context =>
+           {
+               var accessToken = context.Request.Query["access_token"];
+               var path = context.HttpContext.Request.Path;
+
+               if (!string.IsNullOrEmpty(accessToken) &&
+                   path.StartsWithSegments("/chathub"))
+               {
+                   context.Token = accessToken;
+               }
+
+               return Task.CompletedTask;
+           }
+       };
+   });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
@@ -94,6 +114,8 @@ builder.Services.AddScoped(typeof(IAttachmentRepository), typeof(AttachmentRepos
 builder.Services.AddScoped(typeof(IWorkItemHistoryRepository), typeof(WorkItemHistoryRepository));
 builder.Services.AddScoped(typeof(IConversationRepository), typeof(ConversationRepository));
 builder.Services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageRepository));
+builder.Services.AddScoped(typeof(IUserProfileRepository), typeof(UserProfileRepository));
+builder.Services.AddScoped(typeof(ISkillRepository), typeof(SkillRepository));
 
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -113,8 +135,10 @@ builder.Services.AddScoped(typeof(ICommentService), typeof(CommentService));
 builder.Services.AddScoped(typeof(IAttachmentService), typeof(AttachmentService));
 builder.Services.AddScoped(typeof(IConversationService), typeof(ConversationService));
 builder.Services.AddScoped(typeof(IChatMessageService), typeof(ChatMessageService));
-builder.Services.AddHttpClient<IChatBotService, ChatBotService>(); 
+builder.Services.AddHttpClient<IChatBotService, ChatBotService>();
+builder.Services.AddScoped(typeof(IUserProfileService), typeof(UserProfileService));
 
+builder.Services.AddScoped(typeof(ISkillService), typeof(SkillService));
 builder.Services.AddScoped(typeof(IWorkItemHistoryService), typeof(WorkItemHistoryService));
 
 
@@ -122,7 +146,7 @@ builder.Services.AddScoped(typeof(IWorkItemHistoryService), typeof(WorkItemHisto
 
 
 
-
+builder.Services.AddSignalR();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -134,6 +158,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+app.MapHub<ChatHub>("/chathub");
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");

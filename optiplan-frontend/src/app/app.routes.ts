@@ -10,8 +10,9 @@ import { AddSprintComponent } from './user/work-item-management/add-sprint/add-s
 import { WorkItemManagementComponent } from './user/work-item-management/work-item-management.component';
 import { InvitationListComponent } from './invitation-list/invitation-list.component';
 import { DisplayProjectComponent } from './user/dashboard/display-project/display-project.component';
-import { ChatBotService } from './services/chat-bot.service';
 import { ChatBotUserComponent } from './chat-bot-user/chat-bot-user.component';
+import { ChatUserComponent } from './chat-user/chat-user.component';
+import { ChatBoxComponent } from './chat-box/chat-box.component';
 
 export const routes: Routes = [
     {path:'register',component: RegisterComponent},
@@ -29,7 +30,8 @@ export const routes: Routes = [
 
     //**************************************************     */
   
-      
+      {path:'chat-user',component:ChatUserComponent},
+      {path:'chat-box',component:ChatBoxComponent}
 
      //**************************************************     */
 ];

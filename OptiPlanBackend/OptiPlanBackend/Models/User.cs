@@ -14,7 +14,10 @@ namespace OptiPlanBackend.Models
         public string PasswordHash { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.User;
 
-        // New fields for professional profile
+
+        public bool firstLogin { get; set; } = false;
+
+       
         public string FullName { get; set; } = string.Empty;
         public string JobTitle { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;

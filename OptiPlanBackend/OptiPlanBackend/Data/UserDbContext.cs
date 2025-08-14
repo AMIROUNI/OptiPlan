@@ -28,6 +28,9 @@ namespace OptiPlanBackend.Data
         public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public DbSet<Sprint> Sprints { get; set; }
+        public DbSet<DirectChat> DirectChats { get; set; }
+        public DbSet<DirectMessage> DirectMessages { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -204,6 +207,20 @@ namespace OptiPlanBackend.Data
                .WithOne(t => t.Project)
                .HasForeignKey<Team>(t => t.ProjectId)
                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<DirectChat>()
+    .HasMany(dc => dc.Messages)
+    .WithOne(dm => dm.DirectChat)
+    .HasForeignKey(dm => dm.DirectChatId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DirectMessage>()
+                .HasOne(dm => dm.Sender)
+                .WithMany()
+                .HasForeignKey(dm => dm.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
         }
     }

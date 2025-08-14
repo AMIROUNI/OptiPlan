@@ -157,4 +157,13 @@ C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.pdb
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\OptiPlanBackend.genruntimeconfig.cache
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\ref\OptiPlanBackend.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.Extensions.Features.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
 C:\Users\Amir\Desktop\OptiPlan\OptiPlanBackend\OptiPlanBackend\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

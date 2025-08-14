@@ -9,7 +9,7 @@ namespace OptiPlanBackend.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(IAuthService authService,IUploadService 
-        uploadService) : ControllerBase
+        uploadService,IUserProfileService  userProfileService) : ControllerBase
     {
         [HttpPost("register")]
         [Consumes("multipart/form-data")]
@@ -27,6 +27,12 @@ namespace OptiPlanBackend.Controllers
                 if (user is null)
                     return BadRequest("Username or email are  already exists.");
 
+
+                var userProfile = new UserProfile
+                {
+                    UserId = user.Id,
+                };
+                await userProfileService.CreateAsync(userProfile);
                 return Ok(user);
             }
             catch (Exception ex)

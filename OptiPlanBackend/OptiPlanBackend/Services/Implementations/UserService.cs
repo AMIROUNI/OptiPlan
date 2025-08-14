@@ -124,5 +124,15 @@ public class UserService : IUserService
         return await _userRepository.getAllUserNotADMIN();
     }
 
-  
+    public async Task<bool> UpdateAsync(User user)
+    {
+       _userRepository.Update(user);
+        return await _userRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> DeleteAsync(User user)
+    {
+        _userRepository.Delete(user);
+        return await _userRepository.SaveChangesAsync();
+    }
 }

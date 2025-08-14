@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChatBotService } from '../services/chat-bot.service';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ChatHubService } from '../services/chat-hub.service';
+import { ChatBotService } from '../services/chat-bot.service';
 
 
 interface Message {
@@ -176,7 +178,7 @@ export class ChatBotUserComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.scrollToBottom();
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error getting bot response:', err);
           this.isLoading = false;
         }
