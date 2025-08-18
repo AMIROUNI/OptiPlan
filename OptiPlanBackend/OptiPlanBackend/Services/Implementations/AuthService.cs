@@ -118,7 +118,8 @@ namespace OptiPlanBackend.Services.Implementations
         new Claim(ClaimTypes.Role, user.Role.ToString()),
         new Claim("AvatarUrl", user.AvatarUrl ?? string.Empty) ,
         new Claim("id",user.Id.ToString()),
-         new Claim("email",user.Email.ToString())
+        new Claim("email",user.Email.ToString()),
+        new Claim("firstLogin", user.firstLogin.ToString().ToLower())
 
     };
 

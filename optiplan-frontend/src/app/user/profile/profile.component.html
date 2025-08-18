@@ -1,121 +1,205 @@
 <div class="profile-container">
-    <div class="profile-header">
-      <div class="cover-photo"></div>
-      <div class="profile-info">
-        <div class="avatar-container">
-          <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile Avatar" class="avatar">
-        </div>
-        <div class="profile-actions">
-          <button class="btn btn-outline-primary" (click)="toggleEdit()">
-            <fa-icon [icon]="isEditing ? faSave : faEdit"></fa-icon>
-            {{ isEditing ? 'Save Changes' : 'Edit Profile' }}
-          </button>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">Loading profile...</div>
+
+  <!-- Header Section -->
+  <div class="profile-header" *ngIf="!isLoading">
+    <div class="cover-photo"></div>
+    <div class="profile-info">
+      <div class="avatar-container">
+        <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile" class="avatar">
+        <div class="profile-badge" *ngIf="isMyProfile">
+          <span class="badge-icon">👤</span>
+          <span>My Profile</span>
         </div>
       </div>
+      
+      <div class="profile-actions">
+        <button *ngIf="isMyProfile" class="btn btn-primary" (click)="toggleEdit()">
+          <span class="action-icon">{{ isEditing ? '💾' : '✏️' }}</span>
+          {{ isEditing ? 'Save Profile' : 'Edit Profile' }}
+        </button>
+        
+        <button *ngIf="!isMyProfile" class="btn btn-primary" (click)="openMessageForm()">
+          <span class="action-icon">✉️</span>
+          Message
+        </button>
+        
+        <button *ngIf="!isMyProfile" class="btn btn-secondary">
+          <span class="action-icon">🤝</span>
+          Connect
+        </button>
+      </div>
     </div>
-  
-    <div class="profile-content">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="profile-card">
-            <h2 class="profile-name">{{ profile?.fullName || 'No name provided' }}</h2>
-            <p class="profile-title">{{ profile?.jobTitle || 'No job title provided' }}</p>
-            
-            <div class="profile-bio">
-              <h4><fa-icon [icon]="faUser"></fa-icon> About</h4>
-              <div *ngIf="!isEditing; else editBio">
-                <p>{{ profile?.bio || 'No bio provided' }}</p>
-              </div>
-              <ng-template #editBio>
-                <textarea class="form-control" formControlName="bio" rows="3"></textarea>
-              </ng-template>
-            </div>
-  
-            <div class="profile-details">
-              <h4><fa-icon [icon]="faBriefcase"></fa-icon> Work Information</h4>
-              <div *ngIf="!isEditing; else editWork">
-                <p><strong>Company:</strong> {{ profile?.companyName || 'Not specified' }}</p>
-                <p><strong>Department:</strong> {{ profile?.department || 'Not specified' }}</p>
-              </div>
-              <ng-template #editWork>
-                <div class="mb-3">
-                  <label class="form-label">Company</label>
-                  <input type="text" class="form-control" formControlName="companyName">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Department</label>
-                  <input type="text" class="form-control" formControlName="department">
-                </div>
-              </ng-template>
-            </div>
-  
-            <div class="profile-contact">
-              <h4><fa-icon [icon]="faPhone"></fa-icon> Contact Information</h4>
-              <div *ngIf="!isEditing; else editContact">
-                <p><strong>Phone:</strong> {{ profile?.phoneNumber || 'Not specified' }}</p>
-                <p><strong>Country:</strong> {{ profile?.country || 'Not specified' }}</p>
-              </div>
-              <ng-template #editContact>
-                <div class="mb-3">
-                  <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" formControlName="phoneNumber">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Country</label>
-                  <input type="text" class="form-control" formControlName="country">
-                </div>
-              </ng-template>
-            </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-content" *ngIf="!isLoading">
+    <!-- Left Column -->
+    <div class="profile-details">
+      <div class="profile-card">
+        <div class="profile-intro">
+          <h1>{{ profile?.fullName || 'No name provided' }}</h1>
+          <p class="title">{{ profile?.jobTitle || 'No title provided' }}</p>
+          <div class="location" *ngIf="profile?.country">
+            <span class="location-icon">📍</span>
+            <span>{{ profile?.country }}</span>
           </div>
         </div>
-  
-        <div class="col-md-4">
-          <div class="skills-card">
-            <div class="skills-header">
-              <h4><fa-icon [icon]="faCode"></fa-icon> Skills</h4>
-              <button class="btn btn-sm btn-primary" (click)="addSkill()" [disabled]="!newSkillForm.valid">
-                <fa-icon [icon]="faPlus"></fa-icon> Add
-              </button>
+
+        <!-- About Section -->
+        <form [formGroup]="profileForm">
+          <div class="section">
+            <h2><span class="section-icon">👤</span> About</h2>
+            <div *ngIf="!isEditing">
+              <p class="bio">{{ profile?.bio || 'No bio provided' }}</p>
             </div>
-            
-            <div class="add-skill-form">
-              <input type="text" class="form-control mb-2" placeholder="Skill name" formControlName="name">
-              <div class="row">
-                <div class="col">
-                  <label>Proficiency</label>
-                  <select class="form-select" formControlName="proficiencyLevel">
-                    <option *ngFor="let level of [1,2,3,4,5,6,7,8,9,10]" [value]="level">{{ level }}</option>
-                  </select>
-                </div>
-                <div class="col">
-                  <label>Years</label>
-                  <input type="number" class="form-control" formControlName="yearsExperience" min="1">
-                </div>
+            <div *ngIf="isEditing">
+              <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea class="form-control" id="bio" formControlName="bio" rows="4"></textarea>
               </div>
             </div>
-  
-            <div class="skills-list">
-              <div class="skill-item" *ngFor="let skill of skills">
-                <div class="skill-info">
-                  <h5>{{ skill.name }}</h5>
-                  <div class="skill-meta">
-                    <span>Years: {{ skill.yearsExperience }}</span>
-                    <div class="skill-rating">
-                      <span class="star-filled" *ngFor="let star of getProficiencyStars(skill.proficiencyLevel)">★</span>
-                      <span class="star-empty" *ngFor="let star of getEmptyStars(skill.proficiencyLevel)">☆</span>
-                    </div>
+          </div>
+
+          <!-- Work Section -->
+          <div class="section">
+            <h2><span class="section-icon">💼</span> Work</h2>
+            <div *ngIf="!isEditing">
+              <div class="info-grid">
+                <div class="info-item" *ngIf="profile?.companyName">
+                  <span class="info-icon">🏢</span>
+                  <div>
+                    <h3>Company</h3>
+                    <p>{{ profile?.companyName }}</p>
                   </div>
                 </div>
-                <button class="btn btn-sm btn-danger" (click)="deleteSkill(skill.id)">
-                  <fa-icon [icon]="faTrash"></fa-icon>
-                </button>
-              </div>
-              <div *ngIf="skills.length === 0" class="no-skills">
-                No skills added yet.
+                <div class="info-item" *ngIf="profile?.department">
+                  <span class="info-icon">👥</span>
+                  <div>
+                    <h3>Department</h3>
+                    <p>{{ profile?.department }}</p>
+                  </div>
+                </div>
               </div>
             </div>
+            <div *ngIf="isEditing">
+              <div class="form-group">
+                <label for="companyName">Company</label>
+                <input type="text" class="form-control" id="companyName" formControlName="companyName">
+              </div>
+              <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" class="form-control" id="department" formControlName="department">
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Section -->
+          <div class="section">
+            <h2><span class="section-icon">📱</span> Contact</h2>
+            <div *ngIf="!isEditing && profile?.phoneNumber">
+              <p>{{ profile?.phoneNumber }}</p>
+            </div>
+            <div *ngIf="isEditing">
+              <div class="form-group">
+                <label for="phoneNumber">Phone</label>
+                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="profile-sidebar">
+      <!-- Skills Card -->
+      <div class="skills-card">
+        <div class="card-header">
+          <h2><span class="header-icon">💻</span> Skills</h2>
+          <button *ngIf="isMyProfile" class="btn btn-icon" (click)="addSkill()">
+            <span class="action-icon">➕</span>
+          </button>
+        </div>
+
+        <!-- Add Skill Form -->
+        <form [formGroup]="newSkillForm" *ngIf="showSkillForm && isMyProfile" class="add-skill-form">
+          <div class="form-group">
+            <label for="skillName">Skill Name</label>
+            <input type="text" class="form-control" id="skillName" placeholder="Skill name" formControlName="name">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Proficiency</label>
+              <div class="rating">
+                <span *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]" 
+                      (click)="newSkillForm.get('proficiencyLevel')?.setValue(star)"
+                      [class.active]="star <= newSkillForm.get('proficiencyLevel')?.value">
+                  ★
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="yearsExperience">Years</label>
+              <input type="number" class="form-control" id="yearsExperience" formControlName="yearsExperience" min="1">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="cancelAddSkill()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="saveNewSkill()">Save</button>
+          </div>
+        </form>
+
+        <!-- Skills List -->
+        <div class="skills-list">
+          <div class="skill-item" *ngFor="let skill of profile?.skills">
+            <div class="skill-info">
+              <h3>{{ skill.name }}</h3>
+              <div class="skill-meta">
+                <span>{{ skill.yearsExperience }} year{{ skill.yearsExperience > 1 ? 's' : '' }}</span>
+                <div class="stars">
+                  <span *ngFor="let star of getProficiencyStars(skill.proficiencyLevel)">★</span>
+                  <span *ngFor="let star of getEmptyStars(skill.proficiencyLevel)">☆</span>
+                </div>
+              </div>
+            </div>
+            <button *ngIf="isMyProfile" class="btn btn-icon btn-danger" (click)="deleteSkill(skill.id)">
+              <span class="action-icon">🗑️</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Message Modal -->
+  <div class="message-modal" *ngIf="showMessageForm">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeMessageForm()">
+        <span class="action-icon">✖️</span>
+      </button>
+      
+      <h2>Send Message</h2>
+      
+      <div *ngIf="messageSent" class="success-message">
+        <p>Your message has been sent successfully!</p>
+      </div>
+      
+      <form *ngIf="!messageSent" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" class="form-control" id="subject" formControlName="subject">
+        </div>
+        <div class="form-group">
+          <label for="content">Message</label>
+          <textarea class="form-control" id="content" formControlName="content" rows="5"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeMessageForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send <span class="action-icon">✉️</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

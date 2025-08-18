@@ -96,10 +96,24 @@ decodeAndSetUser(token: string): void {
     return this.currentUserSubject.value;
   }
 
+  isFirstLogin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user && user.firstLogin === "true";
+  }
+  
+
   getCurrentUsername(): string | null {
     const user = this.currentUserSubject.value;
-    return user?.username || user?.sub || null;
+    if (!user) return null;
+  
+    // JWT claim URIs from your payload
+    return (
+      user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
+      user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ||
+      null
+    );
   }
+  
 
   isAuthenticated(): boolean {
     const token = this.getToken();

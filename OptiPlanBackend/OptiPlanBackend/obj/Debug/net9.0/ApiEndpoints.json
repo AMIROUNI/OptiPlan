@@ -642,16 +642,6 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.UserProfileController",
-    "Method": "GetProfile",
-    "RelativePath": "api/UserProfile",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OptiPlanBackend.Controllers.UserProfileController",
     "Method": "UpdateProfile",
     "RelativePath": "api/UserProfile",
     "HttpMethod": "PUT",
@@ -668,6 +658,22 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.UserProfileController",
+    "Method": "GetProfile",
+    "RelativePath": "api/UserProfile/{username}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "username",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.UserProfileController",
     "Method": "InitializeProfile",
     "RelativePath": "api/UserProfile/initialize-profile",
     "HttpMethod": "POST",
@@ -675,9 +681,54 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "profileDto",
-        "Type": "OptiPlanBackend.Dto.UserProfileDto",
-        "IsRequired": true
+        "Name": "Bio",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Skills",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "FullName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "JobTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Avatar",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Background",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "CompanyName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Department",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Country",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

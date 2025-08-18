@@ -1,167 +1,166 @@
-import { Component, OnInit } from '@angular/core';
-
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEdit, faSave, faTrash, faPlus, faUser, faBriefcase, faPhone, faBuilding, faGlobe, faCode } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../models/dto/profile.dto';
-import { Skill } from '../../models/skill';
 import { UserProfileService } from '../../services/user-profile.service';
 import { SkillService } from '../../services/skill.service';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FontAwesomeModule]
+  encapsulation: ViewEncapsulation.None, // Disable view encapsulation to ensure styles apply
+  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true
 })
 export class ProfileComponent implements OnInit {
   profile: UserProfile | null = null;
-  skills: Skill[] = [];
   isEditing = false;
   isLoading = true;
-  error: string | null = null;
-  
-  // Icons
-  faEdit = faEdit;
-  faSave = faSave;
-  faTrash = faTrash;
-  faPlus = faPlus;
-  faUser = faUser;
-  faBriefcase = faBriefcase;
-  faPhone = faPhone;
-  faBuilding = faBuilding;
-  faGlobe = faGlobe;
-  faCode = faCode;
+  isMyProfile = false;
+  showSkillForm = false;
+  showMessageForm = false;
+  messageSent = false;
 
   profileForm: FormGroup;
   newSkillForm: FormGroup;
+  messageForm: FormGroup;
+  username : string = "";
 
   constructor(
     private profileService: UserProfileService,
     private skillService: SkillService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {
     this.profileForm = this.fb.group({
-      fullName: ['', Validators.required],
-      jobTitle: [''],
-      phoneNumber: [''],
-      companyName: [''],
-      department: [''],
-      country: [''],
-      bio: ['']
+      fullName: ['', [Validators.required, Validators.maxLength(100)]],
+      jobTitle: ['', Validators.maxLength(100)],
+      phoneNumber: ['', Validators.maxLength(20)],
+      companyName: ['', Validators.maxLength(100)],
+      department: ['', Validators.maxLength(100)],
+      country: ['', Validators.maxLength(50)],
+      bio: ['', Validators.maxLength(1000)]
     });
 
     this.newSkillForm = this.fb.group({
-      name: ['', Validators.required],
-      proficiencyLevel: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      proficiencyLevel: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
       yearsExperience: [1, [Validators.required, Validators.min(1)]]
+    });
+
+    this.messageForm = this.fb.group({
+      subject: ['', [Validators.required, Validators.maxLength(100)]],
+      content: ['', [Validators.required, Validators.maxLength(1000)]]
     });
   }
 
   ngOnInit(): void {
+    console.log('ProfileComponent initialized'); // Debug
+    this.username= this.route.snapshot.paramMap.get("username") ?? "";
+    const currentUser = this.authService.getCurrentUsername();
+    this.isMyProfile = !this.username || this.username === currentUser;
     this.loadProfile();
-    this.loadSkills();
+
+
   }
+
+
 
   loadProfile(): void {
     this.isLoading = true;
-    this.profileService.GetProfile().subscribe({
+    this.profileService.GetProfile(this.username).subscribe({
       next: (data) => {
-        this.profile = data;
-        this.profileForm.patchValue({
-          fullName: data.fullName,
-          jobTitle: data.jobTitle,
-          phoneNumber: data.phoneNumber,
-          companyName: data.companyName,
-          department: data.department,
-          country: data.country,
-          bio: data.bio
-        });
+        this.profile = data ?? {
+          fullName: 'Default Name',
+          jobTitle: 'N/A',
+          country: '',
+          bio: '',
+          companyName: '',
+          department: '',
+          phoneNumber: '',
+          avatarUrl: '',
+          skills: []
+        };
+        this.profileForm.patchValue(this.profile);
         this.isLoading = false;
       },
       error: (err) => {
-        this.error = 'Failed to load profile';
+        console.error('Error loading profile:', err);
         this.isLoading = false;
-        console.error(err);
-      }
-    });
-  }
-
-  loadSkills(): void {
-    this.skillService.Get().subscribe({
-      next: (data: any) => {
-        this.skills = Array.isArray(data) ? data : [];
-      },
-      error: (err) => {
-        console.error('Failed to load skills', err);
       }
     });
   }
 
   toggleEdit(): void {
     this.isEditing = !this.isEditing;
-    if (!this.isEditing && this.profile) {
-      this.profileForm.patchValue({
-        fullName: this.profile.fullName,
-        jobTitle: this.profile.jobTitle,
-        phoneNumber: this.profile.phoneNumber,
-        companyName: this.profile.companyName,
-        department: this.profile.department,
-        country: this.profile.country,
-        bio: this.profile.bio
-      });
+    if (!this.isEditing) {
+      this.saveProfile();
     }
   }
 
   saveProfile(): void {
     if (this.profileForm.valid && this.profile) {
-      const updatedProfile = {
-        ...this.profile,
-        ...this.profileForm.value
-      };
-
+      const updatedProfile = { ...this.profile, ...this.profileForm.value };
       this.profileService.UpdateProfile(updatedProfile).subscribe({
         next: () => {
           this.profile = updatedProfile;
           this.isEditing = false;
         },
-        error: (err) => {
-          console.error('Failed to update profile', err);
-        }
+        error: (err) => console.error('Error updating profile:', err)
       });
     }
   }
 
-  addSkill(): void {
+  addSkill(): void { 
+    this.showSkillForm = true; 
+  }
+
+  saveNewSkill(): void {
     if (this.newSkillForm.valid) {
       this.skillService.AddSkill(this.newSkillForm.value).subscribe({
         next: () => {
-          this.loadSkills();
-          this.newSkillForm.reset({
-            proficiencyLevel: 1,
-            yearsExperience: 1
-          });
+          this.loadProfile();
+          this.newSkillForm.reset({ proficiencyLevel: 5, yearsExperience: 1 });
+          this.showSkillForm = false;
         },
-        error: (err) => {
-          console.error('Failed to add skill', err);
-        }
+        error: (err) => console.error('Error adding skill:', err)
       });
     }
+  }
+
+  cancelAddSkill(): void {
+    this.showSkillForm = false;
+    this.newSkillForm.reset({ proficiencyLevel: 5, yearsExperience: 1 });
   }
 
   deleteSkill(skillId: string): void {
     if (confirm('Are you sure you want to delete this skill?')) {
       this.skillService.Delete(skillId).subscribe({
-        next: () => {
-          this.loadSkills();
-        },
-        error: (err) => {
-          console.error('Failed to delete skill', err);
-        }
+        next: () => this.loadProfile(),
+        error: (err) => console.error('Error deleting skill:', err)
       });
+    }
+  }
+
+  openMessageForm(): void { 
+    this.showMessageForm = true;
+    this.messageSent = false;
+  }
+
+  closeMessageForm(): void { 
+    this.showMessageForm = false;
+    this.messageForm.reset();
+  }
+
+  sendMessage(): void {
+    if (this.messageForm.valid) {
+      console.log('Message sent:', this.messageForm.value); // Placeholder for actual service call
+      this.messageSent = true;
+      setTimeout(() => this.closeMessageForm(), 2000);
     }
   }
 

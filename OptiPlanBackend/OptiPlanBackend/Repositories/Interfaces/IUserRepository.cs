@@ -9,5 +9,8 @@ namespace OptiPlanBackend.Repositories.Interfaces
         public  Task<User> findUserByUsername(string username);
 
         public  Task<IEnumerable<User>> getAllUserNotADMIN();
+
+
+        public Task<User> GetUserByUsernameAsync(string name);
     }
 }

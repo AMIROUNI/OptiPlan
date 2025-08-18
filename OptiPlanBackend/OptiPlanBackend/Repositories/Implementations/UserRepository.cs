@@ -43,5 +43,11 @@ namespace OptiPlanBackend.Repositories.Implementations
             return  await _context.Users.Where(u => u.Role != Enums.Role.Admin)
                 .ToListAsync();
         }
+
+        public async Task<User> GetUserByUsernameAsync(string name)
+        {
+           return await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == name);
+        }
     }
 }

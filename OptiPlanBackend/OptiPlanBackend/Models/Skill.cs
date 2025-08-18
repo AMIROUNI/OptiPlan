@@ -10,7 +10,7 @@
         public UserProfile UserProfile { get; set; }
 
         // Optional attributes
-        public int ProficiencyLevel { get; set; }  // Example: 1–5
-        public int YearsExperience { get; set; }   // Optional
+        public int ProficiencyLevel { get; set; }   
+        public int YearsExperience { get; set; }   
     }
 }

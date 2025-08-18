@@ -135,4 +135,9 @@ public class UserService : IUserService
         _userRepository.Delete(user);
         return await _userRepository.SaveChangesAsync();
     }
+
+    public async Task<User> GetUserByUsernameAsync(string name)
+    {
+      return await _userRepository.GetUserByUsernameAsync(name);
+    }
 }

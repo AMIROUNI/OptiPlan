@@ -6,6 +6,7 @@ using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Implementations;
 using OptiPlanBackend.Services.Interfaces;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace OptiPlanBackend.Controllers
 {
@@ -17,37 +18,40 @@ namespace OptiPlanBackend.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ILogger<UserProfileController> _logger;
+        private readonly IUploadService _uploadService;
         private readonly IUserService _userService;
 
         public UserProfileController(IUserProfileService userProfileService,
            ICurrentUserService currentUserService , ILogger<UserProfileController> logger
-            ,IUserService userService)
+            ,IUserService userService,
+           IUploadService uploadService)
         {
             _userProfileService = userProfileService;
             _currentUserService = currentUserService;   
             _logger = logger;
             _userService = userService;
+            _uploadService = uploadService;
         }
 
 
 
-        [HttpGet]
+        [HttpGet("{username}")]
         [Authorize]
-        public async Task<IActionResult> GetProfile() {
+        public async Task<IActionResult> GetProfile(string username) {
 
             try
             { 
-
-                var userId = _currentUserService.UserId.Value;
-                if (userId == Guid.Empty)
+                if(string.IsNullOrEmpty(username))
                 {
-                    return BadRequest("User ID cannot be empty");
+                    return BadRequest("Username cannot be null or empty");
                 }
+                var user = await _userService.GetUserByUsernameAsync(username);
 
-                var userProfile = await _userProfileService.GetUserByIdAsync(userId);
-                var user = await _userService.GetUserByIdAsync(userId);
 
-                var userProfileDto = new UserProfileDto
+                var userProfile = await _userProfileService.GetUserByIdAsync(user.Id);
+       
+
+                    var userProfileDto = new UserProfileDto
                 {
                     Bio = userProfile.Bio,
                     Skills = userProfile.Skills.Select(s => new SkillDto
@@ -125,20 +129,20 @@ namespace OptiPlanBackend.Controllers
 
 
 
-
         [HttpPost("initialize-profile")]
         [Authorize]
-        public async Task<IActionResult> InitializeProfile([FromBody] UserProfileDto profileDto)
+        public async Task<IActionResult> InitializeProfile([FromForm] InitializeProfileDto profileDto) 
         {
             try
             {
                 var userGuid = _currentUserService.UserId.Value;
                 if (userGuid == Guid.Empty)
                 {
+                    _logger.LogError("in this positon  *****************************************");
                     return BadRequest("Invalid user ID");
                 }
 
-                // Get or create user profile
+                // Get or create profile
                 var userProfile = await _userProfileService.GetUserByIdAsync(userGuid);
                 var isNewProfile = false;
 
@@ -154,56 +158,92 @@ namespace OptiPlanBackend.Controllers
                 }
                 else
                 {
-                    userProfile.Bio = profileDto.Bio ?? userProfile.Bio;
+                    if (!string.IsNullOrWhiteSpace(profileDto.Bio))
+                        userProfile.Bio = profileDto.Bio;
+
                     userProfile.UpdatedAt = DateTime.UtcNow;
                 }
-
-                // Process skills if provided
-                if (profileDto.Skills != null && profileDto.Skills.Any())
+                List<SkillDto> skillDtos = new();
+                if (!string.IsNullOrWhiteSpace(profileDto.Skills))
                 {
-                    // Clear existing skills if this is not a new profile
-                    if (!isNewProfile && userProfile.Skills.Any())
-                    {
-                        userProfile.Skills.Clear();
-                    }
+                    skillDtos = JsonSerializer.Deserialize<List<SkillDto>>(profileDto.Skills) ?? new();
+                }
 
-                    // Add new skills
-                    foreach (var skillDto in profileDto.Skills)
-                    {
-                        var skill = new Skill
+
+              
+
+                    foreach (var skillDto in skillDtos)
+                    userProfile.Skills.Add(new Skill
                         {
                             Name = skillDto.Name,
                             ProficiencyLevel = skillDto.ProficiencyLevel,
                             YearsExperience = skillDto.YearsExperience,
                             UserProfileId = userProfile.Id
-                        };
-                        userProfile.Skills.Add(skill);
-                    }
-                }
+                        });
+                    
+                
 
-                // Save profile changes
                 if (isNewProfile)
-                {
                     await _userProfileService.CreateAsync(userProfile);
-                }
                 else
-                {
                     await _userProfileService.UpdateAsync(userProfile);
-                }
 
-                // Update user's firstLogin status
+                // Update User info
                 var user = await _userService.GetUserByIdAsync(userGuid);
                 if (user != null)
                 {
-                    user.firstLogin = false;
+                    if (!string.IsNullOrWhiteSpace(profileDto.FullName))
+                        user.FullName = profileDto.FullName;
+
+                    if (!string.IsNullOrWhiteSpace(profileDto.JobTitle))
+                        user.JobTitle = profileDto.JobTitle;
+
+                    if (!string.IsNullOrWhiteSpace(profileDto.PhoneNumber))
+                        user.PhoneNumber = profileDto.PhoneNumber;
+
+                    if (!string.IsNullOrWhiteSpace(profileDto.CompanyName))
+                        user.CompanyName = profileDto.CompanyName;
+
+                    if (!string.IsNullOrWhiteSpace(profileDto.Department))
+                        user.Department = profileDto.Department;
+
+                    if (!string.IsNullOrWhiteSpace(profileDto.Country))
+                        user.Country = profileDto.Country;
+
+                    // Upload Avatar if provided
+                    if (profileDto.Avatar != null)
+                    {
+                        user.AvatarUrl = await _uploadService.UploadImageAsync(profileDto.Avatar, "avatars");
+                    }
+
+                    // Upload Background if provided
+                    if (profileDto.Background != null)
+                    {
+                        user.BackGround = await _uploadService.UploadImageAsync(profileDto.Background, "backgrounds");
+                    }
+
+                    if (user.firstLogin)
+                        user.firstLogin = false;
+
                     await _userService.UpdateAsync(user);
                 }
 
                 return Ok(new
                 {
                     Message = "Profile initialized successfully",
-                    Profile = userProfile,
-                    SkillsAdded = profileDto.Skills?.Count ?? 0
+                    Profile = new
+                    {
+                        user.FullName,
+                        user.JobTitle,
+                        user.PhoneNumber,
+                        user.AvatarUrl,
+                        user.BackGround,
+                        user.CompanyName,
+                        user.Department,
+                        user.Country,
+                        userProfile.Bio,
+                        Skills = userProfile.Skills
+                    }
                 });
             }
             catch (Exception ex)
@@ -212,7 +252,6 @@ namespace OptiPlanBackend.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
 
     }
 }

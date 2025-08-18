@@ -14,6 +14,7 @@ import { ChatBotUserComponent } from './chat-bot-user/chat-bot-user.component';
 import { ChatUserComponent } from './chat-user/chat-user.component';
 import { ChatBoxComponent } from './chat-box/chat-box.component';
 import { ProfileComponent } from './user/profile/profile.component';
+import { InitializeProfileComponent } from './user/initialize-profile/initialize-profile.component';
 
 export const routes: Routes = [
     {path:'register',component: RegisterComponent},
@@ -27,13 +28,14 @@ export const routes: Routes = [
     {path:'invitation-list',component:InvitationListComponent},
     {path:'my-projects',component:DisplayProjectComponent},
     {path:'chat-bot',component:ChatBotUserComponent},
-    {path:'profile',component:ProfileComponent},
+    {path:'profile/:username',component:ProfileComponent},
     
 
     //**************************************************     */
   
       {path:'chat-user',component:ChatUserComponent},
-      {path:'chat-box',component:ChatBoxComponent}
+      {path:'chat-box',component:ChatBoxComponent},
+      {path:'initialize-profile',component:InitializeProfileComponent}
 
      //**************************************************     */
 ];
