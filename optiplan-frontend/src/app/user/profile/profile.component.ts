@@ -83,6 +83,7 @@ export class ProfileComponent implements OnInit {
           department: '',
           phoneNumber: '',
           avatarUrl: '',
+          backGround:'',
           skills: []
         };
         this.profileForm.patchValue(this.profile);

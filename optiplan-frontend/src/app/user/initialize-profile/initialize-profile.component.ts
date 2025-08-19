@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { Skill } from '../../models/skill';
 import { UserProfileService } from '../../services/user-profile.service';
 import { AuthService } from '../../services/auth.service';
-import { UserProfile } from '../../models/dto/profile.dto';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,11 +15,9 @@ import { CommonModule } from '@angular/common';
 export class InitializeProfileComponent implements OnInit {
   profileForm: FormGroup;
   currentStep: number = 1;
-  totalSteps: number = 3;
+  totalSteps: number = 2;
   profilePicturePreview: string | null = null;
   backgroundImagePreview: string | null = null;
-  skills: Skill[] = [];
-  newSkill: string = '';
   isLoading: boolean = false;
   errorMessage: string | null = null;
   showModal: boolean = true;
@@ -32,17 +28,12 @@ export class InitializeProfileComponent implements OnInit {
     private authService: AuthService
   ) {
     this.profileForm = this.fb.group({
-      fullName: ['', Validators.required],
-      jobTitle: ['', Validators.required],
-      bio: ['', [Validators.maxLength(500)]],
-      country: [''],
-      companyName: [''],
-      department: [''],
-      phoneNumber: ['']
+      bio: ['', [Validators.maxLength(500)]]
     });
   }
 
   ngOnInit(): void {
+    // Check if it's the user's first login
    
   }
 
@@ -70,23 +61,6 @@ export class InitializeProfileComponent implements OnInit {
     }
   }
 
-  addSkill(): void {
-    if (this.newSkill.trim()) {
-      this.skills.push({
-        id: crypto.randomUUID(),
-        name: this.newSkill.trim(),
-        userProfileId: '',
-        proficiencyLevel: 1,
-        yearsExperience: 0
-      });
-      this.newSkill = '';
-    }
-  }
-
-  removeSkill(skill: Skill): void {
-    this.skills = this.skills.filter(s => s.id !== skill.id);
-  }
-
   nextStep(): void {
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
@@ -104,38 +78,25 @@ export class InitializeProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.profileForm.valid) {
-      this.isLoading = true;
-      const profile: UserProfile = {
-        fullName: this.profileForm.get('fullName')?.value,
-        jobTitle: this.profileForm.get('jobTitle')?.value,
-        bio: this.profileForm.get('bio')?.value,
-        country: this.profileForm.get('country')?.value,
-        companyName: this.profileForm.get('companyName')?.value,
-        department: this.profileForm.get('department')?.value,
-        phoneNumber: this.profileForm.get('phoneNumber')?.value,
-        skills: this.skills,
-        avatarUrl: ''
-      };
+    this.isLoading = true;
+    const profile = {
+      bio: this.profileForm.get('bio')?.value || ''
+    };
 
-      const profilePictureInput = document.getElementById('profilePicture') as HTMLInputElement;
-      const backgroundImageInput = document.getElementById('backgroundImage') as HTMLInputElement;
-      const avatarFile = profilePictureInput?.files?.[0];
-      const backgroundFile = backgroundImageInput?.files?.[0];
+    const avatarFile = (document.getElementById('profilePicture') as HTMLInputElement)?.files?.[0];
+    const backgroundFile = (document.getElementById('backgroundImage') as HTMLInputElement)?.files?.[0];
 
-      this.userProfileService.InitializeProfile(profile, avatarFile, backgroundFile)
-        .subscribe({
-          next: () => {
-            this.isLoading = false;
-            this.showModal = false;
-            this.errorMessage = null;
-          },
-          error: (err) => {
-            this.isLoading = false;
-            this.errorMessage = 'Failed to initialize profile. Please try again.';
-            console.error(err);
-          }
-        });
-    }
+    this.userProfileService.InitializeProfile(profile, avatarFile, backgroundFile).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.showModal = false;
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = 'Failed to initialize profile. Please try again.';
+        console.error(err);
+      }
+    });
   }
 }

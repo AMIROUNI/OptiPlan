@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using OptiPlanBackend.Dto;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Implementations;
@@ -131,127 +132,45 @@ namespace OptiPlanBackend.Controllers
 
         [HttpPost("initialize-profile")]
         [Authorize]
-        public async Task<IActionResult> InitializeProfile([FromForm] InitializeProfileDto profileDto) 
+        public async Task<IActionResult> InitializeProfile([FromForm] IFormCollection form)
         {
-            try
+            var bio = form["Bio"].ToString();
+            var avatar = form.Files.GetFile("Avatar");
+            var background = form.Files.GetFile("Background");
+
+         
+
+            var profileDto = new InitializeProfileDto
             {
-                var userGuid = _currentUserService.UserId.Value;
-                if (userGuid == Guid.Empty)
-                {
-                    _logger.LogError("in this positon  *****************************************");
-                    return BadRequest("Invalid user ID");
-                }
+                Bio = bio,
+                Avatar = avatar,
+                Background = background,
+         
+            };
 
-                // Get or create profile
-                var userProfile = await _userProfileService.GetUserByIdAsync(userGuid);
-                var isNewProfile = false;
+            var userId = _currentUserService.UserId;
+            var user = await _userProfileService.InitializeProfileAsync(userId.Value, profileDto);
 
-                if (userProfile == null)
-                {
-                    userProfile = new UserProfile
-                    {
-                        UserId = userGuid,
-                        Bio = profileDto.Bio ?? string.Empty,
-                        CreatedAt = DateTime.UtcNow
-                    };
-                    isNewProfile = true;
-                }
-                else
-                {
-                    if (!string.IsNullOrWhiteSpace(profileDto.Bio))
-                        userProfile.Bio = profileDto.Bio;
-
-                    userProfile.UpdatedAt = DateTime.UtcNow;
-                }
-                List<SkillDto> skillDtos = new();
-                if (!string.IsNullOrWhiteSpace(profileDto.Skills))
-                {
-                    skillDtos = JsonSerializer.Deserialize<List<SkillDto>>(profileDto.Skills) ?? new();
-                }
-
-
-              
-
-                    foreach (var skillDto in skillDtos)
-                    userProfile.Skills.Add(new Skill
-                        {
-                            Name = skillDto.Name,
-                            ProficiencyLevel = skillDto.ProficiencyLevel,
-                            YearsExperience = skillDto.YearsExperience,
-                            UserProfileId = userProfile.Id
-                        });
-                    
-                
-
-                if (isNewProfile)
-                    await _userProfileService.CreateAsync(userProfile);
-                else
-                    await _userProfileService.UpdateAsync(userProfile);
-
-                // Update User info
-                var user = await _userService.GetUserByIdAsync(userGuid);
-                if (user != null)
-                {
-                    if (!string.IsNullOrWhiteSpace(profileDto.FullName))
-                        user.FullName = profileDto.FullName;
-
-                    if (!string.IsNullOrWhiteSpace(profileDto.JobTitle))
-                        user.JobTitle = profileDto.JobTitle;
-
-                    if (!string.IsNullOrWhiteSpace(profileDto.PhoneNumber))
-                        user.PhoneNumber = profileDto.PhoneNumber;
-
-                    if (!string.IsNullOrWhiteSpace(profileDto.CompanyName))
-                        user.CompanyName = profileDto.CompanyName;
-
-                    if (!string.IsNullOrWhiteSpace(profileDto.Department))
-                        user.Department = profileDto.Department;
-
-                    if (!string.IsNullOrWhiteSpace(profileDto.Country))
-                        user.Country = profileDto.Country;
-
-                    // Upload Avatar if provided
-                    if (profileDto.Avatar != null)
-                    {
-                        user.AvatarUrl = await _uploadService.UploadImageAsync(profileDto.Avatar, "avatars");
-                    }
-
-                    // Upload Background if provided
-                    if (profileDto.Background != null)
-                    {
-                        user.BackGround = await _uploadService.UploadImageAsync(profileDto.Background, "backgrounds");
-                    }
-
-                    if (user.firstLogin)
-                        user.firstLogin = false;
-
-                    await _userService.UpdateAsync(user);
-                }
-
-                return Ok(new
-                {
-                    Message = "Profile initialized successfully",
-                    Profile = new
-                    {
-                        user.FullName,
-                        user.JobTitle,
-                        user.PhoneNumber,
-                        user.AvatarUrl,
-                        user.BackGround,
-                        user.CompanyName,
-                        user.Department,
-                        user.Country,
-                        userProfile.Bio,
-                        Skills = userProfile.Skills
-                    }
-                });
-            }
-            catch (Exception ex)
+            return Ok(new
             {
-                _logger.LogError(ex, "Error initializing profile for user {UserId}", _currentUserService.UserId);
-                return StatusCode(500, "Internal server error");
-            }
+                Message = "Profile initialized successfully",
+                User = new
+                {
+                    user.FullName,
+                    user.JobTitle,
+                    user.PhoneNumber,
+                    user.AvatarUrl,
+                    user.BackGround,
+                    user.CompanyName,
+                    user.Department,
+                    user.Country,
+                    user.firstLogin,
+                    Bio = user.Profile?.Bio,
+                    Skills = user.Profile?.Skills
+                }
+            });
         }
+
 
     }
 }

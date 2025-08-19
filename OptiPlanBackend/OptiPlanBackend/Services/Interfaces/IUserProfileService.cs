@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Models;
+﻿using OptiPlanBackend.Dto;
+using OptiPlanBackend.Models;
 
 namespace OptiPlanBackend.Services.Interfaces
 {
@@ -12,7 +13,10 @@ namespace OptiPlanBackend.Services.Interfaces
         Task<bool> DeleteAsync(UserProfile userProfile);
         Task<UserProfile> GetUserByIdAsync(Guid userId);
 
- 
+        public  Task<User> InitializeProfileAsync(Guid userId, InitializeProfileDto dto);
+
+
+
     }
 }
  

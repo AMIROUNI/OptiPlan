@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Models;
+﻿using OptiPlanBackend.Dto;
+using OptiPlanBackend.Models;
 using OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Interfaces;
 
@@ -41,6 +42,11 @@ namespace OptiPlanBackend.Services.Implementations
         public async Task<UserProfile> GetUserByIdAsync(Guid userId)
         {
             return await _userProfileRepository.GetUserByIdAsync(userId);
+        }
+
+        public async Task<User> InitializeProfileAsync(Guid userId, InitializeProfileDto dto)
+        {
+            return await _userProfileRepository.InitializeProfileAsync(userId, dto);
         }
 
         public async Task<bool> UpdateAsync(UserProfile userProfile)

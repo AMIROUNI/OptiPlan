@@ -8,6 +8,7 @@ export interface  UserProfile{
     jobTitle: string,
     phoneNumber: string ,
     companyName:string ,
-    department:string
-    avatarUrl:string
+    department:string,
+    avatarUrl:string,
+    backGround?:string
 }

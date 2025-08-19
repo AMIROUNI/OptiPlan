@@ -681,53 +681,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Bio",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Skills",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "FullName",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "JobTitle",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "PhoneNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Avatar",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "Background",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "CompanyName",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Department",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Country",
-        "Type": "System.String",
+        "Name": "form",
+        "Type": "Microsoft.AspNetCore.Http.IFormCollection",
         "IsRequired": false
       }
     ],

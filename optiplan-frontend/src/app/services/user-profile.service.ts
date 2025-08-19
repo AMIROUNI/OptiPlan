@@ -23,36 +23,21 @@ export class UserProfileService {
     return this.http.put(`${this.apiUrl}`,newDataProfile)
   }
 
-  InitializeProfile(profile: UserProfile, avatarFile?: File, backgroundFile?: File) {
+  InitializeProfile(profile: { bio: any; }, avatarFile?: File, backgroundFile?: File) {
     const formData = new FormData();
   
-    // Normal fields
     formData.append("Bio", profile.bio || "");
-    formData.append("FullName", profile.fullName || "");
-    formData.append("JobTitle", profile.jobTitle || "");
-    formData.append("PhoneNumber", profile.phoneNumber || "");
-    formData.append("CompanyName", profile.companyName || "");
-    formData.append("Department", profile.department || "");
-    formData.append("Country", profile.country || "");
-  
-    // Skills → convert to JSON string (because backend expects List<SkillDto>)
-    if (profile.skills && profile.skills.length > 0) {
-      formData.append("Skills", JSON.stringify(profile.skills));
-    }
-  
-    // Files
+   
     if (avatarFile) {
-      formData.append("Avatar", avatarFile);
+      formData.append("Avatar", avatarFile, avatarFile.name);
     }
     if (backgroundFile) {
-      formData.append("Background", backgroundFile);
+      formData.append("Background", backgroundFile, backgroundFile.name);
     }
-
-
-    console.log(formData)
   
     return this.http.post(`${this.apiUrl}/initialize-profile`, formData);
   }
+  
   
 
 }

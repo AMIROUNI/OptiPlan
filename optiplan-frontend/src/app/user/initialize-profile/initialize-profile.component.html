@@ -1,176 +1,118 @@
 <div class="profile-completion-overlay" [class.active]="showModal">
-    <div class="profile-completion-container animate__animated animate__fadeInUp">
-      <button class="btn-close-overlay" (click)="skipProfile()">×</button>
-      
-      <div class="auth-header">
-        <h2>Complete Your Professional Profile</h2>
-        <p>Add details to make your profile stand out and connect with professionals</p>
-  
-        <div class="progress-container">
-          <div class="progress-steps">
-            <span class="progress-step" [class.active]="currentStep >= 1">Basic Info</span>
-            <span class="progress-step" [class.active]="currentStep >= 2">Images</span>
-            <span class="progress-step" [class.active]="currentStep >= 3">Skills</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress" [style.width.%]="(currentStep / totalSteps) * 100"></div>
-          </div>
+  <div class="profile-completion-container animate__animated animate__fadeInUp">
+    <button class="btn-close-overlay" (click)="skipProfile()">×</button>
+    
+    <div class="auth-header">
+      <h2>Complete Your Professional Profile</h2>
+      <p>Add details to make your profile stand out and connect with professionals</p>
+
+      <div class="progress-container">
+        <div class="progress-steps">
+          <span class="progress-step" [class.active]="currentStep >= 1">Bio</span>
+          <span class="progress-step" [class.active]="currentStep >= 2">Images</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="(currentStep / totalSteps) * 100"></div>
         </div>
       </div>
-  
-      <div class="auth-body">
-        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-          <!-- Step 1: Basic Info -->
-          <div class="step" [class.active]="currentStep === 1" *ngIf="currentStep === 1">
-            <div class="floating-label">
-              <input type="text" id="fullName" formControlName="fullName" placeholder=" " required>
-              <label for="fullName">Full Name</label>
-              <small *ngIf="profileForm.get('fullName')?.hasError('required') && profileForm.get('fullName')?.touched" class="error-message">
-                <i class="fas fa-exclamation-circle"></i> Full Name is required
-              </small>
-            </div>
-  
-            <div class="floating-label">
-              <input type="text" id="jobTitle" formControlName="jobTitle" placeholder=" " required>
-              <label for="jobTitle">Job Title</label>
-              <small *ngIf="profileForm.get('jobTitle')?.hasError('required') && profileForm.get('jobTitle')?.touched" class="error-message">
-                <i class="fas fa-exclamation-circle"></i> Job Title is required
-              </small>
-            </div>
-  
-            <div class="floating-label">
-              <textarea id="bio" formControlName="bio" rows="3" placeholder=" "></textarea>
-              <label for="bio">Bio</label>
-              <small class="char-count">{{ profileForm.get('bio')?.value?.length || 0 }}/500</small>
-            </div>
-  
-            <div class="floating-label">
-              <input type="text" id="country" formControlName="country" placeholder=" ">
-              <label for="country">Country</label>
-            </div>
-  
-            <div class="floating-label">
-              <input type="text" id="companyName" formControlName="companyName" placeholder=" ">
-              <label for="companyName">Company Name</label>
-            </div>
-  
-            <div class="floating-label">
-              <input type="text" id="department" formControlName="department" placeholder=" ">
-              <label for="department">Department</label>
-            </div>
-  
-            <div class="floating-label">
-              <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder=" ">
-              <label for="phoneNumber">Phone Number</label>
-            </div>
+    </div>
+
+    <div class="auth-body">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Bio -->
+        <div class="step" [class.active]="currentStep === 1" *ngIf="currentStep === 1">
+          <div class="floating-label">
+            <textarea id="bio" formControlName="bio" rows="5" placeholder=" "></textarea>
+            <label for="bio">Bio</label>
+            <small class="char-count">{{ profileForm.get('bio')?.value?.length || 0 }}/500</small>
           </div>
-  
-          <!-- Step 2: Profile Images -->
-          <div class="step" [class.active]="currentStep === 2" *ngIf="currentStep === 2">
-            <div class="image-upload-group">
-              <div class="image-upload">
-                <label>Profile Picture</label>
-                <div class="upload-container">
-                  <div class="preview" *ngIf="profilePicturePreview; else emptyProfile">
-                    <img [src]="profilePicturePreview" alt="Profile Preview">
+        </div>
+
+        <!-- Step 2: Profile Images -->
+        <div class="step" [class.active]="currentStep === 2" *ngIf="currentStep === 2">
+          <div class="image-upload-group">
+            <div class="image-upload">
+              <label>Profile Picture</label>
+              <div class="upload-container">
+                <div class="preview" *ngIf="profilePicturePreview; else emptyProfile">
+                  <img [src]="profilePicturePreview" alt="Profile Preview">
+                </div>
+                <ng-template #emptyProfile>
+                  <div class="preview empty">
+                    <i class="fas fa-user"></i>
                   </div>
-                  <ng-template #emptyProfile>
-                    <div class="preview empty">
-                      <i class="fas fa-user"></i>
-                    </div>
-                  </ng-template>
-                  <div class="upload-btn">
-                    <input type="file" id="profilePicture" (change)="onProfilePictureChange($event)" accept="image/*">
-                    <label for="profilePicture">
-                      <i class="fas fa-cloud-upload-alt"></i> Choose File
-                    </label>
-                    <small>Recommended: 400x400px, JPG/PNG</small>
-                  </div>
+                </ng-template>
+                <div class="upload-btn">
+                  <input type="file" id="profilePicture" (change)="onProfilePictureChange($event)" accept="image/*">
+                  <label for="profilePicture">
+                    <i class="fas fa-cloud-upload-alt"></i> Choose File
+                  </label>
+                  <small>Recommended: 400x400px, JPG/PNG</small>
                 </div>
               </div>
-  
-              <div class="image-upload">
-                <label>Background Image</label>
-                <div class="upload-container">
-                  <div class="preview background-preview" *ngIf="backgroundImagePreview; else emptyBackground">
-                    <img [src]="backgroundImagePreview" alt="Background Preview">
+            </div>
+
+            <div class="image-upload">
+              <label>Background Image</label>
+              <div class="upload-container">
+                <div class="preview background-preview" *ngIf="backgroundImagePreview; else emptyBackground">
+                  <img [src]="backgroundImagePreview" alt="Background Preview">
+                </div>
+                <ng-template #emptyBackground>
+                  <div class="preview background-preview empty">
+                    <i class="fas fa-image"></i>
                   </div>
-                  <ng-template #emptyBackground>
-                    <div class="preview background-preview empty">
-                      <i class="fas fa-image"></i>
-                    </div>
-                  </ng-template>
-                  <div class="upload-btn">
-                    <input type="file" id="backgroundImage" (change)="onBackgroundImageChange($event)" accept="image/*">
-                    <label for="backgroundImage">
-                      <i class="fas fa-cloud-upload-alt"></i> Choose File
-                    </label>
-                    <small>Recommended: 1500x500px, JPG/PNG</small>
-                  </div>
+                </ng-template>
+                <div class="upload-btn">
+                  <input type="file" id="backgroundImage" (change)="onBackgroundImageChange($event)" accept="image/*">
+                  <label for="backgroundImage">
+                    <i class="fas fa-cloud-upload-alt"></i> Choose File
+                  </label>
+                  <small>Recommended: 1500x500px, JPG/PNG</small>
                 </div>
               </div>
             </div>
           </div>
-  
-          <!-- Step 3: Skills -->
-          <div class="step" [class.active]="currentStep === 3" *ngIf="currentStep === 3">
-            <div class="skills-section">
-              <label>Skills</label>
-              <div class="skills-input">
-                <input type="text" [(ngModel)]="newSkill" [ngModelOptions]="{standalone: true}" name="newSkill" placeholder="Add a skill (e.g., Angular)">
-                <button type="button" (click)="addSkill()" class="btn-add-skill">
-                  <i class="fas fa-plus"></i> Add
-                </button>
-              </div>
-              <div class="skills-list">
-                <span class="skill-tag" *ngFor="let skill of skills; let i = index">
-                  {{ skill.name }}
-                  <span class="remove-skill" (click)="removeSkill(skill)">
-                    <i class="fas fa-times"></i>
-                  </span>
-                </span>
-              </div>
-            </div>
+        </div>
+
+        <!-- Loading indicator -->
+        <div class="loading-indicator" *ngIf="isLoading">
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
           </div>
-  
-          <!-- Loading indicator -->
-          <div class="loading-indicator" *ngIf="isLoading">
-            <div class="spinner">
-              <div class="double-bounce1"></div>
-              <div class="double-bounce2"></div>
-            </div>
-            <p>Saving your profile...</p>
-          </div>
-  
-          <!-- Error message -->
-          <div class="error-container" *ngIf="errorMessage">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p class="error-text">{{ errorMessage }}</p>
-          </div>
-  
-          <!-- Navigation buttons -->
-          <div class="navigation-buttons">
-            <button type="button" class="btn btn-secondary btn-prev" *ngIf="currentStep > 1" (click)="prevStep()">
-              <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <button type="button" class="btn btn-primary btn-next" *ngIf="currentStep < totalSteps" (click)="nextStep()">
-              Next <i class="fas fa-arrow-right"></i>
-            </button>
-            <button type="submit" class="btn btn-primary btn-submit" *ngIf="currentStep === totalSteps" [disabled]="isLoading">
-              <i class="fas fa-check"></i> Complete Profile
-            </button>
-            <button type="button" class="btn btn-skip" (click)="skipProfile()" [disabled]="isLoading">
-              Skip for Now
-            </button>
-          </div>
-        </form>
-      </div>
+          <p>Saving your profile...</p>
+        </div>
+
+        <!-- Error message -->
+        <div class="error-container" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p class="error-text">{{ errorMessage }}</p>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="navigation-buttons">
+          <button type="button" class="btn btn-secondary btn-prev" *ngIf="currentStep > 1" (click)="prevStep()">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+          <button type="button" class="btn btn-primary btn-next" *ngIf="currentStep < totalSteps" (click)="nextStep()">
+            Next <i class="fas fa-arrow-right"></i>
+          </button>
+          <button type="submit" class="btn btn-primary btn-submit" *ngIf="currentStep === totalSteps" [disabled]="isLoading">
+            <i class="fas fa-check"></i> Complete Profile
+          </button>
+          <button type="button" class="btn btn-skip" (click)="skipProfile()" [disabled]="isLoading">
+            Skip for Now
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-  
-  <div class="alert-container" *ngIf="!errorMessage && !showModal && !isLoading">
-    <div class="alert alert-success">
-      <i class="fas fa-check-circle"></i>
-      <span>Profile successfully initialized!</span>
-    </div>
+</div>
+
+<div class="alert-container" *ngIf="!errorMessage && !showModal && !isLoading">
+  <div class="alert alert-success">
+    <i class="fas fa-check-circle"></i>
+    <span>Profile successfully initialized!</span>
   </div>
+</div>
