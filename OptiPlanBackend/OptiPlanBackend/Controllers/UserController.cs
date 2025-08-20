@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using OptiPlanBackend.Models;
 using OptiPlanBackend.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,9 +11,9 @@ namespace OptiPlanBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(IUserService userService) : ControllerBase
+    public class UserController(IUserService userService,ILogger<UserController> _logger,ICurrentUserService _currentUserService) : ControllerBase
     {
-        [HttpGet("profile")]
+        [HttpGet("current")]
         public async Task<IActionResult> GetUserProfile()
         {
             try
@@ -42,7 +43,7 @@ namespace OptiPlanBackend.Controllers
                     user.CompanyName,
                     user.PhoneNumber,
                     user.FullName,
-
+                    user.firstLogin
                 });
             }
             catch (Exception ex)
@@ -99,5 +100,15 @@ namespace OptiPlanBackend.Controllers
 
 
 
+
+     
+
+
+
     }
+
+
+
+
+
 }

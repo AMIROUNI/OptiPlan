@@ -1,32 +1,27 @@
 <div class="profile-container">
   <!-- Loading State -->
-  <div *ngIf="isLoading" class="loading">Loading profile...</div>
+  <div *ngIf="isLoading" class="loading">Loading...</div>
 
   <!-- Header Section -->
   <div class="profile-header" *ngIf="!isLoading">
-    <div class="cover-photo"></div>
+    <div class="cover-photo">
+      <img [src]="profile?.backGround || 'assets/default-backGround.png'" alt="Cover Photo">
+    </div>
     <div class="profile-info">
       <div class="avatar-container">
-        <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile" class="avatar">
+        <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile Avatar" class="avatar">
         <div class="profile-badge" *ngIf="isMyProfile">
-          <span class="badge-icon">👤</span>
           <span>My Profile</span>
         </div>
       </div>
-      
       <div class="profile-actions">
         <button *ngIf="isMyProfile" class="btn btn-primary" (click)="toggleEdit()">
-          <span class="action-icon">{{ isEditing ? '💾' : '✏️' }}</span>
           {{ isEditing ? 'Save Profile' : 'Edit Profile' }}
         </button>
-        
-        <button *ngIf="!isMyProfile" class="btn btn-primary" (click)="openMessageForm()">
-          <span class="action-icon">✉️</span>
+        <button *ngIf="!isMyProfile" class="btn btn-primary" (click)="openChat()">
           Message
         </button>
-        
         <button *ngIf="!isMyProfile" class="btn btn-secondary">
-          <span class="action-icon">🤝</span>
           Connect
         </button>
       </div>
@@ -41,16 +36,15 @@
         <div class="profile-intro">
           <h1>{{ profile?.fullName || 'No name provided' }}</h1>
           <p class="title">{{ profile?.jobTitle || 'No title provided' }}</p>
-          <div class="location" *ngIf="profile?.country">
-            <span class="location-icon">📍</span>
-            <span>{{ profile?.country }}</span>
-          </div>
+          <p class="location" *ngIf="profile?.country">
+            {{ profile?.country }}
+          </p>
         </div>
 
         <!-- About Section -->
         <form [formGroup]="profileForm">
           <div class="section">
-            <h2><span class="section-icon">👤</span> About</h2>
+            <h2>About</h2>
             <div *ngIf="!isEditing">
               <p class="bio">{{ profile?.bio || 'No bio provided' }}</p>
             </div>
@@ -64,22 +58,16 @@
 
           <!-- Work Section -->
           <div class="section">
-            <h2><span class="section-icon">💼</span> Work</h2>
+            <h2>Work</h2>
             <div *ngIf="!isEditing">
               <div class="info-grid">
                 <div class="info-item" *ngIf="profile?.companyName">
-                  <span class="info-icon">🏢</span>
-                  <div>
-                    <h3>Company</h3>
-                    <p>{{ profile?.companyName }}</p>
-                  </div>
+                  <h3>Company</h3>
+                  <p>{{ profile?.companyName }}</p>
                 </div>
                 <div class="info-item" *ngIf="profile?.department">
-                  <span class="info-icon">👥</span>
-                  <div>
-                    <h3>Department</h3>
-                    <p>{{ profile?.department }}</p>
-                  </div>
+                  <h3>Department</h3>
+                  <p>{{ profile?.department }}</p>
                 </div>
               </div>
             </div>
@@ -97,7 +85,7 @@
 
           <!-- Contact Section -->
           <div class="section">
-            <h2><span class="section-icon">📱</span> Contact</h2>
+            <h2>Contact</h2>
             <div *ngIf="!isEditing && profile?.phoneNumber">
               <p>{{ profile?.phoneNumber }}</p>
             </div>
@@ -117,9 +105,9 @@
       <!-- Skills Card -->
       <div class="skills-card">
         <div class="card-header">
-          <h2><span class="header-icon">💻</span> Skills</h2>
+          <h2>Skills</h2>
           <button *ngIf="isMyProfile" class="btn btn-icon" (click)="addSkill()">
-            <span class="action-icon">➕</span>
+            Add
           </button>
         </div>
 
@@ -127,13 +115,13 @@
         <form [formGroup]="newSkillForm" *ngIf="showSkillForm && isMyProfile" class="add-skill-form">
           <div class="form-group">
             <label for="skillName">Skill Name</label>
-            <input type="text" class="form-control" id="skillName" placeholder="Skill name" formControlName="name">
+            <input type="text" class="form-control" id="skillName" formControlName="name">
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Proficiency</label>
               <div class="rating">
-                <span *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]" 
+                <span *ngFor="let star of [1,2,3,4,5]" 
                       (click)="newSkillForm.get('proficiencyLevel')?.setValue(star)"
                       [class.active]="star <= newSkillForm.get('proficiencyLevel')?.value">
                   ★
@@ -165,7 +153,7 @@
               </div>
             </div>
             <button *ngIf="isMyProfile" class="btn btn-icon btn-danger" (click)="deleteSkill(skill.id)">
-              <span class="action-icon">🗑️</span>
+              Delete
             </button>
           </div>
         </div>
@@ -173,33 +161,13 @@
     </div>
   </div>
 
-  <!-- Message Modal -->
-  <div class="message-modal" *ngIf="showMessageForm">
-    <div class="modal-content">
-      <button class="close-btn" (click)="closeMessageForm()">
-        <span class="action-icon">✖️</span>
-      </button>
-      
-      <h2>Send Message</h2>
-      
-      <div *ngIf="messageSent" class="success-message">
-        <p>Your message has been sent successfully!</p>
-      </div>
-      
-      <form *ngIf="!messageSent" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <input type="text" class="form-control" id="subject" formControlName="subject">
-        </div>
-        <div class="form-group">
-          <label for="content">Message</label>
-          <textarea class="form-control" id="content" formControlName="content" rows="5"></textarea>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" (click)="closeMessageForm()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Send <span class="action-icon">✉️</span></button>
-        </div>
-      </form>
+  <!-- Chat Container -->
+  <div class="chat-container" *ngIf="showChat">
+    <div class="chat-header">
+      <h3>Chat with {{ profile?.fullName || 'User' }}</h3>
+      <button class="close-btn" (click)="closeChat()">✖</button>
     </div>
+    <app-chat-box [selectedUserUsername]="username"
+    [selectedUserId]="selectedUserId"></app-chat-box>
   </div>
 </div>

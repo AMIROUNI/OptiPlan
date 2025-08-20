@@ -15,7 +15,7 @@ namespace OptiPlanBackend.Models
         public Role Role { get; set; } = Role.User;
 
 
-        public bool firstLogin { get; set; } = false;
+        public bool firstLogin { get; set; } = true;
 
        
         public string FullName { get; set; } = string.Empty;

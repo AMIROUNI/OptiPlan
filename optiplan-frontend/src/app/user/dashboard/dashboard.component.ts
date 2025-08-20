@@ -6,10 +6,14 @@ import { WelcomeCardComponent } from "../../dashboard-components/welcome-card/we
 import { GenericChartComponent } from "../../dashboard-components/growth-chart/generic-chart.component";
 import { CommonModule } from '@angular/common';
 import { DisplayProjectComponent } from "./display-project/display-project.component";
+import { AuthService } from '../../services/auth.service';
+import { InitializeProfileComponent } from "../initialize-profile/initialize-profile.component";
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [KpiCardsComponent, WelcomeCardComponent, GenericChartComponent, CommonModule],
+  imports: [KpiCardsComponent, WelcomeCardComponent, GenericChartComponent, CommonModule, InitializeProfileComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -23,12 +27,17 @@ export class DashboardComponent {
   taskStats: any[] = [];
   loadingChart = true;
   chartError: string | null = null;
+  isFirstLogin : boolean=false;
+  user!:User;
 
-  constructor(private userDashboardService: UserDashboardService) {}
+  constructor(private userDashboardService: UserDashboardService, private authService:AuthService,
+    private userService:UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadKpis();
     this.loadTaskChartData();
+    this.loadCurrentUser();
   }
 
   loadKpis(): void {
@@ -103,4 +112,18 @@ export class DashboardComponent {
       this.taskStats = [];
     }
   }
+
+  loadCurrentUser() {
+    this.userService.getCurrentUser().subscribe(
+      (res) => {
+        console.log("load user successfully");
+        this.user = res;
+        this.isFirstLogin=this.user.firstLogin ?? false;
+      },
+      (err) => {
+        console.log("error", err);
+      }
+    );
+  }
+  
 }

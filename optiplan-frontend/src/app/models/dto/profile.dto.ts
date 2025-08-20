@@ -11,4 +11,5 @@ export interface  UserProfile{
     department:string,
     avatarUrl:string,
     backGround?:string
+    userId?:string
 }

@@ -98,6 +98,7 @@ decodeAndSetUser(token: string): void {
 
   isFirstLogin(): boolean {
     const user = this.currentUserSubject.value;
+    console.log("this form the method isFirstLogin ",user.firstLogin)
     return user && user.firstLogin === "true";
   }
   

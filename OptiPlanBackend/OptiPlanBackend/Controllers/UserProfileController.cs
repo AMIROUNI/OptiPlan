@@ -50,13 +50,14 @@ namespace OptiPlanBackend.Controllers
 
 
                 var userProfile = await _userProfileService.GetUserByIdAsync(user.Id);
-       
 
-                    var userProfileDto = new UserProfileDto
+
+                var userProfileDto = new UserProfileDto
                 {
                     Bio = userProfile.Bio,
                     Skills = userProfile.Skills.Select(s => new SkillDto
                     {
+                        Id = s.Id,
                         Name = s.Name,
                         ProficiencyLevel = s.ProficiencyLevel,
                         YearsExperience = s.YearsExperience
@@ -68,7 +69,10 @@ namespace OptiPlanBackend.Controllers
                     AvatarUrl = user.AvatarUrl,
                     CompanyName = user.CompanyName,
                     Department = user.Department,
-                    Country = user.Country
+                    Country = user.Country,
+                    BackGround = user.BackGround,
+                    UserId = user.Id
+
 
                 };
 

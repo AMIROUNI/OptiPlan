@@ -16,6 +16,7 @@ export interface User {
   companyName?: string;
   department?: string;
   country?: string;
+  firstLogin? : boolean
 
   refreshToken?: string;
   refreshTokenExpiryTime?: string;

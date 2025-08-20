@@ -4,7 +4,11 @@ using System.ComponentModel.DataAnnotations;
 namespace OptiPlanBackend.Dto
 {
     public class SkillDto
+
+
     {
+
+        public Guid? Id { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
 

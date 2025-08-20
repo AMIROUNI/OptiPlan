@@ -606,8 +606,8 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.UserController",
-    "Method": "GetAllWithOutAdmins",
-    "RelativePath": "api/User/get-all-with-out-admins",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/User/current",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -616,8 +616,8 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.UserController",
-    "Method": "GetUserProfile",
-    "RelativePath": "api/User/profile",
+    "Method": "GetAllWithOutAdmins",
+    "RelativePath": "api/User/get-all-with-out-admins",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

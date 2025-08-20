@@ -62,13 +62,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        };
    });
 
+// Add this to your services configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp", policy =>
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod());
+    options.AddPolicy("AllowAngularApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // This is important for SignalR
+        });
 });
+
+
 
 
 
@@ -102,6 +109,7 @@ builder.Services.AddControllers()
 
 //-------------------------------------------------------------------
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 builder.Services.AddScoped(typeof(IProjectRepository), typeof(ProjectRepository));
 builder.Services.AddScoped(typeof(IWorkItemRepository), typeof(WorkItemRepository));
 builder.Services.AddScoped(typeof(ISprintRepository), typeof(SprintRepository));
@@ -117,6 +125,9 @@ builder.Services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageRep
 builder.Services.AddScoped(typeof(IUserProfileRepository), typeof(UserProfileRepository));
 builder.Services.AddScoped(typeof(ISkillRepository), typeof(SkillRepository));
 
+
+builder.Services.AddScoped(typeof(IDirectChatRepository), typeof(DirectChatRepository));
+builder.Services.AddScoped(typeof(IDirectMessageRepository), typeof(DirectMessageRepository));
 //-------------------------------------------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -140,6 +151,10 @@ builder.Services.AddScoped(typeof(IUserProfileService), typeof(UserProfileServic
 
 builder.Services.AddScoped(typeof(ISkillService), typeof(SkillService));
 builder.Services.AddScoped(typeof(IWorkItemHistoryService), typeof(WorkItemHistoryService));
+
+
+builder.Services.AddScoped(typeof(IDirectChatService), typeof(DirectChatService));
+builder.Services.AddScoped(typeof(IDirectMessageService), typeof(DirectMessageService));
 
 
 

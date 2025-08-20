@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/profile  `);
+    return this.http.get<User>(`${this.apiUrl}/current  `);
 
   }
 
@@ -29,4 +29,8 @@ export class UserService {
   getAllUserNotAdmis(){
     return this.http.get<User>(`${this.apiUrl}/get-all-with-out-admins`);
   }
+
+
+
+  
 }

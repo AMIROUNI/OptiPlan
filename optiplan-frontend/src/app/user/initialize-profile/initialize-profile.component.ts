@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UserProfileService } from '../../services/user-profile.service';
@@ -20,7 +20,7 @@ export class InitializeProfileComponent implements OnInit {
   backgroundImagePreview: string | null = null;
   isLoading: boolean = false;
   errorMessage: string | null = null;
-  showModal: boolean = true;
+  @Input() showModal: boolean = true;
 
   constructor(
     private fb: FormBuilder,

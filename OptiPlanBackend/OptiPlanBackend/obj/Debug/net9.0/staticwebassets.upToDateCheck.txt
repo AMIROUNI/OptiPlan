@@ -22,3 +22,14 @@ wwwroot\avatars\6e5ab20d-c8da-4d8d-b3fd-0a92a989b346.png
 wwwroot\backgrounds\ac534c75-fa5a-4045-b38c-1d4361b6ad0a.png
 wwwroot\avatars\1124e007-e8b5-453a-be9d-08bb9b745b8b.png
 wwwroot\backgrounds\a437bc5d-edad-4d58-b3b5-58910ab883d4.png
+wwwroot\avatars\a630a4f1-b266-440f-babf-5074c8e99969.png
+wwwroot\backgrounds\cda803ce-7864-434e-9569-f4ce619f21a3.png
+wwwroot\avatars\ab9892dc-3433-4f9b-9a38-77ca973b5826.jpg
+wwwroot\backgrounds\9c16b73b-7b2d-41a9-be09-b7730fd7cea4.jpg
+wwwroot\avatars\22fcb653-79fb-49e9-9c43-7a9492a377ff.jpg
+wwwroot\avatars\e9991747-bd35-4d74-883e-8fc4aff99d06.jpg
+wwwroot\avatars\97bcc307-7159-48ad-8c44-b41c819fff75.jpg
+wwwroot\backgrounds\b73088c3-17be-4967-8281-796da4d4fc5b.jpg
+wwwroot\avatars\78125b0d-7929-43ad-8cd0-3252947dceac.jpg
+wwwroot\avatars\9b46739b-39fb-424c-9aa4-029343b28831.jpg
+wwwroot\backgrounds\b5c6ae51-c834-4fac-8376-9ba4d5eca724.jpg

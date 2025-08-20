@@ -7,7 +7,14 @@ namespace OptiPlanBackend.Services.Implementations
     public class DirectMessageService : IDirectMessageService
     {
 
+
         private readonly IDirectMessageRepository _directMessageRepository;
+
+        public DirectMessageService(IDirectMessageRepository directMessageRepository)
+        {
+            _directMessageRepository = directMessageRepository;
+        }
+
         public async Task<bool> CreateAsync(DirectMessage directMessage)
         {
            await _directMessageRepository.AddAsync(directMessage);

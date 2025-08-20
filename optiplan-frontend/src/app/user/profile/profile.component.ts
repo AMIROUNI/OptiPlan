@@ -6,13 +6,14 @@ import { UserProfileService } from '../../services/user-profile.service';
 import { SkillService } from '../../services/skill.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ChatBoxComponent } from "../../chat-box/chat-box.component";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  encapsulation: ViewEncapsulation.None, // Disable view encapsulation to ensure styles apply
-  imports: [CommonModule, ReactiveFormsModule],
+  encapsulation: ViewEncapsulation.None,
+  imports: [CommonModule, ReactiveFormsModule, ChatBoxComponent],
   standalone: true
 })
 export class ProfileComponent implements OnInit {
@@ -21,13 +22,11 @@ export class ProfileComponent implements OnInit {
   isLoading = true;
   isMyProfile = false;
   showSkillForm = false;
-  showMessageForm = false;
-  messageSent = false;
-
+  showChat = false;
+  username: string = "";
   profileForm: FormGroup;
   newSkillForm: FormGroup;
-  messageForm: FormGroup;
-  username : string = "";
+  selectedUserId:string="";
 
   constructor(
     private profileService: UserProfileService,
@@ -48,27 +47,18 @@ export class ProfileComponent implements OnInit {
 
     this.newSkillForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      proficiencyLevel: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
+      proficiencyLevel: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
       yearsExperience: [1, [Validators.required, Validators.min(1)]]
-    });
-
-    this.messageForm = this.fb.group({
-      subject: ['', [Validators.required, Validators.maxLength(100)]],
-      content: ['', [Validators.required, Validators.maxLength(1000)]]
     });
   }
 
   ngOnInit(): void {
-    console.log('ProfileComponent initialized'); // Debug
-    this.username= this.route.snapshot.paramMap.get("username") ?? "";
+    console.log('ProfileComponent initialized');
+    this.username = this.route.snapshot.paramMap.get("username") ?? "";
     const currentUser = this.authService.getCurrentUsername();
     this.isMyProfile = !this.username || this.username === currentUser;
     this.loadProfile();
-
-
   }
-
-
 
   loadProfile(): void {
     this.isLoading = true;
@@ -83,11 +73,14 @@ export class ProfileComponent implements OnInit {
           department: '',
           phoneNumber: '',
           avatarUrl: '',
-          backGround:'',
-          skills: []
+          backGround: '',
+          skills: [],
+          userId:''
         };
+        console.log("this id from the load profile ", data.skills[1]?.id);
         this.profileForm.patchValue(this.profile);
         this.isLoading = false;
+        this.selectedUserId=data.userId ?? ""
       },
       error: (err) => {
         console.error('Error loading profile:', err);
@@ -140,6 +133,7 @@ export class ProfileComponent implements OnInit {
 
   deleteSkill(skillId: string): void {
     if (confirm('Are you sure you want to delete this skill?')) {
+      console.log("skill id from the delete method ???", skillId);
       this.skillService.Delete(skillId).subscribe({
         next: () => this.loadProfile(),
         error: (err) => console.error('Error deleting skill:', err)
@@ -147,22 +141,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  openMessageForm(): void { 
-    this.showMessageForm = true;
-    this.messageSent = false;
+  openChat(): void {
+    this.showChat = true;
   }
 
-  closeMessageForm(): void { 
-    this.showMessageForm = false;
-    this.messageForm.reset();
-  }
-
-  sendMessage(): void {
-    if (this.messageForm.valid) {
-      console.log('Message sent:', this.messageForm.value); // Placeholder for actual service call
-      this.messageSent = true;
-      setTimeout(() => this.closeMessageForm(), 2000);
-    }
+  closeChat(): void {
+    this.showChat = false;
   }
 
   getProficiencyStars(level: number): number[] {
@@ -170,6 +154,6 @@ export class ProfileComponent implements OnInit {
   }
 
   getEmptyStars(level: number): number[] {
-    return Array(10 - level).fill(0);
+    return Array(5 - level).fill(0);
   }
 }
