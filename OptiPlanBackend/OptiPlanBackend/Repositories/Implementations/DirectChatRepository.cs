@@ -34,5 +34,26 @@ namespace OptiPlanBackend.Repositories.Implementations
             await _context.SaveChangesAsync();
             return chat;
         }
+
+
+
+        public async Task<IEnumerable<User>> GetUsersIHaveChatWithIt(Guid userId)
+        {
+            var usersAsUser1 = await _context.DirectChats
+                .Include(d => d.User2)
+                .Where(d => d.User1Id == userId && d.User2 != null)
+                .Select(d => d.User2!)
+                .ToListAsync();
+
+            var usersAsUser2 = await _context.DirectChats
+                .Include(d => d.User1)
+                .Where(d => d.User2Id == userId && d.User1 != null)
+                .Select(d => d.User1!)
+                .ToListAsync();
+
+            // Fusionner les deux listes et supprimer les doublons
+            return usersAsUser1.Concat(usersAsUser2).Distinct();
+        }
+
     }
 }

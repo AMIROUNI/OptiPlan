@@ -15,6 +15,7 @@ import { ChatUserComponent } from './chat-user/chat-user.component';
 import { ChatBoxComponent } from './chat-box/chat-box.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { InitializeProfileComponent } from './user/initialize-profile/initialize-profile.component';
+import { MessagesComponent } from './user/messages/messages.component';
 
 export const routes: Routes = [
     {path:'register',component: RegisterComponent},
@@ -29,6 +30,7 @@ export const routes: Routes = [
     {path:'my-projects',component:DisplayProjectComponent},
     {path:'chat-bot',component:ChatBotUserComponent},
     {path:'profile/:username',component:ProfileComponent},
+    {path:'messages',component:MessagesComponent},
     
 
     //**************************************************     */

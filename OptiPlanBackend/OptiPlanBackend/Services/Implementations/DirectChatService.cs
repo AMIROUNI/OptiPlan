@@ -48,5 +48,10 @@ namespace OptiPlanBackend.Services.Implementations
              _directChatRepository.Update(directChat);
             return await _directChatRepository.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<User>> GetUsersIHaveChatWithIt(Guid userId)
+        {
+            return await _directChatRepository.GetUsersIHaveChatWithIt(userId);
+        }
     }
 }

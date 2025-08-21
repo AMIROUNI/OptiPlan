@@ -1,11 +1,17 @@
 <div class="profile-container">
   <!-- Loading State -->
-  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading profile...</p>
+  </div>
 
   <!-- Header Section -->
   <div class="profile-header" *ngIf="!isLoading">
     <div class="cover-photo">
       <img [src]="profile?.backGround || 'assets/default-backGround.png'" alt="Cover Photo">
+      <div class="cover-overlay"></div>
     </div>
     <div class="profile-info">
       <div class="avatar-container">
@@ -16,13 +22,14 @@
       </div>
       <div class="profile-actions">
         <button *ngIf="isMyProfile" class="btn btn-primary" (click)="toggleEdit()">
+          <i class="bi" [class.bi-pencil]="!isEditing" [class.bi-check]="isEditing"></i>
           {{ isEditing ? 'Save Profile' : 'Edit Profile' }}
         </button>
         <button *ngIf="!isMyProfile" class="btn btn-primary" (click)="openChat()">
-          Message
+          <i class="bi bi-chat"></i> Message
         </button>
-        <button *ngIf="!isMyProfile" class="btn btn-secondary">
-          Connect
+        <button *ngIf="!isMyProfile" class="btn btn-outline-primary">
+          <i class="bi bi-person-plus"></i> Connect
         </button>
       </div>
     </div>
@@ -37,14 +44,17 @@
           <h1>{{ profile?.fullName || 'No name provided' }}</h1>
           <p class="title">{{ profile?.jobTitle || 'No title provided' }}</p>
           <p class="location" *ngIf="profile?.country">
-            {{ profile?.country }}
+            <i class="bi bi-geo-alt"></i> {{ profile?.country }}
           </p>
+          <div class="connections" >
+            <span class="connection-count"></span> connections
+          </div>
         </div>
 
         <!-- About Section -->
         <form [formGroup]="profileForm">
           <div class="section">
-            <h2>About</h2>
+            <h2><i class="bi bi-person"></i> About</h2>
             <div *ngIf="!isEditing">
               <p class="bio">{{ profile?.bio || 'No bio provided' }}</p>
             </div>
@@ -58,7 +68,7 @@
 
           <!-- Work Section -->
           <div class="section">
-            <h2>Work</h2>
+            <h2><i class="bi bi-briefcase"></i> Work</h2>
             <div *ngIf="!isEditing">
               <div class="info-grid">
                 <div class="info-item" *ngIf="profile?.companyName">
@@ -85,9 +95,9 @@
 
           <!-- Contact Section -->
           <div class="section">
-            <h2>Contact</h2>
+            <h2><i class="bi bi-envelope"></i> Contact</h2>
             <div *ngIf="!isEditing && profile?.phoneNumber">
-              <p>{{ profile?.phoneNumber }}</p>
+              <p><i class="bi bi-telephone"></i> {{ profile?.phoneNumber }}</p>
             </div>
             <div *ngIf="isEditing">
               <div class="form-group">
@@ -105,9 +115,9 @@
       <!-- Skills Card -->
       <div class="skills-card">
         <div class="card-header">
-          <h2>Skills</h2>
+          <h2><i class="bi bi-tools"></i> Skills</h2>
           <button *ngIf="isMyProfile" class="btn btn-icon" (click)="addSkill()">
-            Add
+            <i class="bi bi-plus-lg"></i> Add
           </button>
         </div>
 
@@ -115,7 +125,7 @@
         <form [formGroup]="newSkillForm" *ngIf="showSkillForm && isMyProfile" class="add-skill-form">
           <div class="form-group">
             <label for="skillName">Skill Name</label>
-            <input type="text" class="form-control" id="skillName" formControlName="name">
+            <input type="text" class="form-control" id="skillName" formControlName="name" placeholder="Enter skill name">
           </div>
           <div class="form-row">
             <div class="form-group">
@@ -130,17 +140,17 @@
             </div>
             <div class="form-group">
               <label for="yearsExperience">Years</label>
-              <input type="number" class="form-control" id="yearsExperience" formControlName="yearsExperience" min="1">
+              <input type="number" class="form-control" id="yearsExperience" formControlName="yearsExperience" min="1" placeholder="0">
             </div>
           </div>
           <div class="form-actions">
-            <button type="button" class="btn btn-secondary" (click)="cancelAddSkill()">Cancel</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelAddSkill()">Cancel</button>
             <button type="button" class="btn btn-primary" (click)="saveNewSkill()">Save</button>
           </div>
         </form>
 
         <!-- Skills List -->
-        <div class="skills-list">
+        <div class="skills-list" [class.form-active]="showSkillForm">
           <div class="skill-item" *ngFor="let skill of profile?.skills">
             <div class="skill-info">
               <h3>{{ skill.name }}</h3>
@@ -152,22 +162,36 @@
                 </div>
               </div>
             </div>
-            <button *ngIf="isMyProfile" class="btn btn-icon btn-danger" (click)="deleteSkill(skill.id)">
-              Delete
+            <button *ngIf="isMyProfile" class="btn btn-icon btn-outline-danger" (click)="deleteSkill(skill.id)">
+              <i class="bi bi-trash"></i>
             </button>
+          </div>
+          
+          <!-- Empty state -->
+          <div class="empty-state" *ngIf="!profile?.skills">
+            <i class="bi bi-tools"></i>
+            <p>No skills added yet</p>
+            <button *ngIf="isMyProfile" class="btn btn-primary" (click)="addSkill()">Add your first skill</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Chat Container -->
-  <div class="chat-container" *ngIf="showChat">
-    <div class="chat-header">
-      <h3>Chat with {{ profile?.fullName || 'User' }}</h3>
-      <button class="close-btn" (click)="closeChat()">✖</button>
+      <!-- Chat Container - Positioned under skills card -->
+      <div class="chat-container" *ngIf="showChat" >
+        <div class="chat-header">
+          <div class="chat-user-info">
+            <img [src]="profile?.avatarUrl || 'assets/default-avatar.png'" alt="Profile Avatar" class="chat-avatar">
+            <div>
+              <h3>Chat with {{ profile?.fullName || 'User' }}</h3>
+              <span class="status-badge online">Online</span>
+            </div>
+          </div>
+          <button class="btn btn-icon close-btn" (click)="closeChat()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <app-chat-box [selectedUserUsername]="username" [selectedUserId]="selectedUserId"></app-chat-box>
+      </div>
     </div>
-    <app-chat-box [selectedUserUsername]="username"
-    [selectedUserId]="selectedUserId"></app-chat-box>
   </div>
 </div>

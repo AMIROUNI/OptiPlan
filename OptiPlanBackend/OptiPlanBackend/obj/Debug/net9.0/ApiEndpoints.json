@@ -411,6 +411,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OptiPlanBackend.Controllers.MessagesController",
+    "Method": "GetMessageHistory",
+    "RelativePath": "api/Messages/history/{receiverUsername}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "receiverUsername",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.MessagesController",
+    "Method": "GetUsersIHaveChatWithIt",
+    "RelativePath": "api/Messages/uesrs-i-have-chat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OptiPlanBackend.Controllers.ProjectController",
     "Method": "GetById",
     "RelativePath": "api/Project/{id}",

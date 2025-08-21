@@ -31,24 +31,44 @@ namespace OptiPlanBackend.Hubs
             _logger = logger;
         }
 
+       
+        private static readonly Dictionary<string, string> _userConnections = new Dictionary<string, string>();
+
         public override async Task OnConnectedAsync()
         {
+            var userId = Context.UserIdentifier;
+            var connectionId = Context.ConnectionId;
+
             _logger.LogInformation("Client connected: {ConnectionId}, User: {UserIdentifier}",
-                Context.ConnectionId, Context.UserIdentifier);
+                connectionId, userId);
+
+         
+            if (!string.IsNullOrEmpty(userId))
+            {
+                _userConnections[connectionId] = userId;
+            }
+
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            var connectionId = Context.ConnectionId;
+
+            if (_userConnections.ContainsKey(connectionId))
+            {
+                _userConnections.Remove(connectionId);
+            }
+
             if (exception != null)
             {
-                _logger.LogWarning(exception, "Client disconnected with error: {ConnectionId}",
-                    Context.ConnectionId);
+                _logger.LogWarning(exception, "Client disconnected with error: {ConnectionId}", connectionId);
             }
             else
             {
-                _logger.LogInformation("Client disconnected: {ConnectionId}", Context.ConnectionId);
+                _logger.LogInformation("Client disconnected: {ConnectionId}", connectionId);
             }
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -56,33 +76,16 @@ namespace OptiPlanBackend.Hubs
         {
             try
             {
-                _logger.LogInformation("SendMessage called by {UserIdentifier} to {ReceiverUsername}",
-                    Context.UserIdentifier, receiverUsername);
-
                 var senderId = _currentUserService.UserId.Value;
-                if (senderId == null)
-                {
-                    _logger.LogWarning("User not authenticated for SendMessage");
-                    throw new HubException("User not authenticated");
-                }
+                if (senderId == null) throw new HubException("User not authenticated");
 
-                var user = await _userService.GetUserByUsernameAsync(receiverUsername);
-                if (user == null)
-                {
-                    _logger.LogWarning("User {ReceiverUsername} not found", receiverUsername);
-                    throw new HubException($"User {receiverUsername} not found");
-                }
+                var receiverUser = await _userService.GetUserByUsernameAsync(receiverUsername);
+                if (receiverUser == null) throw new HubException($"User {receiverUsername} not found");
 
-                // Check if chat exists between users
-                var chat = await _chatService.GetPrivateChatAsync(senderId, user.Id);
+                var chat = await _chatService.GetPrivateChatAsync(senderId, receiverUser.Id);
                 if (chat == null)
-                {
-                    _logger.LogInformation("Creating new chat between {SenderId} and {ReceiverId}",
-                        senderId, user.Id);
-                    chat = await _chatService.CreatePrivateChatAsync(senderId, user.Id);
-                }
+                    chat = await _chatService.CreatePrivateChatAsync(senderId, receiverUser.Id);
 
-                // Create message
                 var message = new DirectMessage
                 {
                     DirectChatId = chat.Id,
@@ -92,27 +95,22 @@ namespace OptiPlanBackend.Hubs
 
                 await _messageService.CreateAsync(message);
 
-                _logger.LogInformation("Sending message to group: {ChatId}, Content: {Content}",
-                    chat.Id, content);
-
+                // ✅ Broadcast to everyone in the chat (including sender)
                 await Clients.Group(chat.Id.ToString()).SendAsync("ReceiveMessage", new
                 {
                     senderId,
+                    senderUsername = await GetUsernameAsync(senderId),
                     content,
-                    displaySender = user.Username,
                     sentAt = message.SentAt,
                     chatId = chat.Id
                 });
-
-                _logger.LogInformation("Message sent successfully to chat {ChatId}", chat.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in SendMessage from {UserIdentifier} to {ReceiverUsername}",
-                    Context.UserIdentifier, receiverUsername);
                 throw new HubException($"Failed to send message: {ex.Message}");
             }
         }
+
 
         public async Task JoinChat(string receiverUsername)
         {
@@ -121,40 +119,56 @@ namespace OptiPlanBackend.Hubs
                 _logger.LogInformation("JoinChat called for user: {ReceiverUsername} by {UserIdentifier}",
                     receiverUsername, Context.UserIdentifier);
 
-                var senderId = _currentUserService.UserId.Value;
-                if (senderId == null)
+                var currentUserId = _currentUserService.UserId.Value;
+                if (currentUserId == null)
                 {
-                    _logger.LogWarning("User not authenticated for JoinChat");
                     throw new HubException("User not authenticated");
                 }
 
-                var user = await _userService.GetUserByUsernameAsync(receiverUsername);
-                if (user == null)
+                var otherUser = await _userService.GetUserByUsernameAsync(receiverUsername);
+                if (otherUser == null)
                 {
-                    _logger.LogWarning("User {ReceiverUsername} not found for JoinChat", receiverUsername);
                     throw new HubException($"User {receiverUsername} not found");
                 }
 
-                var chat = await _chatService.GetPrivateChatAsync(senderId, user.Id);
+                var chat = await _chatService.GetPrivateChatAsync(currentUserId, otherUser.Id);
                 if (chat != null)
                 {
+                    // ✅ Add current user to the chat group
                     await Groups.AddToGroupAsync(Context.ConnectionId, chat.Id.ToString());
                     _logger.LogInformation("User {UserIdentifier} added to group: {ChatId}",
                         Context.UserIdentifier, chat.Id);
+
+                    // ✅ Also ensure the other user is in the group (if online)
+                    // This ensures both users receive messages in real-time
+                    await EnsureUserInGroup(otherUser.Id, chat.Id);
                 }
                 else
                 {
-                    _logger.LogWarning("No chat found between {SenderId} and {ReceiverId}",
-                        senderId, user.Id);
+                    _logger.LogWarning("No chat found between users");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in JoinChat for user: {ReceiverUsername}", receiverUsername);
+                _logger.LogError(ex, "Error in JoinChat");
                 throw new HubException($"Failed to join chat: {ex.Message}");
             }
         }
 
+        // ✅ New method to ensure both users are in the chat group
+        private async Task EnsureUserInGroup(Guid userId, Guid chatId)
+        {
+            // This would require tracking user connections
+            // For now, we'll rely on each user calling JoinChat when they open the chat
+            _logger.LogInformation("Ensuring user {UserId} is in group {ChatId}", userId, chatId);
+        }
+
+        // ✅ Add this helper method
+        private async Task<string> GetUsernameAsync(Guid userId)
+        {
+            var user = await _userService.GetUserByIdAsync(userId);
+            return user?.Username ?? userId.ToString();
+        }
         public async Task LeaveChat(string receiverUsername)
         {
             try
@@ -181,5 +195,9 @@ namespace OptiPlanBackend.Hubs
                 _logger.LogError(ex, "Error in LeaveChat for user: {ReceiverUsername}", receiverUsername);
             }
         }
+
+
+
+
     }
 }

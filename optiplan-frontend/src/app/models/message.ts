@@ -1,6 +1,9 @@
 export interface Message {
-    senderId: string;
-    displaySender: string;
-    content: string;
-    sentAt: Date;
-  }
+  id?: string;
+  senderId: string;
+  senderUsername?: string;
+  displaySender?: string; // For UI display
+  content: string;
+  sentAt: Date;
+  chatId?: string;
+}

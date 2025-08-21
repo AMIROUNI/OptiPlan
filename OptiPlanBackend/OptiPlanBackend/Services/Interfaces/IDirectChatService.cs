@@ -13,5 +13,6 @@ namespace OptiPlanBackend.Services.Interfaces
 
         Task<DirectChat?> GetPrivateChatAsync(Guid user1Id, Guid user2Id);
         Task<DirectChat> CreatePrivateChatAsync(Guid user1Id, Guid user2Id);
+        public  Task<IEnumerable<User>> GetUsersIHaveChatWithIt(Guid userId);
     }
 }

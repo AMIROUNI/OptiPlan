@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Models;
+﻿using OptiPlanBackend.Dto;
+using OptiPlanBackend.Models;
 using OptiPlanBackend.Repositories.Interfaces;
 using OptiPlanBackend.Services.Interfaces;
 
@@ -40,6 +41,11 @@ namespace OptiPlanBackend.Services.Implementations
         public async Task<List<DirectMessage>> GetMessagesAsync(Guid chatId)
         {
            return await _directMessageRepository.GetMessagesAsync(chatId);
+        }
+
+        public async Task<List<MessageDto>> GetMessagesByChatIdAsync(Guid chatId)
+        {
+           return await _directMessageRepository.GetMessagesByChatIdAsync(chatId);
         }
 
         public async Task<bool> UpdateAsync(DirectMessage directMessage)

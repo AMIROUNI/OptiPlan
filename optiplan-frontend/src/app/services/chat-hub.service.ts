@@ -13,34 +13,24 @@ export class ChatHubService {
   connectionStatus$ = this.connectionStatus.asObservable();
 
   connect(token: string): Promise<void> {
-    if (this.connectionPromise) {
-      return this.connectionPromise;
-    }
-
-    const url = 'https://localhost:7078/chathub';
-    console.log('Connecting to SignalR at:', url);
+    if (this.connectionPromise) return this.connectionPromise;
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(url, {
-        accessTokenFactory: () => token,
-        skipNegotiation: false, // Ensure negotiation happens
-        transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.ServerSentEvents
+      .withUrl('https://localhost:7078/chathub', {
+        accessTokenFactory: () => token
       })
       .withAutomaticReconnect()
-      .configureLogging(signalR.LogLevel.Debug) // Enable detailed logging
+      .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    // Setup connection event handlers
     this.setupConnectionEvents();
 
     this.connectionPromise = this.hubConnection.start()
       .then(() => {
         this.isConnected = true;
-        console.log('SignalR connected successfully');
         this.connectionStatus.next(true);
       })
       .catch(err => {
-        console.error('Connection error details:', err);
         this.isConnected = false;
         this.connectionStatus.next(false);
         this.connectionPromise = null;
@@ -51,61 +41,34 @@ export class ChatHubService {
   }
 
   private setupConnectionEvents() {
-    this.hubConnection.onclose((error) => {
-      console.log('SignalR connection closed', error);
+    this.hubConnection.onclose(() => {
       this.isConnected = false;
       this.connectionStatus.next(false);
     });
 
-    this.hubConnection.onreconnecting((error) => {
-      console.log('SignalR reconnecting...', error);
+    this.hubConnection.onreconnecting(() => {
       this.isConnected = false;
       this.connectionStatus.next(false);
     });
 
-    this.hubConnection.onreconnected((connectionId) => {
-      console.log('SignalR reconnected', connectionId);
+    this.hubConnection.onreconnected(() => {
       this.isConnected = true;
       this.connectionStatus.next(true);
     });
   }
 
   async joinChat(receiverUsername: string): Promise<void> {
-    if (!this.isConnected) {
-      await this.waitForConnection();
-    }
-    
-    console.log('Joining chat for user:', receiverUsername);
-    try {
-      await this.hubConnection.invoke('JoinChat', receiverUsername);
-      console.log('Successfully joined chat');
-    } catch (err) {
-      console.error('Error joining chat:', err);
-      throw err;
-    }
+    await this.waitForConnection();
+    await this.hubConnection.invoke('JoinChat', receiverUsername);
   }
 
   async sendMessage(receiverUsername: string, content: string): Promise<void> {
-    if (!this.isConnected) {
-      await this.waitForConnection();
-    }
-    
-    console.log('Sending message to:', receiverUsername);
-    try {
-      await this.hubConnection.invoke('SendMessage', receiverUsername, content);
-      console.log('Message sent successfully');
-    } catch (err) {
-      console.error('Error sending message:', err);
-      throw err;
-    }
+    await this.waitForConnection();
+    await this.hubConnection.invoke('SendMessage', receiverUsername, content);
   }
 
   onMessageReceived(callback: (msg: Message) => void) {
-    if (!this.hubConnection) {
-      console.error('Hub connection not initialized');
-      return;
-    }
-    
+    if (!this.hubConnection) return;
     this.hubConnection.on('ReceiveMessage', callback);
   }
 
@@ -118,23 +81,17 @@ export class ChatHubService {
     }
   }
 
-  private async waitForConnection(timeoutMs: number = 10000): Promise<void> {
+  private async waitForConnection(timeoutMs = 10000): Promise<void> {
     if (this.isConnected) return;
-    
-    const startTime = Date.now();
-    
+    const start = Date.now();
+
     return new Promise((resolve, reject) => {
-      const checkConnection = () => {
-        if (this.isConnected) {
-          resolve();
-        } else if (Date.now() - startTime > timeoutMs) {
-          reject(new Error('Connection timeout: SignalR connection not established'));
-        } else {
-          setTimeout(checkConnection, 100);
-        }
+      const check = () => {
+        if (this.isConnected) resolve();
+        else if (Date.now() - start > timeoutMs) reject(new Error('SignalR connection timeout'));
+        else setTimeout(check, 100);
       };
-      
-      checkConnection();
+      check();
     });
   }
 }

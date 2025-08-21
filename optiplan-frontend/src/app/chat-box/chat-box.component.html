@@ -7,47 +7,40 @@
   <!-- Loading state -->
   <div *ngIf="isLoading" class="loading">
     <div class="spinner"></div>
-    Connecting to chat...
+    Loading conversation...
   </div>
 
   <!-- Error message -->
   <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-    <button (click)="ngOnInit()" class="retry-btn">Retry</button>
+    <span>{{ errorMessage }}</span>
+    <button (click)="retryConnection()" class="retry-btn">Retry</button>
   </div>
 
   <!-- Chat content -->
   <div class="messages-container" *ngIf="!isLoading">
     <div class="messages">
-      <div *ngFor="let msg of messages" 
-           class="message" 
-           [class.my-message]="msg.senderId === 'me'">
+      <div *ngFor="let msg of messages"
+           class="message"
+           [ngClass]="{'my-message': msg.displaySender === 'me'}">
         <div class="message-content">
-          <strong>{{ msg.senderId === 'me' ? 'You' : msg.senderId }}</strong>: 
+          <strong *ngIf="msg.displaySender !== 'me'">{{ msg.senderUsername }}:</strong>
           {{ msg.content }}
         </div>
         <div class="message-time">
           {{ msg.sentAt | date:'shortTime' }}
         </div>
       </div>
-      
+
       <div *ngIf="messages.length === 0" class="no-messages">
         No messages yet. Start the conversation!
       </div>
     </div>
-    
+
     <div class="input-area">
-      <input 
-        [value]="newMessage" 
-        (input)="newMessage = $any($event.target).value" 
-        (keyup.enter)="sendMessage()"
-        placeholder="Type a message..." 
-        [disabled]="!isConnected || isLoading" />
-      
-      <button 
-        (click)="sendMessage()" 
-        [disabled]="!newMessage.trim() || !isConnected || isLoading"
-        class="send-btn">
+      <input [value]="newMessage" (input)="newMessage = $any($event.target).value" (keyup.enter)="sendMessage()"
+        placeholder="Type a message..." [disabled]="!isConnected || isLoading" />
+
+      <button (click)="sendMessage()" [disabled]="!newMessage.trim() || !isConnected || isLoading" class="send-btn">
         Send
       </button>
     </div>

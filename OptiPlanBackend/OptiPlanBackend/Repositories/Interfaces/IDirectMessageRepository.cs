@@ -1,4 +1,5 @@
-﻿using OptiPlanBackend.Models;
+﻿using OptiPlanBackend.Dto;
+using OptiPlanBackend.Models;
 
 namespace OptiPlanBackend.Repositories.Interfaces
 {
@@ -6,5 +7,9 @@ namespace OptiPlanBackend.Repositories.Interfaces
     {
 
         public  Task<List<DirectMessage>> GetMessagesAsync(Guid chatId);
+
+      public Task<List<MessageDto>> GetMessagesByChatIdAsync(Guid chatId);
+
+
     }
 }

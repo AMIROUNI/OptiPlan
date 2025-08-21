@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OptiPlanBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2b31d17f628585d4724b29559e2490d12d8d2f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a03b9a8375a9efc8f7f80e9e49eef4bda2ec8bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("OptiPlanBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OptiPlanBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
