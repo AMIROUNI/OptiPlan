@@ -632,6 +632,22 @@
   },
   {
     "ContainingType": "OptiPlanBackend.Controllers.UserController",
+    "Method": "UpdateAvatar",
+    "RelativePath": "api/User/avatar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "avatar",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OptiPlanBackend.Controllers.UserController",
     "Method": "GetUserProfile",
     "RelativePath": "api/User/current",
     "HttpMethod": "GET",

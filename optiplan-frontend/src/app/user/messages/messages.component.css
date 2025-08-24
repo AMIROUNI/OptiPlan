@@ -1,301 +1,360 @@
-/* Import Bootstrap and Bootstrap Icons */
+/* ============================================================================
+   GLOBAL IMPORTS
+============================================================================ */
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css');
 
-/* Integrated Root Variables from Provided CSS */
+/* ============================================================================
+   ROOT VARIABLES (Light Mode Palette)
+============================================================================ */
 :root {
+  /* Brand / Primary */
   --primary: #0a66c2;
   --primary-light: #3385d6;
   --primary-lighter: #7fb6f0;
   --primary-lightest: #e6f0fa;
   --primary-dark: #004182;
+
+  /* Accent / Status */
   --success: #2e7d32;
-  --success-light: #4caf50;
-  --warning: #f57c00;
+  --success-lightest: #e8f5e9;
   --danger: #d32f2f;
-  --light: #f3f2ef;
-  --card-bg: #ffffff;
-  --border-light: #e6e9ec;
-  --text-primary: #1a1a1a;
-  --text-secondary: #5e5e5e;
-  --text-tertiary: #757575;
-  --text-light: #ffffff;
-  --shadow-sm: 0 1px 2px 0 var(--shadow);
-  --shadow-md: 0 4px 6px -1px var(--shadow), 0 2px 4px -1px var(--shadow-light);
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-full: 50%;
+  --danger-lightest: #fdecea;
+  --warning: #f9a825;
+  --warning-lightest: #fff8e1;
+
+  /* Neutral */
+  --white: #ffffff;
+  --light: #f9f9f9;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #eeeeee;
+  --gray-300: #e0e0e0;
+  --gray-400: #bdbdbd;
+  --gray-500: #9e9e9e;
+  --gray-600: #757575;
+  --gray-700: #616161;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  --black: #000000;
+
+  /* Text */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --text-tertiary: var(--gray-600);
+  --text-quaternary: var(--gray-500);
+  --text-light: var(--white);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --radius-pill: 9999px;
+
+  /* Spacing */
+  --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
-  --space-5: 1.5rem;
-  --font-size-base: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Typography */
+  --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
-  --shadow: rgba(0, 0, 0, 0.08);
-  --shadow-light: rgba(0, 0, 0, 0.04);
+  --font-weight-bold: 700;
+
+  /* Components */
+  --chat-header-height: 72px;
+  --avatar-size-sm: 32px;
+  --avatar-size-md: 48px;
+  --avatar-size-lg: 64px;
+
+  /* Transition */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
 }
 
-/* Messages Container */
+/* ============================================================================
+   RESET & BASE
+============================================================================ */
+.messages-container * {
+  box-sizing: border-box;
+}
+
 .messages-container {
-  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--text-primary);
   background-color: var(--light);
+  display: flex;
+  height: 100vh;
   overflow: hidden;
 }
 
-/* Users List Container */
+/* ============================================================================
+   USERS LIST (Sidebar)
+============================================================================ */
 .users-list-container {
-  border-right: 1px solid var(--border-light);
-  height: 100%;
-  overflow-y: auto;
-  padding: var(--space-4);
-  background-color: var(--card-bg);
-}
-
-/* Search Bar Enhancements */
-.search-bar .search-input {
-  border-radius: var(--radius-pill);
-  padding: var(--space-3) var(--space-5);
-  border: 1px solid var(--primary-light);
-  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--gray-200);
+  background-color: var(--white);
   box-shadow: var(--shadow-sm);
 }
 
-.search-bar .search-input:focus {
+/* Search Bar */
+.search-bar {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--gray-200);
+  background-color: var(--white);
+}
+
+.search-input {
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--gray-300);
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-6);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-normal);
+}
+
+.search-input:focus {
+  outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.15);
-  transform: scale(1.02);
 }
 
-.search-bar .search-input::placeholder {
-  color: var(--text-tertiary);
-}
-
-/* User Item Styles */
-.user-item {
+/* Users List */
+.users-list {
+  flex: 1;
+  overflow-y: auto;
   padding: var(--space-3);
+}
+
+.users-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.users-list::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: var(--radius-pill);
+}
+
+/* User Item */
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  background-color: var(--light);
-  border: 1px solid var(--border-light);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  margin-bottom: var(--space-2);
 }
 
 .user-item:hover {
   background-color: var(--primary-lightest);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
 }
 
-.user-item .chat-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
+.user-item.active {
+  background-color: var(--primary-lightest);
+  border: 1px solid var(--primary-light);
+}
+
+.chat-avatar {
+  width: var(--avatar-size-md);
+  height: var(--avatar-size-md);
+  border-radius: var(--radius-pill);
   object-fit: cover;
-  border: 2px solid var(--primary-light);
-  transition: transform var(--transition-fast);
+  flex-shrink: 0;
 }
 
-.user-item:hover .chat-avatar {
-  transform: scale(1.1);
+.user-info {
+  margin-left: var(--space-3);
+  flex: 1;
 }
 
-.user-item .username {
+.username {
   font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Empty State */
 .empty-state {
+  padding: var(--space-6) var(--space-4);
   background-color: var(--primary-lightest);
-  border: 1px dashed var(--border-light);
   border-radius: var(--radius-lg);
-  animation: pulse 1.5s infinite;
+  border: 2px dashed var(--gray-300);
+  text-align: center;
 }
 
-.empty-state .bi {
-  opacity: 0.7;
-  transition: opacity var(--transition-normal);
+.empty-state p {
+  margin-top: var(--space-2);
+  color: var(--text-secondary);
 }
 
-.empty-state:hover .bi {
-  opacity: 1;
-}
-
-/* Chat Container Styles (Integrated from Provided CSS) */
+/* ============================================================================
+   CHAT CONTAINER
+============================================================================ */
 .chat-container {
-  background-color: var(--card-bg);
-  border-left: 1px solid var(--border-light);
-  height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  overflow: hidden;
+  flex: 1;
+  background-color: var(--white);
 }
 
-.chat-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-}
-
+/* Chat Header */
 .chat-header {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--text-light);
-  padding: var(--space-4);
-  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--gray-200);
+  height: var(--chat-header-height);
+  background-color: var(--white);
+  box-shadow: var(--shadow-xs);
+}
+
+.chat-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.chat-header .chat-avatar {
+  width: var(--avatar-size-md);
+  height: var(--avatar-size-md);
+  margin-right: var(--space-3);
+  border: 2px solid var(--primary-light);
 }
 
 .chat-header h3 {
   font-size: var(--font-size-lg);
-  margin-bottom: 0;
+  margin: 0;
 }
 
-.chat-header .chat-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  border: 2px solid var(--text-light);
+.status-badge {
+  font-size: var(--font-size-xs);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-medium);
+  display: inline-block;
+  margin-top: var(--space-1);
 }
 
 .status-badge.online {
   background-color: var(--success-lightest);
   color: var(--success);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-pill);
 }
 
 .close-btn {
-  color: var(--text-light-secondary);
+  border: none;
+  background: var(--gray-100);
+  border-radius: var(--radius-pill);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
 }
 
 .close-btn:hover {
-  color: var(--text-light);
-  transform: rotate(90deg);
+  background: var(--gray-200);
+  color: var(--primary-dark);
 }
 
-/* Chat Box Styles (Assuming Structure in app-chat-box) */
+/* ============================================================================
+   CHAT BOX
+============================================================================ */
 app-chat-box {
   flex: 1;
+  background-color: var(--light);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
-.chat-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--space-4);
-  background-color: var(--light);
+/* ============================================================================
+   ANIMATIONS
+============================================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.chat-message {
-  margin-bottom: var(--space-3);
-  padding: var(--space-3);
-  border-radius: var(--radius-md);
-  max-width: 70%;
-  animation: slideUp var(--transition-normal);
-}
-
-.chat-message.sent {
-  background-color: var(--primary-lightest);
-  align-self: flex-end;
-  border-bottom-right-radius: 0;
-}
-
-.chat-message.received {
-  background-color: var(--secondary-lightest);
-  align-self: flex-start;
-  border-bottom-left-radius: 0;
-}
-
-.chat-input {
-  display: flex;
-  padding: var(--space-3);
-  border-top: 1px solid var(--border-light);
-  background-color: var(--card-bg);
-}
-
-.chat-input input {
-  flex: 1;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--border-light);
-  padding: var(--space-3);
-  margin-right: var(--space-2);
-}
-
-.chat-input button {
-  border-radius: var(--radius-pill);
-  background: var(--primary);
-  color: var(--text-light);
-}
-
-/* Scrollbar */
-.chat-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-.chat-body::-webkit-scrollbar-track {
-  background: var(--border-light);
-}
-
-.chat-body::-webkit-scrollbar-thumb {
-  background: var(--primary);
-}
-
-.chat-body::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
-}
-
-/* Animations from Provided CSS */
-@keyframes slideUp {
+@keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
+.user-item {
+  animation: fadeInUp var(--transition-normal);
 }
 
-/* Responsive Design */
+/* ============================================================================
+   RESPONSIVE DESIGN
+============================================================================ */
 @media (max-width: 992px) {
   .messages-container {
     flex-direction: column;
   }
   .users-list-container {
-    col-12;
-    height: auto;
-    max-height: 40vh;
+    flex: none;
+    height: 40vh;
     border-right: none;
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--gray-200);
   }
   .chat-container {
-    col-12;
-    height: auto;
+    flex: 1;
   }
 }
 
-@media (max-width: 576px) {
-  .user-item .chat-avatar {
-    width: 40px;
-    height: 40px;
-  }
-  .chat-header .chat-avatar {
-    width: 32px;
-    height: 32px;
-  }
+@media (max-width: 768px) {
+  .users-list-container { height: 35vh; }
+  .chat-container { height: 65vh; }
+  .chat-header { padding: var(--space-2) var(--space-3); }
 }
+
+@media (max-width: 576px) {
+  .users-list-container { height: 30vh; }
+  .chat-container { height: 70vh; }
+  .username { font-size: var(--font-size-sm); }
+  .chat-header h3 { font-size: var(--font-size-base); }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+============================================================================ */
+.user-item:focus {
+  outline: 2px solid var(--primary);
+}
+
+.close-btn:focus {
+  outline: 2px solid var(--primary);
+}
+
+/* ============================================================================
+   UTILITIES
+============================================================================ */
+.text-muted { color: var(--text-quaternary) !important; }
+.bg-primary-lightest { background: var(--primary-lightest) !important; }
+.shadow-md { box-shadow: var(--shadow-md) !important; }

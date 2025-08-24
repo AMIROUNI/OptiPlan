@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -24,7 +24,8 @@ interface Conversation {
   selector: 'app-chat-bot-user',
   templateUrl: './chat-bot-user.component.html',
   styleUrls: ['./chat-bot-user.component.css'],
-  imports:[CommonModule,ReactiveFormsModule]
+  imports:[CommonModule,ReactiveFormsModule],
+  encapsulation: ViewEncapsulation.None
 })
 export class ChatBotUserComponent implements OnInit, OnDestroy {
   chatForm: FormGroup;

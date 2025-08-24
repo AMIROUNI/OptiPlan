@@ -12,6 +12,7 @@ export interface User {
   jobTitle: string;
   phoneNumber: string;
   avatarUrl: string;
+  backGround?: string
 
   companyName?: string;
   department?: string;

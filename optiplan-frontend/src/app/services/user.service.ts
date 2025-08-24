@@ -26,8 +26,8 @@ export class UserService {
 
 
 
-  getAllUserNotAdmis(){
-    return this.http.get<User>(`${this.apiUrl}/get-all-with-out-admins`);
+  getAllUserNotAdmis():Observable<User[]>{
+    return this.http.get<User[]>(`${this.apiUrl}/get-all-with-out-admins`);
   }
 
 

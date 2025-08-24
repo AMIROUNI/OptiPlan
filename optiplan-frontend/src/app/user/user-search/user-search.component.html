@@ -1,0 +1,60 @@
+<div class="user-search-component">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search by name, job title, company, or location..."
+          [(ngModel)]="query"
+          (input)="searchUsers()"
+          class="search-input"
+          aria-label="Search users"
+        />
+      </div>
+    </div>
+  
+    <div class="results-container">
+      <div *ngIf="isLoading" class="loading-state animate-pulse">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading users...</p>
+      </div>
+  
+      <div *ngIf="noResults && !isLoading" class="no-results animate-slide-in">
+        <i class="bi bi-search"></i>
+        <p>No users found matching your search.</p>
+        <small>Try different keywords or check your spelling.</small>
+      </div>
+  
+      <div *ngIf="!isLoading && !noResults" class="user-grid">
+        <a
+          *ngFor="let user of filteredUsers; "
+          [routerLink]="['/profile', user.username]"
+          class="user-card animate-card"
+        >
+          <img
+            [src]="user.avatarUrl || 'assets/default-avatar.png'"
+            alt="{{ user.fullName || 'User' }}'s avatar"
+            class="avatar"
+          />
+          <div class="user-info">
+            <h3 class="truncate">{{ user.fullName || 'Unnamed User' }}</h3>
+            <p class="job truncate">{{ user.jobTitle || 'No job title' }}</p>
+            <p class="company truncate" *ngIf="user.companyName || user.department">
+              {{ user.companyName ? user.companyName : '' }}
+              {{ user.companyName && user.department ? ' - ' : '' }}
+              {{ user.department ? user.department : '' }}
+            </p>
+            <p class="location" *ngIf="user.country">
+              <i class="bi bi-geo-alt-fill"></i> {{ user.country }}
+            </p>
+            <p class="email truncate">{{ user.email }}</p>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-outline-primary btn-sm">Connect</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>

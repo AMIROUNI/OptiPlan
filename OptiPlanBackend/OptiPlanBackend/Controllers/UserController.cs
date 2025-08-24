@@ -11,7 +11,7 @@ namespace OptiPlanBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(IUserService userService,ILogger<UserController> _logger,ICurrentUserService _currentUserService) : ControllerBase
+    public class UserController(IUserService userService, ILogger<UserController> _logger, ICurrentUserService _currentUserService, IUploadService uploadService): ControllerBase
     {
         [HttpGet("current")]
         public async Task<IActionResult> GetUserProfile()
@@ -25,7 +25,7 @@ namespace OptiPlanBackend.Controllers
                 {
                     return Unauthorized("Authorization header is missing");
                 }
-               
+
                 var user = await userService.GetUserByTokenAsync(authHeader);
 
                 if (user == null)
@@ -86,12 +86,12 @@ namespace OptiPlanBackend.Controllers
         {
             try
             {
-                var users = await  userService.getAllUserNotADMIN();
+                var users = await userService.getAllUserNotADMIN();
                 return Ok(users);
 
             }
 
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
@@ -100,8 +100,52 @@ namespace OptiPlanBackend.Controllers
 
 
 
+        [HttpPut("avatar")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAvatar(IFormFile avatar)
+        {
+            if (avatar == null || avatar.Length == 0)
+            {
+                return BadRequest("No image detected to update.");
+            }
 
-     
+            try
+            {
+                var userId = _currentUserService.UserId.Value;
+                var user = await userService.GetUserByIdAsync(userId);
+
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                // Upload image and get URL
+                var uploadedUrl = await uploadService.UploadImageAsync(avatar, "avatars");
+
+                if (string.IsNullOrEmpty(uploadedUrl))
+                {
+                    return StatusCode(500, "Image upload failed.");
+                }
+
+                // Update user avatar
+                user.AvatarUrl = uploadedUrl;
+                await userService.UpdateAsync(user);
+
+                return Ok(new
+                {
+                    Message = "Avatar updated successfully.",
+                    AvatarUrl = uploadedUrl
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating avatar");
+                return StatusCode(500, "An error occurred while updating the avatar.");
+            }
+        }
+
+
+
 
 
 

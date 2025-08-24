@@ -1,17 +1,18 @@
 <div class="chat-box">
   <!-- Connection status indicator -->
-  <div class="connection-indicator" [class.connected]="isConnected" [class.disconnected]="!isConnected">
+  <div class="connection-indicator" [ngClass]="{'connected': isConnected, 'disconnected': !isConnected}">
+    <i class="bi" [ngClass]="{'bi-check-circle-fill': isConnected, 'bi-x-circle-fill': !isConnected}"></i>
     {{ isConnected ? 'Connected' : 'Disconnected' }}
   </div>
 
   <!-- Loading state -->
-  <div *ngIf="isLoading" class="loading">
+  <div *ngIf="isLoading" class="loading animate-pulse">
     <div class="spinner"></div>
-    Loading conversation...
+    <p>Loading conversation...</p>
   </div>
 
   <!-- Error message -->
-  <div *ngIf="errorMessage" class="error-message">
+  <div *ngIf="errorMessage" class="error-message animate-slide-in">
     <span>{{ errorMessage }}</span>
     <button (click)="retryConnection()" class="retry-btn">Retry</button>
   </div>
@@ -19,28 +20,36 @@
   <!-- Chat content -->
   <div class="messages-container" *ngIf="!isLoading">
     <div class="messages">
-      <div *ngFor="let msg of messages"
-           class="message"
-           [ngClass]="{'my-message': msg.displaySender === 'me'}">
+      <div *ngFor="let msg of messages;" class="message animate-message" [ngClass]="{'my-message': msg.displaySender === 'me'}">
         <div class="message-content">
-          <strong *ngIf="msg.displaySender !== 'me'">{{ msg.senderUsername }}:</strong>
+          <strong *ngIf="msg.displaySender !== 'me'" class="sender-name">{{ msg.senderUsername }}:</strong>
           {{ msg.content }}
         </div>
-        <div class="message-time">
-          {{ msg.sentAt | date:'shortTime' }}
-        </div>
+        <div class="message-time">{{ msg.sentAt | date:'shortTime' }}</div>
       </div>
-
-      <div *ngIf="messages.length === 0" class="no-messages">
-        No messages yet. Start the conversation!
+      <div *ngIf="messages.length === 0" class="no-messages animate-slide-in">
+        <i class="bi bi-chat-dots"></i>
+        <p>No messages yet. Start the conversation!</p>
       </div>
     </div>
 
     <div class="input-area">
-      <input [value]="newMessage" (input)="newMessage = $any($event.target).value" (keyup.enter)="sendMessage()"
-        placeholder="Type a message..." [disabled]="!isConnected || isLoading" />
-
-      <button (click)="sendMessage()" [disabled]="!newMessage.trim() || !isConnected || isLoading" class="send-btn">
+      <input
+        [value]="newMessage"
+        (input)="newMessage = $any($event.target).value"
+        (keyup.enter)="sendMessage()"
+        placeholder="Type your message..."
+        [disabled]="!isConnected || isLoading"
+        class="message-input"
+        aria-label="Type a message"
+      />
+      <button
+        (click)="sendMessage()"
+        [disabled]="!newMessage.trim() || !isConnected || isLoading"
+        class="send-btn"
+        aria-label="Send message"
+      >
+        <i class="bi bi-send-fill"></i>
         Send
       </button>
     </div>
